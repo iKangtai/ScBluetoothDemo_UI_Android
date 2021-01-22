@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">Shecare蓝牙SDKUIDemo</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+
+    <string name="warm_prompt">温馨提示</string>
+    <string name="i_know">我知道了</string>
+    <string name="write_permission">亲~要先打开存储权限哟~</string>
+    <string name="paper_open_flashlight">打开闪光灯</string>
+    <string name="paper_close_flashlight">关闭闪光灯</string>
+    <string name="paper_in_container">请将完整试纸放入镜头内</string>
+    <string name="clip_picture_zoom">放大缩小</string>
+    <string name="clip_picture_rotate">旋转</string>
+    <string name="paper_clip_text">温馨提示：可以通过以下操作调整图片到取景框中</string>
+    <string name="paper_scan_notice">请务必保持试纸处在取景框内</string>
+    <string name="scan_paper_notice">卡/笔形试纸？</string>
+    <string name="dialog_paper_hint_str">请保持T、C线处于取景框内，并且T线位于左边；T、C线不必与示例对齐</string>
+    <string name="left_margin">左边缘</string>
+    <string name="right_margin">右边缘</string>
+    <string name="ovulation_camera_tips"><![CDATA[为避免失效，孕橙试纸请在显色后%s分钟内拍照<br>其他试纸请参照相关说明进行拍照识别]]></string>
+    <string name="format_font_79FA1E"><![CDATA[<font color="#79FA1E">%s</font>]]></string>
+    <string name="sure">确定</string>
+    <string name="cancel">取消</string>
+    <string name="finish">完成</string>
+    <string name="paper_clip_title">排卵试纸</string>
+    <string name="smart_paper_result">智能检测结果</string>
+    <string name="lh_photo">试纸照片</string>
+    <string name="error_in_color_recognition">颜色识别有误差？</string>
+    <string name="color_reference_bar_title_1">T线色值参考条:</string>
+    <string name="color_reference_bar_title_2">T线色值参考条，拖动色卡修正结果！</string>
+    <string name="lh_refer_result"><![CDATA[参考结果：<font color="#FF7486">%d</font>]]></string>
+    <string name="lh_time2">检测时间</string>
+    <string name="save">保存</string>
+    <string name="photo">拍照</string>
+    <string name="camera">从相册选择</string>
+    <string name="paper">试纸识别</string>
+
+    <string name="personal_my_device_bind">设备绑定</string>
+    <string name="device_list">设备列表</string>
+    <string name="shecare_thermometer">孕橙智能基础体温计</string>
+    <string name="shecare_ewq">孕橙智能额温枪</string>
+    <string name="shecare_txy">孕橙智能胎心仪</string>
+
+    <string name="request_location_premisson">扫描蓝牙设备需要开启定位功能权限</string>
+    <string name="location_service_turn_on">定位服务已开启</string>
+    <string name="location_service_turn_off">定位服务未开启</string>
+    <string name="request_location_premisson_tips">请打开手机蓝牙，否则无法连接体温计</string>
+
+
+</resources>

@@ -17,6 +17,18 @@ public class AppInfo {
      * OAD连接界面
      */
     private boolean isOADConnectActive = false;
+    /**
+     * 蓝牙状态开/闭
+     */
+    private boolean bluetoothState;
+    /**
+     * 体温计状态开/闭
+     */
+    private boolean thermometerState;
+    /**
+     * 是否处于绑定页面
+     */
+    private boolean isBindActivityActive = false;
     private static volatile AppInfo instance;
 
     private AppInfo() {
@@ -34,6 +46,14 @@ public class AppInfo {
         return instance;
     }
 
+    public boolean isBindActivityActive() {
+        return isBindActivityActive;
+    }
+
+    public void setBindActivityActive(boolean bindActivityActive) {
+        isBindActivityActive = bindActivityActive;
+    }
+
     public void setDeviceConnectActive(boolean deviceConnectActive) {
         isDeviceConnectActive = deviceConnectActive;
     }
@@ -48,5 +68,25 @@ public class AppInfo {
 
     public boolean isOADConnectActive() {
         return isOADConnectActive;
+    }
+
+    public boolean isBluetoothState() {
+        return bluetoothState;
+    }
+
+    public void setBluetoothState(boolean bluetoothState) {
+        this.bluetoothState = bluetoothState;
+    }
+
+    public boolean isThermometerState() {
+        return thermometerState;
+    }
+
+    public void setThermometerState(boolean thermometerState) {
+        this.thermometerState = thermometerState;
+    }
+
+    public boolean isTempUnitC() {
+        return true;
     }
 }

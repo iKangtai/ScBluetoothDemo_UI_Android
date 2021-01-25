@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingTop="@dimen/dp_10">
+
+        <ImageView
+            android:id="@+id/deviceLogo"
+            android:layout_width="54dp"
+            android:layout_height="match_parent"
+            android:layout_alignTop="@+id/deviceInfo"
+            android:layout_alignBottom="@+id/deviceInfo"
+            android:scaleType="centerInside"
+            android:src="@drawable/a31" />
+
+        <LinearLayout
+            android:id="@+id/deviceInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_toRightOf="@+id/deviceLogo"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/deviceName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" "
+                android:textColor="@color/app_primary_light_color"
+                android:textSize="@dimen/title_text_size" />
+
+            <TextView
+                android:id="@+id/deviceMacAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text=" "
+                android:textSize="@dimen/button_text_small_size_12" />
+
+            <TextView
+                android:id="@+id/deviceOadVesion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text=" "
+                android:textSize="@dimen/button_text_small_size_12" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@+id/deviceLogo"
+            android:layout_marginTop="@dimen/dp_5"
+            android:background="#f0f0f0" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/unbind_device"
+        android:layout_width="@dimen/dp_140"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="解绑设备"
+        android:layout_marginBottom="@dimen/dp_20"/>
+
+    <Button
+        android:id="@+id/device_upgrade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/unbind_device"
+        android:text="设备程序升级"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dp_10"/>
+</RelativeLayout>
+

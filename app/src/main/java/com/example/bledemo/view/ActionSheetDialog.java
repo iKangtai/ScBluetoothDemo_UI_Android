@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.example.bledemo.basic.R;
+import com.example.bledemo.R;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.bledemo.view.TemperatureKeyborad xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#D2D5DB"
+    android:orientation="vertical"
+    android:padding="@dimen/dp_5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/number1Btn"
+            style="@style/keyboardNumberStyle"
+            android:text="1" />
+
+        <Button
+            android:id="@+id/number2Btn"
+            style="@style/keyboardNumberStyle"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:text="2" />
+
+        <Button
+            android:id="@+id/number3Btn"
+            style="@style/keyboardNumberStyle"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:text="3" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/number4Btn"
+            style="@style/keyboardNumberStyle"
+            android:text="4" />
+
+        <Button
+            android:id="@+id/number5Btn"
+            style="@style/keyboardNumberStyle"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:text="5" />
+
+        <Button
+            android:id="@+id/number6Btn"
+            style="@style/keyboardNumberStyle"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:text="6" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/number7Btn"
+            style="@style/keyboardNumberStyle"
+            android:text="7" />
+
+        <Button
+            android:id="@+id/number8Btn"
+            style="@style/keyboardNumberStyle"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:text="8" />
+
+        <Button
+            android:id="@+id/number9Btn"
+            style="@style/keyboardNumberStyle"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:text="9" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/content"
+            style="@style/keyboardNumberStyle"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/number0Btn"
+            style="@style/keyboardNumberStyle"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:text="0" />
+
+        <FrameLayout
+            android:id="@+id/numberDelBtn"
+            android:layout_width="0dp"
+            android:background="@drawable/keyborad_number_del_bg"
+            android:layout_height="46dp"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/keyboard_delete" />
+        </FrameLayout>
+
+
+    </LinearLayout>
+
+</com.example.bledemo.view.TemperatureKeyborad>

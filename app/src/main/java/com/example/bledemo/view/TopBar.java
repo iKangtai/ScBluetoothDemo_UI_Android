@@ -12,9 +12,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.example.bledemo.basic.R;
-import com.ikangtai.papersdk.util.PxDxUtil;
+import com.example.bledemo.R;
+import com.ikangtai.bluetoothsdk.util.PxDxUtil;
 
 /**
  * desc

@@ -14,25 +14,39 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.bledemo.Keys;
 import com.example.bledemo.R;
 import com.example.bledemo.activity.BindDeviceActivity;
+import com.example.bledemo.info.TemperatureInfo;
+import com.example.bledemo.util.DateUtil;
 import com.example.bledemo.view.ActionSheetDialog;
+import com.example.bledemo.view.dialog.BleAlertDialog;
+import com.example.bledemo.view.dialog.TemperatureAddDialog;
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
+import com.ikangtai.bluetoothsdk.Config;
+import com.ikangtai.bluetoothsdk.ScPeripheralManager;
 import com.ikangtai.bluetoothsdk.util.BleTools;
+import com.ikangtai.bluetoothsdk.util.FileUtil;
 import com.ikangtai.bluetoothsdk.util.ToastUtils;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class HomeFragment extends Fragment {
     public static final String TAG = HomeFragment.class.getSimpleName();
     public final static int REQUEST_LOCATION_SETTINGS = 1000;
     public final static int REQUEST_BLE_SETTINGS_CODE = 1001;
-
+    private ScPeripheralManager scPeripheralManager;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -57,7 +71,22 @@ public class HomeFragment extends Fragment {
                                 new ActionSheetDialog.OnSheetItemClickListener() {
                                     @Override
                                     public void onClick(int which) {
+                                        new TemperatureAddDialog(getContext()).builder().initEvent(new TemperatureAddDialog.IEvent() {
+                                            @Override
+                                            public void onSave(TemperatureInfo temperatureInfo) {
+                                                new BleAlertDialog(getContext()).builder()
+                                                        .setTitle("温度保存成功")
+                                                        .setMsg(DateUtil.getDateFormatYMDHM(temperatureInfo.getMeasureTime()) + "\n" + temperatureInfo.getTemperature() + Keys.kTempUnitC)
+                                                        .setCancelable(false)
+                                                        .setCanceledOnTouchOutside(false)
+                                                        .setPositiveButton(getString(R.string.ok), new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View v) {
 
+                                                            }
+                                                        }).show();
+                                            }
+                                        }).show();
                                     }
                                 }).setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
@@ -71,6 +100,27 @@ public class HomeFragment extends Fragment {
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         getActivity().registerReceiver(receiver, filter);
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        scPeripheralManager = ScPeripheralManager.getInstance();
+        String logFilePath = new File(FileUtil.createRootPath(getContext()), "log.txt").getAbsolutePath();
+        BufferedWriter logWriter = null;
+        try {
+            logWriter = new BufferedWriter(new FileWriter(logFilePath, true), 2048);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /**
+         * There are two ways to configure log
+         * 1. {@link Config.Builder#logWriter(Writer)}
+         * 2. {@link Config.Builder#logFilePath(String)}
+         */
+        Config config = new Config.Builder().logWriter(logWriter).build();
+        //sdk init
+        scPeripheralManager.init(getContext(), config);
     }
 
     /**
@@ -115,7 +165,7 @@ public class HomeFragment extends Fragment {
                                 builder.create().show();
 
                             } else {
-                                appendConsoleContent(getString(R.string.request_location_premisson));
+                                showMessage(getString(R.string.request_location_premisson));
                             }
                         }
                     });
@@ -139,10 +189,10 @@ public class HomeFragment extends Fragment {
                 int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
                 if (state == BluetoothAdapter.STATE_OFF) {
                     Log.e(TAG, "Bluetooth is off");
-                    appendConsoleContent("Bluetooth off");
+                    showMessage("Bluetooth off");
                 } else if (state == BluetoothAdapter.STATE_ON) {
                     Log.e(TAG, "Bluetooth is on");
-                    appendConsoleContent("Bluetooth is on");
+                    showMessage("Bluetooth is on");
                 }
             }
         }
@@ -156,20 +206,20 @@ public class HomeFragment extends Fragment {
             boolean openLocationServer = BleTools.isLocationEnable(getContext());
             if (openLocationServer) {
                 Log.e(TAG, "Location service: The user manually sets the location service");
-                appendConsoleContent(getString(R.string.location_service_turn_on));
+                showMessage(getString(R.string.location_service_turn_on));
             } else {
                 Log.e(TAG, "Location service: The user manually set the location service is not enabled");
-                appendConsoleContent(getString(R.string.location_service_turn_off));
+                showMessage(getString(R.string.location_service_turn_off));
             }
         } else if (requestCode == REQUEST_BLE_SETTINGS_CODE) {
             boolean enable = BleTools.isLocationEnable(getContext());
             if (!enable) {
-                appendConsoleContent(getString(R.string.request_location_premisson_tips));
+                showMessage(getString(R.string.request_location_premisson_tips));
             }
         }
     }
 
-    private void appendConsoleContent(String massage) {
+    private void showMessage(String massage) {
         ToastUtils.show(getContext(), massage);
     }
 

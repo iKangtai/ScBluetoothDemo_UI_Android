@@ -2,7 +2,7 @@ package com.example.bledemo.view.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Paint;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
@@ -20,8 +20,11 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.example.bledemo.AppInfo;
 import com.example.bledemo.Keys;
 import com.example.bledemo.R;
+import com.example.bledemo.activity.DeviceConnectActivity;
 import com.example.bledemo.info.HardwareInfo;
+import com.example.bledemo.info.TemperatureInfo;
 import com.example.bledemo.model.HardwareModel;
+import com.example.bledemo.util.DateUtil;
 import com.example.bledemo.view.InputTemperatureLayout;
 import com.example.bledemo.view.TemperatureKeyborad;
 import com.ikangtai.bluetoothsdk.util.LogUtils;
@@ -43,16 +46,13 @@ import io.reactivex.schedulers.Schedulers;
 public class TemperatureAddDialog extends BaseShecareDialog {
     private Context context;
     private Display display;
-
     private TemperatureKeyborad keyBoardLayout;
     private InputTemperatureLayout inputTemperatureLayout;
     private TextView titleContent;
-    private TextView addMoreData;
     private TextView errorHint;
     private ImageView closeBtn;
     private Button operator;
     private long measureTime;
-    private String temperatureId;
     private TextView temperatureDateContent;
 
 
@@ -71,25 +71,10 @@ public class TemperatureAddDialog extends BaseShecareDialog {
         operator = view.findViewById(R.id.operator);
         closeBtn = view.findViewById(R.id.closeBtn);
         titleContent = view.findViewById(R.id.titleContent);
-        addMoreData = view.findViewById(R.id.addMoreData);
         errorHint = view.findViewById(R.id.errorHint);
         keyBoardLayout = view.findViewById(R.id.keyBoardLayout);
         inputTemperatureLayout = view.findViewById(R.id.inputTemperatureLayout);
         temperatureDateContent = view.findViewById(R.id.temperatureDateContent);
-        if (addMoreData != null) {
-            addMoreData.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-            addMoreData.getPaint().setAntiAlias(true);
-            addMoreData.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (dialog != null) {
-                        dialog.dismiss();
-                    }
-                    //RouteUtils.go(RouteUtils.ROUTE_APP_BBT, Keys.KEY_DATE_RECORD, DateUtil.getSimpleDate());
-                }
-            });
-        }
-
         closeBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,16 +87,17 @@ public class TemperatureAddDialog extends BaseShecareDialog {
             @Override
             public void onClick(View v) {
                 if (operator instanceof Button) {
-                    String content = operator.getText().toString();
+                    final String content = operator.getText().toString();
                     if (context.getResources().getString(R.string.save).equals(content)) {
+                        double temperatureValue = inputTemperatureLayout.getValue();
                         //用户保存当天体温
-                        String temperature = String.valueOf(inputTemperatureLayout.getValue());
+                        String temperature = String.valueOf(temperatureValue);
                         if (!TextUtils.isEmpty(temperature)) {
                             if (AppInfo.getInstance().isTempUnitC()) {
-                                if (Double.parseDouble(temperature) < Keys.C_MIN || Double.parseDouble(temperature) > Keys.C_MAX) {
+                                if (temperatureValue < Keys.C_MIN || temperatureValue > Keys.C_MAX) {
                                     if (errorHint != null) {
                                         String errorContent = String.format(context.getResources().getString(R.string.add_valid_temperature_hint),
-                                                temperature, "℃", Keys.C_MIN + "", Keys.C_MAX + "", "℃");
+                                                temperature, Keys.kTempUnitC, Keys.C_MIN + "", Keys.C_MAX + "", Keys.kTempUnitC);
                                         errorHint.setText(errorContent);
                                         if (inputTemperatureLayout != null) {
                                             inputTemperatureLayout.setError();
@@ -121,10 +107,10 @@ public class TemperatureAddDialog extends BaseShecareDialog {
                                     return;
                                 }
                             } else {
-                                if (Double.parseDouble(temperature) < Keys.F_MIN || Double.parseDouble(temperature) > Keys.F_MAX) {
+                                if (temperatureValue < Keys.F_MIN || temperatureValue > Keys.F_MAX) {
                                     if (errorHint != null) {
                                         String errorContent = String.format(context.getResources().getString(R.string.add_valid_temperature_hint),
-                                                temperature, "℉", Keys.F_MIN + "", Keys.F_MAX + "", "℉");
+                                                temperature, Keys.kTempUnitF, Keys.F_MIN + "", Keys.F_MAX + "", Keys.kTempUnitF);
                                         errorHint.setText(errorContent);
                                         if (inputTemperatureLayout != null) {
                                             inputTemperatureLayout.setError();
@@ -134,18 +120,11 @@ public class TemperatureAddDialog extends BaseShecareDialog {
                                     return;
                                 }
                             }
-                            if (TextUtils.isEmpty(temperatureId)) {
-                                if (measureTime > 0) {
-                                    //新增体温从体温列表添加
-                                    //EventBus.getDefault().post(new TemperatureEventBus(temperature, temperatureId, measureTime));
-                                } else {
-                                    //新增体温从首页添加
-                                    //TemperatureListActivity activity = new TemperatureListActivity();
-                                    //activity.addOrEditTemperature(new TemperatureEventBus(temperature,temperatureId, System.currentTimeMillis() / 1000));
-                                }
-                            } else {
-                                //编辑
-                                //EventBus.getDefault().post(new TemperatureEventBus(temperature, temperatureId, measureTime));
+                            if (event != null) {
+                                TemperatureInfo temperatureInfo = new TemperatureInfo();
+                                temperatureInfo.setMeasureTime(measureTime);
+                                temperatureInfo.setTemperature(temperatureValue);
+                                event.onSave(temperatureInfo);
                             }
                             if (dialog != null) {
                                 dialog.dismiss();
@@ -155,7 +134,7 @@ public class TemperatureAddDialog extends BaseShecareDialog {
                         if (dialog != null) {
                             dialog.dismiss();
                         }
-                        LogUtils.i("添加温度，用户已绑定设备");
+                        LogUtils.i("添加温度");
                         //判断用户是否已经绑定
                         HardwareModel.obtainThermometerObservable(context).subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
@@ -167,13 +146,13 @@ public class TemperatureAddDialog extends BaseShecareDialog {
                                             new BuyAndBindThermometerDialog(context).builder().show();
                                         } else {
                                             //跳转到数据上传界面
-                                            //RouteUtils.go(RouteUtils.ROUTE_APP_CONNECT_THERMOMETER);
+                                            context.startActivity(new Intent(context, DeviceConnectActivity.class));
                                         }
                                     }
                                 }, new Consumer<Throwable>() {
                                     @Override
                                     public void accept(Throwable throwable) throws Exception {
-                                        LogUtils.i("绑定设备列表" + throwable.getMessage());
+                                        LogUtils.i("获取设备错误" + throwable.getMessage());
                                     }
                                 });
                     }
@@ -230,8 +209,8 @@ public class TemperatureAddDialog extends BaseShecareDialog {
                             ToastUtils.show(context, context.getString(R.string.not_edit_future_time));
                             return;
                         }
-                        measureTime = date.getTime() / 1000;
-                        temperatureDateContent.setText(getDateFormatYMDHM(measureTime));
+                        measureTime = DateUtil.getYMDHMDate(DateUtil.getDateFormatYMDHM(date.getTime() / 1000));
+                        temperatureDateContent.setText(DateUtil.getDateFormatYMDHM(measureTime));
 
                     }
                 })
@@ -261,22 +240,6 @@ public class TemperatureAddDialog extends BaseShecareDialog {
         return this;
     }
 
-    /**
-     * 获取月日 时分
-     *
-     * @param seconds
-     * @return
-     */
-    public static String getDateFormatYMDHM(long seconds) {
-        Date date = new Date(seconds * 1000);
-        SimpleDateFormat simpleDateFormat;
-        if (TextUtils.equals(Locale.getDefault().getLanguage(), "zh")) {
-            simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
-        } else {
-            simpleDateFormat = new SimpleDateFormat("MMM dd, yyyy HH:mm");
-        }
-        return simpleDateFormat.format(date);
-    }
 
     public TemperatureAddDialog withTitle(String title) {
 
@@ -287,41 +250,13 @@ public class TemperatureAddDialog extends BaseShecareDialog {
         return this;
     }
 
-    public TemperatureAddDialog withMeasureTime(long measureTime) {
+    private TemperatureAddDialog withMeasureTime(long measureTime) {
         this.measureTime = measureTime;
         if (measureTime > 0) {
-            temperatureDateContent.setText(getDateFormatYMDHM(measureTime));
+            temperatureDateContent.setText(DateUtil.getDateFormatYMDHM(measureTime));
         } else {
-            temperatureDateContent.setText(getDateFormatYMDHM(System.currentTimeMillis() / 1000));
-        }
-        return this;
-    }
-
-
-    public TemperatureAddDialog withAddMoreTemperature(boolean isVisible) {
-        if (addMoreData != null) {
-            addMoreData.setVisibility(!isVisible ? View.GONE : View.VISIBLE);
-        }
-
-        return this;
-    }
-
-    /**
-     * 含有体温 代表修改体温数据
-     *
-     * @param temperatureId
-     * @return
-     */
-    public TemperatureAddDialog withTemperature(String temperatureId, String temperature) {
-        this.temperatureId = temperatureId;
-        if (!TextUtils.isEmpty(temperature)) {
-            temperature = temperature.replace(".", "");
-            if (inputTemperatureLayout != null) {
-                inputTemperatureLayout.inputTemperature(temperature, true);
-            }
-            if (operator != null) {
-                operator.setText(context.getResources().getString(R.string.save));
-            }
+            this.measureTime = DateUtil.getYMDHMDate(DateUtil.getDateFormatYMDHM(System.currentTimeMillis() / 1000));
+            temperatureDateContent.setText(DateUtil.getDateFormatYMDHM(this.measureTime));
         }
         return this;
     }
@@ -333,6 +268,17 @@ public class TemperatureAddDialog extends BaseShecareDialog {
         }
 
         return this;
+    }
+
+    private TemperatureAddDialog.IEvent event;
+
+    public TemperatureAddDialog initEvent(TemperatureAddDialog.IEvent event) {
+        this.event = event;
+        return this;
+    }
+
+    public interface IEvent {
+        void onSave(TemperatureInfo temperatureInfo);
     }
 
 }

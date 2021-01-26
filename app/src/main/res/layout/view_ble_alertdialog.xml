@@ -92,7 +92,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/alertdialog_right_selector"
                 android:gravity="center"
-                android:textColor="@color/white"
+                android:textColor="@color/app_primary_dark_color"
                 android:textSize="18sp" />
         </LinearLayout>
 

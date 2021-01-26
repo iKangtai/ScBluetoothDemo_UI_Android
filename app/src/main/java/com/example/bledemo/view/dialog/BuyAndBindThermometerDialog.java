@@ -2,6 +2,7 @@ package com.example.bledemo.view.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.example.bledemo.R;
+import com.example.bledemo.activity.BindDeviceActivity;
+import com.example.bledemo.util.ThirdAppUtils;
 
 
 /**
@@ -42,7 +45,8 @@ public class BuyAndBindThermometerDialog extends BaseShecareDialog {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                //RouteUtils.go(RouteUtils.ROUTE_APP_DEVICE_CHOOSE, Keys.KEY_TYPE, Keys.KEY_BIND_THERMOMETER);
+                //跳转到体温计绑定界面
+                context.startActivity(new Intent(context, BindDeviceActivity.class));
             }
         });
 
@@ -52,7 +56,8 @@ public class BuyAndBindThermometerDialog extends BaseShecareDialog {
             public void onClick(View v) {
                 dialog.dismiss();
                 //进入购买体温计
-                //EventBus.getDefault().post(new ChangeTabEvent(JPType.EXTRA_MARKET, Urls.getThermomterProductUrl()));
+                String url = "https://s.click.taobao.com/t?e=m%3D2%26s%3DD5MM%2B3Pqg8wcQipKwQzePOeEDrYVVa64K7Vc7tFgwiFRAdhuF14FMb9PD7m6Qvbfxq3IhSJN6GQG50TC%2BOEKRV2PCaw8s0I5%2B4XeV4Br1rTc52Qvs3i40Q8zPczQMp9Ma7G8XfSvkCllRh9jBtJI%2BWeTimChZPpGxg5p7bh%2BFbQ%3D&pvid=53_115.239.25.5_624_1611125519095";
+                ThirdAppUtils.handleShop(context, url);
             }
         });
 

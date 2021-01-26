@@ -15,35 +15,10 @@
 
     <string name="warm_prompt">温馨提示</string>
     <string name="i_know">我知道了</string>
-    <string name="write_permission">亲~要先打开存储权限哟~</string>
-    <string name="paper_open_flashlight">打开闪光灯</string>
-    <string name="paper_close_flashlight">关闭闪光灯</string>
-    <string name="paper_in_container">请将完整试纸放入镜头内</string>
-    <string name="clip_picture_zoom">放大缩小</string>
-    <string name="clip_picture_rotate">旋转</string>
-    <string name="paper_clip_text">温馨提示：可以通过以下操作调整图片到取景框中</string>
-    <string name="paper_scan_notice">请务必保持试纸处在取景框内</string>
-    <string name="scan_paper_notice">卡/笔形试纸？</string>
-    <string name="dialog_paper_hint_str">请保持T、C线处于取景框内，并且T线位于左边；T、C线不必与示例对齐</string>
-    <string name="left_margin">左边缘</string>
-    <string name="right_margin">右边缘</string>
-    <string name="ovulation_camera_tips"><![CDATA[为避免失效，孕橙试纸请在显色后%s分钟内拍照<br>其他试纸请参照相关说明进行拍照识别]]></string>
-    <string name="format_font_79FA1E"><![CDATA[<font color="#79FA1E">%s</font>]]></string>
     <string name="sure">确定</string>
     <string name="cancel">取消</string>
     <string name="finish">完成</string>
-    <string name="paper_clip_title">排卵试纸</string>
-    <string name="smart_paper_result">智能检测结果</string>
-    <string name="lh_photo">试纸照片</string>
-    <string name="error_in_color_recognition">颜色识别有误差？</string>
-    <string name="color_reference_bar_title_1">T线色值参考条:</string>
-    <string name="color_reference_bar_title_2">T线色值参考条，拖动色卡修正结果！</string>
-    <string name="lh_refer_result"><![CDATA[参考结果：<font color="#FF7486">%d</font>]]></string>
-    <string name="lh_time2">检测时间</string>
     <string name="save">保存</string>
-    <string name="photo">拍照</string>
-    <string name="camera">从相册选择</string>
-    <string name="paper">试纸识别</string>
 
     <string name="personal_my_device_bind">设备绑定</string>
     <string name="device_list">设备列表</string>
@@ -113,7 +88,7 @@
     <string name="data_uploading">数据上传中</string>
     <string name="upload_complete">上传完毕</string>
     <string name="update_oad_hint_1">为了保证良好的蓝牙连接，请始终保持孕橙在屏幕显示，请不要关闭设备</string>
-    <string name="wait_thermomter_data_uploading">数据上传中,请稍候</string>
+    <string name="wait_thermometer_data_uploading">数据上传中,请稍候</string>
     <string name="temperature_alert_1">数据检查完毕，未发现新增体温数据，现在就开始测温吧</string>
     <string name="temperature_alert_2"><![CDATA[体温计“嘀嘀”声后才算测温结束，测完后，也不要立即关机，以免数据丢失。]]></string>
     <string name="temperature_alert_3">体温数据传输完毕，共同步体温数据%d条。好习惯要保持，记得每天及时测量你的基础体温哦。</string>
@@ -126,7 +101,7 @@
     <string name="temperature_alert_8">收到%d条体温数据，请注意查看体温曲线。</string>
     <string name="format_font_ff7568"><![CDATA[<font color="#FF7486">%s</font>]]></string>
 
-    <string name="toaday_temperature_title">今日体温</string>
+    <string name="today_temperature_title">今日体温</string>
     <string name="add_more_temperature_data">批量添加</string>
     <string name="auto_upload_temperature">体温计自动上传</string>
     <string name="add_temperature_select_time">选择时间：</string>
@@ -139,4 +114,5 @@
     <string name="go_to_buy">去购买</string>
     <string name="not_edit_future_time">不能编辑成未来时间</string>
     <string name="not_edit_past_time">不能编辑成过去时间</string>
+    <string name="add_temp">添加体温</string>
 </resources>

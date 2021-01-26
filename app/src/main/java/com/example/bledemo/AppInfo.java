@@ -6,8 +6,6 @@ package com.example.bledemo;
  * @author xiongyl 2021/1/21 22:10
  */
 public class AppInfo {
-    public static final String kTempUnitC = "ºC";
-    public static final String kTempUnitF = "ºF";
     /**
      * 设备连接界面
      */

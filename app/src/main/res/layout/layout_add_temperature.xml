@@ -37,7 +37,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="@dimen/dp_10"
-                android:text="@string/toaday_temperature_title"
+                android:text="@string/today_temperature_title"
                 android:textColor="@color/black"
                 android:textSize="@dimen/title_text_size"
                 android:visibility="invisible" />
@@ -135,15 +135,6 @@
                     android:layout_marginBottom="1dp"/>
             </com.example.bledemo.view.InputTemperatureLayout>
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/addMoreData"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="@dimen/dp_10"
-            android:text="@string/add_more_temperature_data"
-            android:textColor="@color/color_67A3FF" />
 
         <TextView
             android:id="@+id/errorHint"

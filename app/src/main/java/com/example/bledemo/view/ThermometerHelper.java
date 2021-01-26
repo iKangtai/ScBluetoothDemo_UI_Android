@@ -251,7 +251,7 @@ public class ThermometerHelper extends FrameLayout {
                                             public void accept(Long aLong) throws Exception {
                                                 int len = (int) (aLong % 3) + 1;
                                                 StringBuilder stringBuilder = new StringBuilder();
-                                                stringBuilder.append(getResources().getString(R.string.wait_thermomter_data_uploading));
+                                                stringBuilder.append(getResources().getString(R.string.wait_thermometer_data_uploading));
                                                 for (int i = 0; i < len; i++) {
                                                     stringBuilder.append(".");
                                                 }

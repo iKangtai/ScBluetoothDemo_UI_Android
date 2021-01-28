@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -14,12 +15,21 @@ import android.widget.TextView;
 import com.example.bledemo.AppInfo;
 import com.example.bledemo.BaseAppActivity;
 import com.example.bledemo.R;
+import com.example.bledemo.event.AutoUploadTemperatureEvent;
+import com.example.bledemo.event.BleStateEventBus;
+import com.example.bledemo.event.BluetoothStateEventBus;
+import com.example.bledemo.event.TemperatureBleScanEventBus;
 import com.example.bledemo.info.HardwareInfo;
 import com.example.bledemo.model.HardwareModel;
 import com.example.bledemo.view.ThermometerHelper;
 import com.example.bledemo.view.TopBar;
 import com.example.bledemo.view.dialog.BleAlertDialog;
+import com.ikangtai.bluetoothsdk.util.BleTools;
 import com.ikangtai.bluetoothsdk.util.LogUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -79,6 +89,9 @@ public class DeviceConnectActivity extends BaseAppActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         LogUtils.i("DeviceConnectActivity onCreate>>>");
         setContentView(R.layout.activity_thermometer_device);
         AppInfo.getInstance().setDeviceConnectActive(true);
@@ -133,7 +146,7 @@ public class DeviceConnectActivity extends BaseAppActivity {
                         //重新搜索
                         loadData();
                         operatorBtn.setText(getResources().getString(R.string.cancel));
-                        //todo
+                        EventBus.getDefault().post(new TemperatureBleScanEventBus());
                     } else if (content.equals(getResources().getString(R.string.cancel)) ||
                             content.equals(getResources().getString(R.string.upload_complete))) {
                         //取消
@@ -189,6 +202,9 @@ public class DeviceConnectActivity extends BaseAppActivity {
 
     private boolean obtainBluetoothState() {
         boolean bluetoothState = AppInfo.getInstance().isBluetoothState();
+        if (BleTools.checkBleEnable()) {
+            bluetoothState = true;
+        }
         return bluetoothState;
     }
 
@@ -274,7 +290,7 @@ public class DeviceConnectActivity extends BaseAppActivity {
                     //未发现新增体温
                     String content = getString(R.string.temperature_alert_1);
                     String subContent = String.format(getString(R.string.format_font_ff7568), getString(R.string.warm_prompt) + ":") + getString(R.string.temperature_alert_2);
-                    showTemperatureInfo(content, subContent);
+                    showTemperatureInfo(new AutoUploadTemperatureEvent(content, subContent));
                 }
             }
         });
@@ -290,6 +306,9 @@ public class DeviceConnectActivity extends BaseAppActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
         LogUtils.i("onDestroy");
         AppInfo.getInstance().setDeviceConnectActive(false);
     }
@@ -298,51 +317,64 @@ public class DeviceConnectActivity extends BaseAppActivity {
     /**
      * 显示体温计状态
      *
-     * @param isConn
+     * @param eventBus
      */
-    public void syncBLeState(boolean isConn) {
-        showBleState(isConn);
-        notifyUserConnected();
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void syncBLeState(BleStateEventBus eventBus) {
+        if (eventBus != null) {
+            boolean isConn = eventBus.isConnect();
+            showBleState(isConn);
+            notifyUserConnected();
+        }
 
     }
 
     /**
      * 显示设备蓝牙状态
      *
-     * @param isConn
+     * @param eventBus
      */
-    public void synBluetoothState(boolean isConn) {
-        showBluetoothState(isConn);
-        if (!isConn) {
-            showConnState(CONN_FAIL);
-        } else {
-            loadData();
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void synBluetoothState(BluetoothStateEventBus eventBus) {
+        if (eventBus != null) {
+            boolean isConn = eventBus.isOpen();
+            showBluetoothState(isConn);
+            if (!isConn) {
+                showConnState(CONN_FAIL);
+            } else {
+                loadData();
+            }
         }
     }
 
     /**
      * 将体温计传输的温度结果信息告知用户
+     *
+     * @param autoUploadTemperatureEvent
      */
-    public void showTemperatureInfo(String content, String subContent) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void showTemperatureInfo(AutoUploadTemperatureEvent autoUploadTemperatureEvent) {
         uploadSuccess = true;
         showConnState(CONN_SEND_DATA_SUCCESS);
 
-        if (TextUtils.isEmpty(content) && TextUtils.isEmpty(subContent)) {
-            return;
+        if (autoUploadTemperatureEvent != null) {
+            String content = autoUploadTemperatureEvent.getContent();
+            String subContent = autoUploadTemperatureEvent.getSubContent();
+            if (TextUtils.isEmpty(content) && TextUtils.isEmpty(subContent)) {
+                return;
+            }
+            new BleAlertDialog(DeviceConnectActivity.this).builder()
+                    .setMsg(Html.fromHtml(content + "<br>" + subContent), Gravity.LEFT)
+                    .setCancelable(false)
+                    .setCanceledOnTouchOutside(false)
+                    .setPositiveButton(getString(R.string.allright), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                        }
+                    }).show();
         }
 
-        new BleAlertDialog(DeviceConnectActivity.this).builder()
-                .setMsg(content + "\r" + subContent, Gravity.LEFT)
-                .setCancelable(false)
-                .setCanceledOnTouchOutside(false)
-                .setPositiveButton(getString(R.string.allright), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                    }
-                }).show();
-
     }
-
 
     private void showBleState(boolean isConn) {
         if (openThermometerhHint != null) {
@@ -455,6 +487,5 @@ public class DeviceConnectActivity extends BaseAppActivity {
 
         void nextTask();
     }
-
 
 }

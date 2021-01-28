@@ -2,6 +2,7 @@ package com.example.bledemo.util;
 
 import android.text.TextUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -47,7 +48,34 @@ public class DateUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return 0;
+    }
+
+    public static String getDateTimeStr2bit(long seconds) {
+        Date date = new Date(seconds * 1000);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return simpleDateFormat.format(date);
+    }
+
+    public static long getStringToDate(String time) {
+
+        SimpleDateFormat sf = null;
+
+        if (!time.contains(":")) {
+            time = time + " 12:00:00";
+        }
+        if (time.contains("-")) {
+            sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        } else if (time.contains(".")) {
+            sf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+        }
+
+        Date date = new Date();
+        try {
+            date = sf.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date.getTime() / 1000;
     }
 }

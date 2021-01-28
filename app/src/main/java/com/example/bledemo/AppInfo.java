@@ -1,5 +1,8 @@
 package com.example.bledemo;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+
 /**
  * desc
  *
@@ -86,5 +89,29 @@ public class AppInfo {
 
     public boolean isTempUnitC() {
         return true;
+    }
+
+    /**
+     * temp 输入源必须是摄氏度单位, 如果是华摄氏度源数据，则不能使用此方法
+     *
+     * @param temp
+     * @return
+     */
+    public float getTemp(float temp) {
+
+        if (isTempUnitC()) {
+            return temp;
+        } else {
+            DecimalFormat decimalFormat = new DecimalFormat(".000");
+            DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+            dfs.setDecimalSeparator('.');
+            decimalFormat.setDecimalFormatSymbols(dfs);
+            String tempF = decimalFormat.format(1.8 * temp + 32);
+            return Float.valueOf(tempF.substring(0, tempF.length() - 1));
+        }
+    }
+
+    public String getTempUnit() {
+        return isTempUnitC() ? Keys.kTempUnitC : Keys.kTempUnitF;
     }
 }

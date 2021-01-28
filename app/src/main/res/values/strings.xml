@@ -100,6 +100,13 @@
     <string name="temperature_alert_sub_7"><![CDATA[<font color="#FF6F8F">温馨提示:</font>最佳测温时间为早上醒来起身之前的一段时间还有每天尽量保持在同一时间测量哦。]]></string>
     <string name="temperature_alert_8">收到%d条体温数据，请注意查看体温曲线。</string>
     <string name="format_font_ff7568"><![CDATA[<font color="#FF7486">%s</font>]]></string>
+    <string name="bbt_valid_value_post_fail">亲，您的体温值过于偏离正常值,请重新测量。</string>
+    <string name="ble_temp_bg_notif_title">孕橙测温通知</string>
+    <string name="ble_temp_bg_notif_ticker">您收到新的温度!</string>
+    <string name="ble_temp_bg_notif_def_content">您收到多条新的温度!请进入App查看</string>
+    <string name="ble_temp_bg_notif_content">收到一条体温数据：%s。</string>
+    <string name="ble_temp_bg_notif_content_last">, 体温+试纸联合分析更准确！</string>
+
 
     <string name="today_temperature_title">今日体温</string>
     <string name="add_more_temperature_data">批量添加</string>
@@ -116,4 +123,8 @@
     <string name="not_edit_past_time">不能编辑成过去时间</string>
     <string name="add_temp">添加体温</string>
     <string name="device_info">设备信息</string>
+    <string name="temp_auto_upload_success">温度上传成功</string>
+    <string name="temp_add_success">温度保存成功</string>
+    <string name="temp_auto_upload">体温计自动上传</string>
+    <string name="temp_add">手动输入</string>
 </resources>

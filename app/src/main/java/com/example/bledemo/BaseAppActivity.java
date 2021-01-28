@@ -1,10 +1,14 @@
 package com.example.bledemo;
 
 import android.app.Dialog;
+import android.os.Bundle;
 import android.view.View;
 
 import com.example.bledemo.view.ProgressDialog;
 
+import org.greenrobot.eventbus.EventBus;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
@@ -14,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public class BaseAppActivity extends AppCompatActivity {
     protected Dialog progressDialog;
+
     public void showProgressDialog() {
         progressDialog = ProgressDialog.createLoadingDialog(this, null, null);
         if (progressDialog != null && !progressDialog.isShowing() && !isFinishing()) {

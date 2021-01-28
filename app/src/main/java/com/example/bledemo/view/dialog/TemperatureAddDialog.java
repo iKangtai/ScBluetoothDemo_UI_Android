@@ -136,25 +136,14 @@ public class TemperatureAddDialog extends BaseShecareDialog {
                         }
                         LogUtils.i("添加温度");
                         //判断用户是否已经绑定
-                        HardwareModel.obtainThermometerObservable(context).subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Consumer<List<HardwareInfo>>() {
-                                    @Override
-                                    public void accept(List<HardwareInfo> hardwareInfoList) throws Exception {
-                                        if (hardwareInfoList.isEmpty()) {
-                                            //弹框提示用户购买体温计
-                                            new BuyAndBindThermometerDialog(context).builder().show();
-                                        } else {
-                                            //跳转到数据上传界面
-                                            context.startActivity(new Intent(context, DeviceConnectActivity.class));
-                                        }
-                                    }
-                                }, new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(Throwable throwable) throws Exception {
-                                        LogUtils.i("获取设备错误" + throwable.getMessage());
-                                    }
-                                });
+                        List<HardwareInfo> hardwareInfoList=HardwareModel.hardwareList(context);
+                        if (hardwareInfoList.isEmpty()) {
+                            //弹框提示用户购买体温计
+                            new BuyAndBindThermometerDialog(context).builder().show();
+                        } else {
+                            //跳转到数据上传界面
+                            context.startActivity(new Intent(context, DeviceConnectActivity.class));
+                        }
                     }
                 }
 

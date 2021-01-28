@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <com.example.bledemo.view.TopBar
+        android:id="@+id/topBar"
+        style="@style/toolBarStyle"
+        custom:midText="@string/device_info" />
 
     <RelativeLayout
         android:id="@+id/container"
@@ -11,7 +17,9 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/dp_20"
-        android:paddingTop="@dimen/dp_10">
+        android:paddingTop="@dimen/dp_10"
+        android:layout_below="@+id/topBar"
+        android:layout_marginTop="@dimen/dp_5">
 
         <ImageView
             android:id="@+id/deviceLogo"
@@ -71,16 +79,16 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="解绑设备"
-        android:layout_marginBottom="@dimen/dp_20"/>
+        android:layout_marginBottom="@dimen/dp_20"
+        android:text="解绑设备" />
 
     <Button
         android:id="@+id/device_upgrade"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/unbind_device"
-        android:text="设备程序升级"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/dp_10"/>
+        android:layout_marginBottom="@dimen/dp_10"
+        android:text="设备程序升级" />
 </RelativeLayout>
 

@@ -22,8 +22,8 @@ import com.example.bledemo.ThermometerParameters;
 import com.example.bledemo.info.FirmwareVersionResp;
 import com.example.bledemo.info.HardwareInfo;
 import com.example.bledemo.model.HardwareModel;
-import com.example.bledemo.view.dialog.BleAlertDialog;
 import com.example.bledemo.view.TopBar;
+import com.example.bledemo.view.dialog.BleAlertDialog;
 import com.example.bledemo.view.dialog.FirmwareUpdateDialog;
 import com.google.gson.Gson;
 import com.hjq.permissions.OnPermission;
@@ -48,8 +48,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -357,38 +355,23 @@ public class BindDeviceActivity extends BaseAppActivity {
     public void checkAndBinding(final String deviceAddr) {
         Log.i(TAG, "MyDeviceVersion3Activity 准备 bindFromServer！");
         long time = System.currentTimeMillis();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date1 = new Date(time);
-        String dateStr = format.format(date1);
         hardwareInfo = new HardwareInfo();
         hardwareInfo.setHardMacId(deviceAddr);
         hardwareInfo.setHardHardwareUuid(deviceAddr);
-        //hardwareInfo.setHardBindingPlatftom(DeviceUtils.getDevicesInfo());
-        hardwareInfo.setHardBindingLocation("china");
         hardwareInfo.setHardBindingDate(time / 1000);
         hardwareInfo.setHardHardwareVersion(firmwareVersion);
-        hardwareInfo.setDeleted(0);
-        hardwareInfo.setIsSynced(0);
         if (hardwareType == ThermometerParameters.HW_GENERATION_LAIJIA_TXY) {
             hardwareInfo.setHardType(HardwareInfo.HARD_TYPE_TXY);
             hardwareInfo.setHardHardwareType(1);
-            HardwareModel.saveHardwareInfo(hardwareInfo);
-            onSuccess();
         } else if (hardwareType == ThermometerParameters.HW_GENERATION_EWQ) {
             hardwareInfo.setHardType(HardwareInfo.HARD_TYPE_EWQ);
             hardwareInfo.setHardHardwareType(1);
-            HardwareModel.saveHardwareInfo(hardwareInfo);
-            onSuccess();
         } else {
             hardwareInfo.setHardType(HardwareInfo.HARD_TYPE_THERMOMETER);
             hardwareInfo.setHardHardwareType(hardwareType);
-            HardwareModel.saveHardwareInfo(hardwareInfo);
-            onSuccess();
         }
-
-    }
-
-    private void saveData() {
+        HardwareModel.saveHardwareInfo(BindDeviceActivity.this, hardwareInfo);
+        onSuccess();
 
     }
 
@@ -411,7 +394,6 @@ public class BindDeviceActivity extends BaseAppActivity {
             case BIND_SUCCESS:
                 Log.i(TAG, "MyDeviceVersion3Activity BIND_STATE:" + (eventBusCode == BIND_SUCCESS ? "BIND_SUCCESS" : "BIND_FAILURE"));
                 ToastUtils.show(getApplicationContext(), getString(R.string.attach_success));
-                saveData();
                 finish();
                 break;
             case SEL_WRONG_GEN:
@@ -602,29 +584,28 @@ public class BindDeviceActivity extends BaseAppActivity {
         Log.i(TAG, "用户绑定体温计成功");
         if (hardwareType == ThermometerParameters.HW_GENERATION_AKY3 || hardwareType == ThermometerParameters.HW_GENERATION_AKY4 || hardwareType == ThermometerParameters.HW_GENERATION_1 || hardwareType == ThermometerParameters.HW_GENERATION_2 || hardwareType == ThermometerParameters.HW_GENERATION_3) {
             stepThirdState3.setImageResource(R.drawable.personal_my_device_bind_ok);
-            //模拟需要固件升级
-            //傅达康三代 {"code":200,"message":"Success","data":{"fileUrl":"{\"A\":\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Athermometer.bin\",\"B\":\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Bthermometer.bin\"}\r\n","version":"3.68","type":1}}
-            //安康源三代四代  {"code":200,"message":"Success","data":{"fileUrl":"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Bthermometer.bin","version":"6.1","type":2}}
-            String jsonData="{\"code\":200,\"message\":\"Success\",\"data\":{\"fileUrl\":\"{\\\"A\\\":\\\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Athermometer.bin\\\",\\\"B\\\":\\\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Bthermometer.bin\\\"}\\r\\n\",\"version\":\"3.68\",\"type\":1}}";
-            final FirmwareVersionResp firmwareVersionResp=new Gson().fromJson(jsonData,FirmwareVersionResp.class);
-            if (Double.parseDouble(firmwareVersionResp.getData().getVersion()) > Double.parseDouble(ThermometerParameters.FW_VERSION)) {
-                saveData();
+            if (hardwareType == ThermometerParameters.HW_GENERATION_3 && 3.68 > Double.parseDouble(ThermometerParameters.FW_VERSION)) {
+                //模拟需要固件升级
+                //旧三代 {"code":200,"message":"Success","data":{"fileUrl":"{\"A\":\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Athermometer.bin\",\"B\":\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Bthermometer.bin\"}\r\n","version":"3.68","type":1}}
+                //新三代四代  {"code":200,"message":"Success","data":{"fileUrl":"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Bthermometer.bin","version":"6.1","type":2}}
+                String jsonData = "{\"code\":200,\"message\":\"Success\",\"data\":{\"fileUrl\":\"{\\\"A\\\":\\\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Athermometer.bin\\\",\\\"B\\\":\\\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Bthermometer.bin\\\"}\\r\\n\",\"version\":\"3.68\",\"type\":1}}";
+                final FirmwareVersionResp firmwareVersionResp = new Gson().fromJson(jsonData, FirmwareVersionResp.class);
                 new BleAlertDialog(BindDeviceActivity.this).builder()
                         .setTitle(getString(R.string.warm_prompt))
                         .setMsg(getString(R.string.device_upate_tips))
                         .setCancelable(false)
                         .setCanceledOnTouchOutside(false)
                         .setPositiveButton(getString(R.string.ok), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new FirmwareUpdateDialog(BindDeviceActivity.this, hardwareInfo, firmwareVersionResp.getData()).builder().initEvent(new FirmwareUpdateDialog.IEvent() {
                             @Override
-                            public void onDismiss() {
-                                dealRegisterMsg(BIND_SUCCESS);
+                            public void onClick(View v) {
+                                new FirmwareUpdateDialog(BindDeviceActivity.this, hardwareInfo, firmwareVersionResp.getData()).builder().initEvent(new FirmwareUpdateDialog.IEvent() {
+                                    @Override
+                                    public void onDismiss() {
+                                        dealRegisterMsg(BIND_SUCCESS);
+                                    }
+                                }).show();
                             }
                         }).show();
-                    }
-                }).show();
                 return;
             }
         }
@@ -641,7 +622,6 @@ public class BindDeviceActivity extends BaseAppActivity {
                 Log.i(TAG, "定位服务: 用户手动设置开启了定位服务");
                 ToastUtils.show(getApplicationContext(),
                         getString(R.string.open_location_server_success));
-                //handleScan();
             } else {
                 Log.i(TAG, "定位服务: 用户手动设置未开启定位服务");
                 ToastUtils.show(getApplicationContext(),

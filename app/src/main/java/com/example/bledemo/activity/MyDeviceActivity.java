@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.example.bledemo.BaseAppActivity;
 import com.example.bledemo.R;
-import com.example.bledemo.ThermometerParameters;
 import com.example.bledemo.info.FirmwareVersionResp;
 import com.example.bledemo.info.HardwareInfo;
 import com.example.bledemo.model.HardwareModel;
@@ -17,6 +16,7 @@ import com.example.bledemo.view.dialog.BleAlertDialog;
 import com.example.bledemo.view.dialog.FirmwareUpdateDialog;
 import com.google.gson.Gson;
 import com.ikangtai.bluetoothsdk.util.LogUtils;
+import com.ikangtai.bluetoothsdk.util.ToastUtils;
 
 import java.util.List;
 
@@ -80,8 +80,8 @@ public class MyDeviceActivity extends BaseAppActivity implements View.OnClickLis
 
 
     private void loadData() {
-        List<HardwareInfo> hardwareInfoList=HardwareModel.hardwareList(this);
-        if (!hardwareInfoList.isEmpty()){
+        List<HardwareInfo> hardwareInfoList = HardwareModel.hardwareList(this);
+        if (!hardwareInfoList.isEmpty()) {
             hardwareInfo = hardwareInfoList.get(0);
             deviceLogo.setImageResource(hardwareInfo.getDeviceLogo());
             deviceName.setText(hardwareInfo.getDeviceName(MyDeviceActivity.this));
@@ -105,9 +105,9 @@ public class MyDeviceActivity extends BaseAppActivity implements View.OnClickLis
                 //模拟需要固件升级
                 //傅达康三代 {"code":200,"message":"Success","data":{"fileUrl":"{\"A\":\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Athermometer.bin\",\"B\":\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Bthermometer.bin\"}\r\n","version":"3.68","type":1}}
                 //安康源三代四代  {"code":200,"message":"Success","data":{"fileUrl":"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Bthermometer.bin","version":"6.1","type":2}}
-                String jsonData="{\"code\":200,\"message\":\"Success\",\"data\":{\"fileUrl\":\"{\\\"A\\\":\\\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Athermometer.bin\\\",\\\"B\\\":\\\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Bthermometer.bin\\\"}\\r\\n\",\"version\":\"3.68\",\"type\":1}}";
-                final FirmwareVersionResp firmwareVersionResp=new Gson().fromJson(jsonData,FirmwareVersionResp.class);
-                if (Double.parseDouble(firmwareVersionResp.getData().getVersion()) > Double.parseDouble(ThermometerParameters.FW_VERSION)) {
+                String jsonData = "{\"code\":200,\"message\":\"Success\",\"data\":{\"fileUrl\":\"{\\\"A\\\":\\\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Athermometer.bin\\\",\\\"B\\\":\\\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Bthermometer.bin\\\"}\\r\\n\",\"version\":\"3.68\",\"type\":1}}";
+                final FirmwareVersionResp firmwareVersionResp = new Gson().fromJson(jsonData, FirmwareVersionResp.class);
+                if (hardwareInfo != null && hardwareInfo.getHardType() == HardwareInfo.HARD_TYPE_THERMOMETER && 3.68 > Double.parseDouble(hardwareInfo.getHardHardwareVersion())) {
                     new BleAlertDialog(MyDeviceActivity.this).builder()
                             .setTitle(getString(R.string.warm_prompt))
                             .setMsg(getString(R.string.device_upate_tips))
@@ -130,10 +130,9 @@ public class MyDeviceActivity extends BaseAppActivity implements View.OnClickLis
                 if (ClickFilter.filter()) {
                     return;
                 }
-                LogUtils.i("解绑成功");
-                hardwareInfo.setDeleted(1);
-                HardwareModel.saveHardwareInfo(hardwareInfo);
-
+                HardwareModel.deleteHardwareInfo(MyDeviceActivity.this, hardwareInfo);
+                ToastUtils.show(MyDeviceActivity.this, "解绑成功");
+                finish();
                 break;
         }
     }

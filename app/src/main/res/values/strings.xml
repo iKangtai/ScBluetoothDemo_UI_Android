@@ -115,4 +115,5 @@
     <string name="not_edit_future_time">不能编辑成未来时间</string>
     <string name="not_edit_past_time">不能编辑成过去时间</string>
     <string name="add_temp">添加体温</string>
+    <string name="device_info">设备信息</string>
 </resources>

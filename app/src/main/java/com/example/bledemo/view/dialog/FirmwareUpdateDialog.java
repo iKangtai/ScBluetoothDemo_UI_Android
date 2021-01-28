@@ -364,7 +364,6 @@ public class FirmwareUpdateDialog extends BaseShecareDialog {
         if (progressNum >= 99) {
             // 检查是否升级成功, 在连接断开之后 若OAD_COMPLETE = true, 则 5s 之后再次扫描, 连接, 读取版本号
             OAD_COMPLETE = true;
-
             if (ThermometerParameters.HW_GENERATION == ThermometerParameters.HW_GENERATION_2 ||
                     ThermometerParameters.HW_GENERATION == ThermometerParameters.HW_GENERATION_3) {
                 updateConnect(context.getString(R.string.oad_check_succ_g23));
@@ -395,7 +394,7 @@ public class FirmwareUpdateDialog extends BaseShecareDialog {
         if (!TextUtils.isEmpty(hardwareInfo.getHardMacId())) {
             LogUtils.i("固件升级成功,将升级后的信息进行同步 latestNetFirmVer:" + latestNetFirmVer);
             hardwareInfo.setHardHardwareVersion(latestNetFirmVer);
-            HardwareModel.updateHardwareInfo(hardwareInfo);
+            HardwareModel.updateHardwareInfo(context,hardwareInfo);
         }
     }
 

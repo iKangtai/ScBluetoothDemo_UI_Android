@@ -1,5 +1,6 @@
 package com.example.bledemo.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
@@ -13,11 +14,14 @@ import android.widget.TextView;
 import com.example.bledemo.AppInfo;
 import com.example.bledemo.BaseAppActivity;
 import com.example.bledemo.R;
+import com.example.bledemo.info.HardwareInfo;
+import com.example.bledemo.model.HardwareModel;
 import com.example.bledemo.view.ThermometerHelper;
 import com.example.bledemo.view.TopBar;
 import com.example.bledemo.view.dialog.BleAlertDialog;
 import com.ikangtai.bluetoothsdk.util.LogUtils;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -79,7 +83,6 @@ public class DeviceConnectActivity extends BaseAppActivity {
         setContentView(R.layout.activity_thermometer_device);
         AppInfo.getInstance().setDeviceConnectActive(true);
         initView();
-        loadData();
     }
 
     private void initView() {
@@ -102,7 +105,7 @@ public class DeviceConnectActivity extends BaseAppActivity {
 
             @Override
             public void rightClick() {
-
+                startActivity(new Intent(DeviceConnectActivity.this, MyDeviceActivity.class));
             }
         });
 
@@ -175,6 +178,12 @@ public class DeviceConnectActivity extends BaseAppActivity {
                 }
             }));
 
+        }
+        List<HardwareInfo> hardwareInfoList = HardwareModel.hardwareList(this);
+        if (!hardwareInfoList.isEmpty()) {
+
+        } else {
+            finish();
         }
     }
 
@@ -270,6 +279,12 @@ public class DeviceConnectActivity extends BaseAppActivity {
             }
         });
         disposables.add(waitUploadDisposable);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData();
     }
 
     @Override

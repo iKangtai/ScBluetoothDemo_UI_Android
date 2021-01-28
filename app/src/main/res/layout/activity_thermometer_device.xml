@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:orientation="vertical">
+
 
     <com.example.bledemo.view.TopBar
         android:id="@+id/topBar"
         style="@style/toolBarStyle"
-        custom:midText="@string/device_connect" />
+        custom:midText="@string/device_connect"
+        custom:rightBtnText="体温计管理"
+        custom:rightBtnTextColor="#67A3FF"
+        custom:rightBtnTextSize="14sp"
+        custom:rightBtnVisible="true"
+        custom:rightBtnWidth="-1dp"
+        custom:rightBtnHeight="-1dp"
+        custom:rightBtnBg="@color/trans" />
 
 
     <com.example.bledemo.view.ThermometerHelper
@@ -83,10 +86,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:paddingBottom="@dimen/dp_5"
             android:paddingLeft="@dimen/dp_10"
-            android:paddingRight="@dimen/dp_10"
             android:paddingTop="@dimen/dp_5"
+            android:paddingRight="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_5"
             android:textColor="#FF444444"
             android:visibility="gone" />
 
@@ -130,7 +133,7 @@
         android:gravity="center"
         android:padding="@dimen/dp_5"
         android:text="@string/continue_manual_add_thermomter"
-        android:textColor="#B2B2B2"/>
+        android:textColor="#B2B2B2" />
 
     <Button
         android:id="@+id/operatorBtn"
@@ -141,6 +144,6 @@
         android:layout_margin="@dimen/dp_20"
         android:gravity="center"
         android:text="@string/cancel"
-        android:textSize="18sp"/>
+        android:textSize="18sp" />
 
 </LinearLayout>

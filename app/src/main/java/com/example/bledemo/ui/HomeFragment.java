@@ -17,7 +17,10 @@ import android.view.ViewGroup;
 import com.example.bledemo.Keys;
 import com.example.bledemo.R;
 import com.example.bledemo.activity.BindDeviceActivity;
+import com.example.bledemo.activity.DeviceConnectActivity;
+import com.example.bledemo.info.HardwareInfo;
 import com.example.bledemo.info.TemperatureInfo;
+import com.example.bledemo.model.HardwareModel;
 import com.example.bledemo.util.DateUtil;
 import com.example.bledemo.view.ActionSheetDialog;
 import com.example.bledemo.view.dialog.BleAlertDialog;
@@ -64,7 +67,12 @@ public class HomeFragment extends Fragment {
                                         if (!checkBleFeatures()) {
                                             return;
                                         }
-                                        startActivity(new Intent(getContext(), BindDeviceActivity.class));
+                                        List<HardwareInfo> hardwareInfoList=HardwareModel.hardwareList(getContext());
+                                        if (hardwareInfoList.isEmpty()){
+                                            startActivity(new Intent(getContext(), BindDeviceActivity.class));
+                                        }else {
+                                            startActivity(new Intent(getContext(), DeviceConnectActivity.class));
+                                        }
                                     }
                                 })
                         .addSheetItem("手动输入", ActionSheetDialog.SheetItemColor.Blue,

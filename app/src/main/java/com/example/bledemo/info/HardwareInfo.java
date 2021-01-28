@@ -20,7 +20,6 @@ public class HardwareInfo {
     "hardHardwareType": 1,
     "hardHardwareVersion": "10.2",
     "hardHardwareUuid": "",
-    "hardIsBinded": true,
     "hardType": 3,
     "gmtCreateTime": 1605063990,
     "gmtUpdateTime": 1605064004*/
@@ -31,15 +30,11 @@ public class HardwareInfo {
     private int deviceLogo;
     private String deviceName;
     private String hardMacId;
-    private String hardBindingLocation;
-    private String hardBindingPlatftom;
     private long hardBindingDate;
     private int hardHardwareType;
     private String hardHardwareVersion;
     private String hardHardwareUuid;
     private int hardType;
-    private int deleted;
-    private int isSynced;
     private long gmtCreateTime = System.currentTimeMillis() / 1000;
     private long gmtUpdateTime = System.currentTimeMillis() / 1000;
 
@@ -49,22 +44,6 @@ public class HardwareInfo {
 
     public void setHardMacId(String hardMacId) {
         this.hardMacId = hardMacId;
-    }
-
-    public String getHardBindingLocation() {
-        return hardBindingLocation;
-    }
-
-    public void setHardBindingLocation(String hardBindingLocation) {
-        this.hardBindingLocation = hardBindingLocation;
-    }
-
-    public String getHardBindingPlatftom() {
-        return hardBindingPlatftom;
-    }
-
-    public void setHardBindingPlatftom(String hardBindingPlatftom) {
-        this.hardBindingPlatftom = hardBindingPlatftom;
     }
 
     public long getHardBindingDate() {
@@ -97,22 +76,6 @@ public class HardwareInfo {
 
     public void setHardHardwareUuid(String hardHardwareUuid) {
         this.hardHardwareUuid = hardHardwareUuid;
-    }
-
-    public int getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(int deleted) {
-        this.deleted = deleted;
-    }
-
-    public int getIsSynced() {
-        return isSynced;
-    }
-
-    public void setIsSynced(int isSynced) {
-        this.isSynced = isSynced;
     }
 
     public long getGmtCreateTime() {
@@ -168,9 +131,9 @@ public class HardwareInfo {
         if (deviceLogo == 0) {
             switch (hardType) {
                 case HARD_TYPE_THERMOMETER:
-                    if (hardHardwareType == ThermometerParameters.HW_GENERATION_2 || hardHardwareType == ThermometerParameters.HW_GENERATION_4) {
+                    if (hardHardwareType == ThermometerParameters.HW_GENERATION_2 || hardHardwareType == ThermometerParameters.HW_GENERATION_4 || hardHardwareType == ThermometerParameters.HW_GENERATION_AKY4) {
                         deviceLogo = R.drawable.a21;
-                    } else if (hardHardwareType == ThermometerParameters.HW_GENERATION_3) {
+                    } else if (hardHardwareType == ThermometerParameters.HW_GENERATION_3 || hardHardwareType == ThermometerParameters.HW_GENERATION_AKY3) {
                         deviceLogo = R.drawable.a31;
                     }
                     break;

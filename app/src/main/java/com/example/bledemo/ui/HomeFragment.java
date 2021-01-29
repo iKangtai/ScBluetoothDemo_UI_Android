@@ -321,7 +321,7 @@ public class HomeFragment extends Fragment {
                                         public void onClick(View v) {
 
                                         }
-                                    }).show();
+                                    }).withOverLay().show();
                         } else {
                             //App后台发送通知
                             int notifyTempNum = temperatureInfoList.size();

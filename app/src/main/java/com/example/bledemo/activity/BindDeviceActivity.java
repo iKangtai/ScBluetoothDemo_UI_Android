@@ -13,7 +13,7 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.bledemo.AppInfo;
 import com.example.bledemo.BaseAppActivity;
@@ -25,6 +25,7 @@ import com.example.bledemo.model.HardwareModel;
 import com.example.bledemo.view.TopBar;
 import com.example.bledemo.view.dialog.BleAlertDialog;
 import com.example.bledemo.view.dialog.FirmwareUpdateDialog;
+import com.example.bledemo.view.loading.LoadingView;
 import com.google.gson.Gson;
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
@@ -62,10 +63,10 @@ import androidx.annotation.Nullable;
 public class BindDeviceActivity extends BaseAppActivity {
     public static final String TAG = BindDeviceActivity.class.getSimpleName();
     private TopBar topBar;
-    public ImageView stepFirstImage;
-    public ImageView stepSecondImage;
-    private ImageView stepThirdState3;
-
+    public TextView stepFirstState;
+    public TextView stepSecondState;
+    private TextView stepThirdState;
+    private LoadingView stepFirstLoading, stepSecondLoading, stepThirdLoading;
     private Dialog progressNumDialog;
     public String firmwareVersion = null;
     public int hardwareType;
@@ -98,27 +99,22 @@ public class BindDeviceActivity extends BaseAppActivity {
                 switch (state) {
                     case BluetoothAdapter.STATE_OFF:
                         Log.i(TAG, "STATE_OFF 手机蓝牙关闭");
-                        stepFirstImage.setImageResource(R.drawable.personal_my_device_bind_false);
+                        stepFirstLoading.initLoading();
+                        stepSecondLoading.initLoading();
+                        stepFirstState.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.device_binding_page_pic_bluetooth_unselected, 0);
                         break;
                     case BluetoothAdapter.STATE_TURNING_OFF:
                         Log.i(TAG, "STATE_TURNING_OFF 手机蓝牙正在关闭");
                         break;
                     case BluetoothAdapter.STATE_ON:
                         Log.i(TAG, "STATE_ON 手机蓝牙开启");
-                        stepFirstImage.setImageResource(R.drawable.personal_my_device_bind_ok);
-
                         // 开启后，需要一定的时间差再扫描
                         // 温度计扫描操作打开
-                        (new Handler()).postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                scanLeDevice(true);
-                            }
-                        }, 500);
-
+                        handleScan();
                         break;
                     case BluetoothAdapter.STATE_TURNING_ON:
                         Log.i(TAG, "STATE_TURNING_ON 手机蓝牙正在开启");
+                        stepFirstLoading.startLoading();
                         break;
                 }
             }
@@ -158,10 +154,12 @@ public class BindDeviceActivity extends BaseAppActivity {
 
             }
         });
-
-        stepFirstImage = findViewById(R.id.stepFirstState3);
-        stepSecondImage = findViewById(R.id.stepSecondState3);
-        stepThirdState3 = findViewById(R.id.stepThirdState3);
+        stepFirstLoading = findViewById(R.id.stepFirstLoading3);
+        stepSecondLoading = findViewById(R.id.stepSecondLoading3);
+        stepThirdLoading = findViewById(R.id.stepThirdLoading3);
+        stepFirstState = findViewById(R.id.stepFirstState3);
+        stepSecondState = findViewById(R.id.stepSecondState3);
+        stepThirdState = findViewById(R.id.stepThirdState3);
     }
 
     private void initData() {
@@ -264,7 +262,7 @@ public class BindDeviceActivity extends BaseAppActivity {
                         @Override
                         public void run() {
                             Log.i(TAG, "连接断开后继续扫描!");
-                            scanLeDevice(true);
+                            handleScan();
                         }
                     });
                 }
@@ -275,7 +273,6 @@ public class BindDeviceActivity extends BaseAppActivity {
 
     private void handleFirmwareInfo() {
         firmwareVersion = ThermometerParameters.FW_VERSION;
-
         Log.i(TAG, "固件版本 = " + ThermometerParameters.FW_VERSION);
         if (TextUtils.equals(deviceName, ThermometerParameters.BLE_AKY3_NAME)) {
             ThermometerParameters.HW_GENERATION = ThermometerParameters.HW_GENERATION_AKY3;
@@ -323,14 +320,17 @@ public class BindDeviceActivity extends BaseAppActivity {
     private void updateConnectInfo(int status) {
         switch (status) {
             case ThermometerParameters.STATE_CONNECTED:
-                stepSecondImage.setImageResource(R.drawable.personal_my_device_bind_ok);
+                stepSecondLoading.finishLoading();
+                stepSecondState.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.device_binding_page_pic_device_selected, 0);
+                stepThirdLoading.startLoading();
                 if (null != deviceAddr) {
                     ToastUtils.show(this, getString(R.string.binding));
                 }
                 break;
 
             case ThermometerParameters.STATE_DISCONNECTED:
-                stepSecondImage.setImageResource(R.drawable.personal_my_device_bind_false);
+                stepSecondLoading.initLoading();
+                stepSecondState.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.device_binding_page_pic_device_unselected, 0);
                 dismissProgressNumDialog();//用于关闭更新进度条
                 break;
         }
@@ -386,7 +386,9 @@ public class BindDeviceActivity extends BaseAppActivity {
 
     public void handleScan() {
         if (BleTools.checkBleEnable()) {
-            stepFirstImage.setImageResource(R.drawable.personal_my_device_bind_ok);
+            stepFirstLoading.finishLoading();
+            stepSecondLoading.startLoading();
+            stepFirstState.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.device_binding_page_pic_bluetooth_selected, 0);
             Log.i(TAG, "mScanning = " + mScanning);
             if (!mScanning) {
                 mHandler.postDelayed(new Runnable() {
@@ -397,7 +399,9 @@ public class BindDeviceActivity extends BaseAppActivity {
                 }, 1000);
             }
         } else {
-            stepFirstImage.setImageResource(R.drawable.personal_my_device_bind_false);
+            stepFirstLoading.initLoading();
+            stepSecondLoading.initLoading();
+            stepFirstState.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.device_binding_page_pic_bluetooth_unselected, 0);
         }
     }
 
@@ -545,8 +549,9 @@ public class BindDeviceActivity extends BaseAppActivity {
 
     public void onSuccess() {
         Log.i(TAG, "用户绑定体温计成功");
+        stepThirdLoading.finishLoading();
+        stepThirdState.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.device_binding_page_pic_check_selected, 0);
         if (hardwareType == ThermometerParameters.HW_GENERATION_AKY3 || hardwareType == ThermometerParameters.HW_GENERATION_AKY4 || hardwareType == ThermometerParameters.HW_GENERATION_1 || hardwareType == ThermometerParameters.HW_GENERATION_2 || hardwareType == ThermometerParameters.HW_GENERATION_3) {
-            stepThirdState3.setImageResource(R.drawable.personal_my_device_bind_ok);
             if (hardwareType == ThermometerParameters.HW_GENERATION_3 && 3.68 > Double.parseDouble(ThermometerParameters.FW_VERSION)) {
                 //模拟需要固件升级
                 //旧三代 {"code":200,"message":"Success","data":{"fileUrl":"{\"A\":\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Athermometer.bin\",\"B\":\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Bthermometer.bin\"}\r\n","version":"3.68","type":1}}
@@ -572,7 +577,6 @@ public class BindDeviceActivity extends BaseAppActivity {
                 return;
             }
         }
-        stepThirdState3.setImageResource(R.drawable.personal_my_device_bind_ok);
         bindSuccess();
     }
 

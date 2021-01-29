@@ -17,6 +17,7 @@
     <color name="gray4">#aaaaaa</color>
     <color name="color_333333">#333333</color>
     <color name="color_b2b2b2">#b2b2b2</color>
+    <color name="color_f0f0f0">#f0f0f0</color>
     <color name="app_primary_dark_color">#FF7486</color>
 
 </resources>

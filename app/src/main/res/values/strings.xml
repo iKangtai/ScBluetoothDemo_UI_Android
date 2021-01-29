@@ -130,4 +130,7 @@
     <string name="unbind_device">解绑设备</string>
     <string name="device_upgrade">设备程序升级</string>
     <string name="device_manage">体温计管理</string>
+    <string name="turn_on_ble">请打开手机蓝牙</string>
+    <string name="turn_on_thermometer">按下开关键</string>
+    <string name="check_device_version">设备程序版本校验</string>
 </resources>

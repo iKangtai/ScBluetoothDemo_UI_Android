@@ -371,7 +371,7 @@ public class DeviceConnectActivity extends BaseAppActivity {
                         @Override
                         public void onClick(View v) {
                         }
-                    }).show();
+                    }).withOverLay().show();
         }
 
     }

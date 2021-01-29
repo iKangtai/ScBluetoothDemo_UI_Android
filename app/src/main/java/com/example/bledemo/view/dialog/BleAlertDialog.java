@@ -277,12 +277,15 @@ public class BleAlertDialog extends BaseShecareDialog {
         }
     }
 
+    public BleAlertDialog withOverLay() {
+        if (Build.VERSION.SDK_INT >= 26) {
+            dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY - 1);
+        }
+        return this;
+    }
+
     public BleAlertDialog show() {
         setLayout();
-        //8.0新特性
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY - 1);
-        }
         try {
             dialog.show();
         } catch (Exception e) {

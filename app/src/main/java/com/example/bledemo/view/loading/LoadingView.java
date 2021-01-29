@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.example.bledemo.R;
+
 public class LoadingView extends androidx.appcompat.widget.AppCompatImageView {
     private LoadingDrawable mLoadingDrawable;
 
@@ -13,12 +15,26 @@ public class LoadingView extends androidx.appcompat.widget.AppCompatImageView {
 
     public LoadingView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setLoadingRenderer(new LevelLoadingRenderer.Builder(context).build());
+        //setLoadingRenderer(new LevelLoadingRenderer.Builder(context).build());
     }
 
     public void setLoadingRenderer(LoadingRenderer loadingRenderer) {
         mLoadingDrawable = new LoadingDrawable(loadingRenderer);
         setImageDrawable(mLoadingDrawable);
+    }
+
+    public void startLoading() {
+        setLoadingRenderer(new LevelLoadingRenderer.Builder(getContext()).build());
+    }
+
+    public void finishLoading() {
+        stopAnimation();
+        setImageResource(R.drawable.device_binding_page_ic_selected);
+    }
+
+    public void initLoading() {
+        stopAnimation();
+        setImageResource(R.drawable.device_binding_page_ic_unselected);
     }
 
     @Override

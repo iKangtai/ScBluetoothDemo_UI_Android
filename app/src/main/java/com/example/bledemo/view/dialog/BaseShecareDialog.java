@@ -20,12 +20,4 @@ public class BaseShecareDialog {
 
         return false;
     }
-
-
-    public BaseShecareDialog withOverLay() {
-        if (Build.VERSION.SDK_INT >= 26) {
-            dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY - 1);
-        }
-        return this;
-    }
 }

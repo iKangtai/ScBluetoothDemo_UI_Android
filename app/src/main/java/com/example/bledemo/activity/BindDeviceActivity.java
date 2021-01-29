@@ -69,13 +69,6 @@ public class BindDeviceActivity extends BaseAppActivity {
     private Dialog progressNumDialog;
     public String firmwareVersion = null;
     public int hardwareType;
-
-    private static final int CHECKBIND_SUCCESS = 0;
-    private static final int CHECKBIND_FAILURE = 1;
-    private static final int BIND_REPETE = 2;
-    private static final int BIND_SUCCESS = 3;
-    private static final int BIND_FAILURE = 4;
-    public static final int SEL_WRONG_GEN = 5;
     /**
      * BLE 相关
      */
@@ -375,36 +368,6 @@ public class BindDeviceActivity extends BaseAppActivity {
 
     }
 
-    public void dealRegisterMsg(int eventBusCode) {
-        switch (eventBusCode) {
-            case CHECKBIND_SUCCESS:
-                Log.i(TAG, "MyDeviceVersion3Activity CHECKBIND_SUCCESS");
-                break;
-            case CHECKBIND_FAILURE:
-                Log.i(TAG, "MyDeviceVersion3Activity CHECKBIND_FAILURE");
-                break;
-            case BIND_REPETE:
-                Log.i(TAG, "MyDeviceVersion3Activity BIND_REPETE");
-                ToastUtils.show(getApplicationContext(), getString(R.string.hardware_attached_unattach));
-                // 继续扫描
-                scanLeDevice(true);
-                break;
-
-            case BIND_FAILURE:
-            case BIND_SUCCESS:
-                Log.i(TAG, "MyDeviceVersion3Activity BIND_STATE:" + (eventBusCode == BIND_SUCCESS ? "BIND_SUCCESS" : "BIND_FAILURE"));
-                ToastUtils.show(getApplicationContext(), getString(R.string.attach_success));
-                finish();
-                break;
-            case SEL_WRONG_GEN:
-                ToastUtils.show(getApplicationContext(), getString(R.string.attach_fail)
-                        + "/n" + getString(R.string.sel_wrong_gen3));
-                break;
-            default:
-                break;
-        }
-    }
-
 
     public void dismissProgressNumDialog() {
         if (progressNumDialog != null && progressNumDialog.isShowing()) {
@@ -601,7 +564,7 @@ public class BindDeviceActivity extends BaseAppActivity {
                                 new FirmwareUpdateDialog(BindDeviceActivity.this, hardwareInfo, firmwareVersionResp.getData()).builder().initEvent(new FirmwareUpdateDialog.IEvent() {
                                     @Override
                                     public void onDismiss() {
-                                        dealRegisterMsg(BIND_SUCCESS);
+                                        bindSuccess();
                                     }
                                 }).show();
                             }
@@ -610,7 +573,13 @@ public class BindDeviceActivity extends BaseAppActivity {
             }
         }
         stepThirdState3.setImageResource(R.drawable.personal_my_device_bind_ok);
-        dealRegisterMsg(BIND_SUCCESS);
+        bindSuccess();
+    }
+
+    private void bindSuccess() {
+        ToastUtils.show(getApplicationContext(), getString(R.string.attach_success));
+        startActivity(new Intent(BindDeviceActivity.this, BindResultActivity.class));
+        finish();
     }
 
     @Override

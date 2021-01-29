@@ -27,7 +27,7 @@ public class MyDeviceActivity extends BaseAppActivity implements View.OnClickLis
 
     private TopBar topBar;
     private Button unbindDevice;
-    private Button deviceUpgrade;
+    private TextView deviceUpgrade;
     private HardwareInfo hardwareInfo;
     public ImageView deviceLogo;
     public TextView deviceName;

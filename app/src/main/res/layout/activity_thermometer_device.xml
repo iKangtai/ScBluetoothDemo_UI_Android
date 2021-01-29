@@ -10,13 +10,13 @@
         android:id="@+id/topBar"
         style="@style/toolBarStyle"
         custom:midText="@string/device_connect"
-        custom:rightBtnText="体温计管理"
-        custom:rightBtnTextColor="#67A3FF"
+        custom:rightBtnBg="@color/trans"
+        custom:rightBtnHeight="-1dp"
+        custom:rightBtnText="@string/device_manage"
+        custom:rightBtnTextColor="@color/color_67A3FF"
         custom:rightBtnTextSize="14sp"
         custom:rightBtnVisible="true"
-        custom:rightBtnWidth="-1dp"
-        custom:rightBtnHeight="-1dp"
-        custom:rightBtnBg="@color/trans" />
+        custom:rightBtnWidth="-1dp" />
 
 
     <com.example.bledemo.view.ThermometerHelper
@@ -44,7 +44,7 @@
                 android:id="@+id/thermomterHintTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#FF444444"
+                android:textColor="@color/color_444444"
                 android:textSize="@dimen/title_text_size"
                 android:visibility="gone" />
 
@@ -75,7 +75,7 @@
             android:layout_height="230dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textColor="#FF444444"
+            android:textColor="@color/color_444444"
             android:textSize="@dimen/title_text_size"
             android:visibility="gone" />
 
@@ -90,7 +90,7 @@
             android:paddingTop="@dimen/dp_5"
             android:paddingRight="@dimen/dp_10"
             android:paddingBottom="@dimen/dp_5"
-            android:textColor="#FF444444"
+            android:textColor="@color/color_444444"
             android:visibility="gone" />
 
     </com.example.bledemo.view.ThermometerHelper>
@@ -133,7 +133,8 @@
         android:gravity="center"
         android:padding="@dimen/dp_5"
         android:text="@string/continue_manual_add_thermomter"
-        android:textColor="#B2B2B2" />
+        android:textColor="@color/color_b2b2b2"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/operatorBtn"

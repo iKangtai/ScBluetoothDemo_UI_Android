@@ -127,4 +127,7 @@
     <string name="temp_add_success">温度保存成功</string>
     <string name="temp_auto_upload">体温计自动上传</string>
     <string name="temp_add">手动输入</string>
+    <string name="unbind_device">解绑设备</string>
+    <string name="device_upgrade">设备程序升级</string>
+    <string name="device_manage">体温计管理</string>
 </resources>

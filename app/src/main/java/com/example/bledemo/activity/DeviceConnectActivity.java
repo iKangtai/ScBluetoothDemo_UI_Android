@@ -364,7 +364,7 @@ public class DeviceConnectActivity extends BaseAppActivity {
                 return;
             }
             new BleAlertDialog(DeviceConnectActivity.this).builder()
-                    .setMsg(Html.fromHtml(content + "<br>" + subContent), Gravity.LEFT)
+                    .setMsg(Html.fromHtml(content + "<br><br>" + subContent), Gravity.LEFT)
                     .setCancelable(false)
                     .setCanceledOnTouchOutside(false)
                     .setPositiveButton(getString(R.string.allright), new View.OnClickListener() {

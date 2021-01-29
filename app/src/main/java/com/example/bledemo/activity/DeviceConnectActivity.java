@@ -306,10 +306,13 @@ public class DeviceConnectActivity extends BaseAppActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        LogUtils.i("onDestroy");
+        if (disposables!=null){
+            disposables.clear();
+        }
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-        LogUtils.i("onDestroy");
         AppInfo.getInstance().setDeviceConnectActive(false);
     }
 
@@ -371,7 +374,7 @@ public class DeviceConnectActivity extends BaseAppActivity {
                         @Override
                         public void onClick(View v) {
                         }
-                    }).withOverLay().show();
+                    }).show();
         }
 
     }

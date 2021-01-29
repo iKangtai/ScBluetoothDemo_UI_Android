@@ -1,5 +1,6 @@
 package com.example.bledemo.activity;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -73,6 +74,8 @@ public class MyDeviceActivity extends BaseAppActivity implements View.OnClickLis
         unbindDevice = findViewById(R.id.unbind_device);
         unbindDevice.setOnClickListener(this);
         deviceUpgrade = findViewById(R.id.device_upgrade);
+        deviceUpgrade.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+        deviceUpgrade.getPaint().setAntiAlias(true);//抗锯齿
         deviceUpgrade.setOnClickListener(this);
 
         loadData();

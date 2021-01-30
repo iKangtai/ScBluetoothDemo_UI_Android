@@ -117,7 +117,7 @@
     <string name="you_has_not_thermometer">还没有孕橙智能基础体温计？</string>
     <string name="buy_thermometer_introduce1">孕橙智能基础体温计，精准测温、自动绘图、永久储存</string>
     <string name="buy_thermometer_introduce2">，购买即赠送备孕教练服务</string>
-    <string name="go_to_bind">已有，去绑定</string>
+    <string name="go_to_bind">去绑定</string>
     <string name="go_to_buy">去购买</string>
     <string name="not_edit_future_time">不能编辑成未来时间</string>
     <string name="not_edit_past_time">不能编辑成过去时间</string>

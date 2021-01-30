@@ -148,7 +148,7 @@ public class HomeFragment extends Fragment {
             EventBus.getDefault().register(this);
         }
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        root.findViewById(R.id.image_home).setOnClickListener(new View.OnClickListener() {
+        root.findViewById(R.id.add_temp).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new ActionSheetDialog(getContext())

@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -21,14 +20,12 @@ import com.example.bledemo.ThermometerParameters;
 import com.example.bledemo.info.FirmwareVersionResp;
 import com.example.bledemo.info.HardwareInfo;
 import com.example.bledemo.model.HardwareModel;
+import com.example.bledemo.util.CheckBleFeaturesUtil;
 import com.example.bledemo.view.TopBar;
 import com.example.bledemo.view.dialog.BleAlertDialog;
 import com.example.bledemo.view.dialog.FirmwareUpdateDialog;
 import com.example.bledemo.view.loading.LoadingView;
 import com.google.gson.Gson;
-import com.hjq.permissions.OnPermission;
-import com.hjq.permissions.Permission;
-import com.hjq.permissions.XXPermissions;
 import com.ikangtai.bluetoothsdk.BleCommand;
 import com.ikangtai.bluetoothsdk.Config;
 import com.ikangtai.bluetoothsdk.ScPeripheralManager;
@@ -87,8 +84,6 @@ public class BindDeviceActivity extends AppCompatActivity {
 
     private ScPeripheralManager scPeripheralManager;
     private ReceiveDataListenerAdapter receiveDataListenerAdapter;
-    private boolean isWaitBinding;
-    protected final int REQUEST_CODE_LOCATION_SETTINGS = 1000;
     private BroadcastReceiver bleReceiver = new BroadcastReceiver() {
 
         @Override
@@ -126,7 +121,6 @@ public class BindDeviceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bind_device);
         initView();
-        initData();
         initBleSdk();
         registerBleReceiver();
     }
@@ -160,10 +154,6 @@ public class BindDeviceActivity extends AppCompatActivity {
         stepFirstState = findViewById(R.id.stepFirstState3);
         stepSecondState = findViewById(R.id.stepSecondState3);
         stepThirdState = findViewById(R.id.stepThirdState3);
-    }
-
-    private void initData() {
-
     }
 
     public void registerBleReceiver() {
@@ -224,22 +214,6 @@ public class BindDeviceActivity extends AppCompatActivity {
                 }
             }
 
-            @Override
-            public void onReceiveCommandData(String macAddress, int type, int resultCode, byte[] value) {
-                if (AppInfo.getInstance().isOADConnectActive()) {
-                    return;
-                }
-                switch (type) {
-                    case BleCommand.GET_DEVICE_DATA:
-                        if (isWaitBinding && TextUtils.equals(deviceName, BleParam.BLE_TXY_LJ_NAME)) {
-                            isWaitBinding = false;
-                            ThermometerParameters.FW_VERSION = "1.0";
-                            handleFirmwareInfo();
-                        }
-                        break;
-                }
-
-            }
 
             @Override
             public void onConnectionStateChange(String macAddress, int state) {
@@ -251,12 +225,10 @@ public class BindDeviceActivity extends AppCompatActivity {
                     Log.i(TAG, "The device is connected " + macAddress);
                     AppInfo.getInstance().setThermometerState(true);
                     updateConnectInfo(ThermometerParameters.STATE_CONNECTED);
-                    isWaitBinding = true;
                 } else if (state == BluetoothProfile.STATE_DISCONNECTED) {
                     Log.i(TAG, "Device disconnected " + macAddress);
                     AppInfo.getInstance().setThermometerState(false);
                     updateConnectInfo(ThermometerParameters.STATE_DISCONNECTED);
-                    isWaitBinding = false;
                     // 连接断开之后，紧接着继续扫描
                     runOnUiThread(new Runnable() {
                         @Override
@@ -405,66 +377,6 @@ public class BindDeviceActivity extends AppCompatActivity {
         }
     }
 
-    public void openLocationServer() {
-        new BleAlertDialog(this).builder().setTitle(getString(R.string.open_location_hint)).setMsg(getString(R.string.locaiton_server_hint)).setPositiveButton(getString(R.string.authorize), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent locationIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivityForResult(locationIntent, REQUEST_CODE_LOCATION_SETTINGS);
-            }
-        }).show();
-    }
-
-    private boolean checkBleFeatures() {
-        //Check Bluetooth Location Service
-        if (!BleTools.isLocationEnable(this)) {
-            openLocationServer();
-            return false;
-        }
-        //Check Bluetooth location permission
-        if (!BleTools.checkBlePermission(this)) {
-            XXPermissions.with(this)
-                    .permission(Permission.Group.LOCATION)
-                    .request(new OnPermission() {
-                        @Override
-                        public void hasPermission(List<String> granted, boolean isAll) {
-                            if (isAll) {
-                                //do something
-                            }
-                        }
-
-                        @Override
-                        public void noPermission(List<String> denied, boolean quick) {
-                            if (quick) {
-                                new BleAlertDialog(BindDeviceActivity.this).builder().setTitle(getString(R.string.warm_prompt)).setMsg(getString(R.string.request_location_premisson)).setNegativeButton(getString(R.string.cancel), new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-
-                                    }
-                                }).setPositiveButton(getString(R.string.ok), new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        XXPermissions.gotoPermissionSettings(BindDeviceActivity.this);
-                                    }
-                                }).show();
-
-                            } else {
-                                ToastUtils.show(BindDeviceActivity.this, getString(R.string.request_location_premisson));
-                            }
-                        }
-                    });
-            return false;
-        }
-        //Check the Bluetooth switch
-        if (!BleTools.checkBleEnable()) {
-//            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//            startActivityForResult(intent, REQUEST_BLE_SETTINGS_CODE);
-            Log.i(TAG, "不可用");
-            return false;
-        }
-        return true;
-    }
-
     public void scanLeDevice(final boolean enable) {
         deviceFoundMap.clear();
 
@@ -474,7 +386,7 @@ public class BindDeviceActivity extends AppCompatActivity {
         }
 
         if (enable) {
-            if (!checkBleFeatures()) {
+            if (!CheckBleFeaturesUtil.checkBleFeatures(this)) {
                 return;
             }
             stopScanRunnable = new Runnable() {
@@ -589,17 +501,6 @@ public class BindDeviceActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_LOCATION_SETTINGS) {
-            boolean openLocationServer = BleTools.isLocationEnable(getApplicationContext());
-            if (openLocationServer) {
-                Log.i(TAG, "定位服务: 用户手动设置开启了定位服务");
-                ToastUtils.show(getApplicationContext(),
-                        getString(R.string.open_location_server_success));
-            } else {
-                Log.i(TAG, "定位服务: 用户手动设置未开启定位服务");
-                ToastUtils.show(getApplicationContext(),
-                        getString(R.string.open_locaiton_service_fail));
-            }
-        }
+        CheckBleFeaturesUtil.handBleFeaturesResult(this, requestCode, resultCode);
     }
 }

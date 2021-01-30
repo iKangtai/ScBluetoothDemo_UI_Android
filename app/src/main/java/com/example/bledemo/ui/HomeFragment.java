@@ -1,6 +1,5 @@
 package com.example.bledemo.ui;
 
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
@@ -10,8 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +18,6 @@ import com.example.bledemo.AppInfo;
 import com.example.bledemo.Keys;
 import com.example.bledemo.MainActivity;
 import com.example.bledemo.R;
-import com.example.bledemo.activity.BindDeviceActivity;
 import com.example.bledemo.activity.DeviceConnectActivity;
 import com.example.bledemo.event.AutoUploadTemperatureEvent;
 import com.example.bledemo.event.BleStateEventBus;
@@ -30,15 +26,13 @@ import com.example.bledemo.event.TemperatureBleScanEventBus;
 import com.example.bledemo.info.HardwareInfo;
 import com.example.bledemo.info.TemperatureInfo;
 import com.example.bledemo.model.HardwareModel;
+import com.example.bledemo.util.CheckBleFeaturesUtil;
 import com.example.bledemo.util.DateUtil;
 import com.example.bledemo.util.NotificationUtil;
 import com.example.bledemo.view.ActionSheetDialog;
 import com.example.bledemo.view.dialog.BleAlertDialog;
 import com.example.bledemo.view.dialog.BuyAndBindThermometerDialog;
 import com.example.bledemo.view.dialog.TemperatureAddDialog;
-import com.hjq.permissions.OnPermission;
-import com.hjq.permissions.Permission;
-import com.hjq.permissions.XXPermissions;
 import com.ikangtai.bluetoothsdk.BleCommand;
 import com.ikangtai.bluetoothsdk.Config;
 import com.ikangtai.bluetoothsdk.ScPeripheralManager;
@@ -70,8 +64,6 @@ import androidx.fragment.app.Fragment;
 
 public class HomeFragment extends Fragment {
     public static final String TAG = HomeFragment.class.getSimpleName();
-    public final static int REQUEST_LOCATION_SETTINGS = 1000;
-    public final static int REQUEST_BLE_SETTINGS_CODE = 1001;
     private ScPeripheralManager scPeripheralManager;
     private ReceiveDataListenerAdapter receiveDataListenerAdapter;
     private String deviceName;
@@ -91,10 +83,10 @@ public class HomeFragment extends Fragment {
      * @param state
      */
     private void refreshBleState(boolean state) {
-        if (state){
-            ToastUtils.show(getContext(),getString(R.string.thermometer_conn_success));
-        }else {
-            ToastUtils.show(getContext(),getString(R.string.thermometer_conn_fail));
+        if (state) {
+            ToastUtils.show(getContext(), getString(R.string.thermometer_conn_success));
+        } else {
+            ToastUtils.show(getContext(), getString(R.string.thermometer_conn_fail));
         }
         AppInfo.getInstance().setThermometerState(state);
         EventBus.getDefault().post(new BleStateEventBus(state));
@@ -159,9 +151,6 @@ public class HomeFragment extends Fragment {
                                 new ActionSheetDialog.OnSheetItemClickListener() {
                                     @Override
                                     public void onClick(int which) {
-                                        if (!checkBleFeatures()) {
-                                            return;
-                                        }
                                         List<HardwareInfo> hardwareInfoList = HardwareModel.hardwareList(getContext());
                                         if (hardwareInfoList.isEmpty()) {
                                             //弹框提示用户购买或者绑定体温计
@@ -210,63 +199,6 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initBleSdk();
-    }
-
-    /**
-     * Before the scan starts, you need to check the positioning service switch above 6.0, the positioning authority of the system above 6.0, and the Bluetooth switch
-     *
-     * @return
-     */
-    private boolean checkBleFeatures() {
-        //Check Bluetooth Location Service
-        if (!BleTools.isLocationEnable(getContext())) {
-            Intent locationIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivityForResult(locationIntent, REQUEST_LOCATION_SETTINGS);
-            return false;
-        }
-        //Check Bluetooth location permission
-        if (!BleTools.checkBlePermission(getContext())) {
-            XXPermissions.with(getActivity())
-                    .permission(Permission.Group.LOCATION)
-                    .request(new OnPermission() {
-                        @Override
-                        public void hasPermission(List<String> granted, boolean isAll) {
-                            if (isAll) {
-                                //do something
-                            }
-                        }
-
-                        @Override
-                        public void noPermission(List<String> denied, boolean quick) {
-                            if (quick) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle(R.string.warm_prompt)
-                                        .setMessage(R.string.request_location_premisson).setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                XXPermissions.gotoPermissionSettings(getContext());
-                                            }
-                                        }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                dialogInterface.dismiss();
-                                            }
-                                        });
-                                builder.create().show();
-
-                            } else {
-                                showMessage(getString(R.string.request_location_premisson));
-                            }
-                        }
-                    });
-            return false;
-        }
-        //Check the Bluetooth switch
-        if (!BleTools.checkBleEnable()) {
-            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(intent, REQUEST_BLE_SETTINGS_CODE);
-            return false;
-        }
-        return true;
     }
 
     private void initBleSdk() {
@@ -424,12 +356,10 @@ public class HomeFragment extends Fragment {
             if (action != null && action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
                 int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
                 if (state == BluetoothAdapter.STATE_OFF) {
-                    Log.e(TAG, "Bluetooth is off");
-                    showMessage("Bluetooth off");
+                    LogUtils.e("手机蓝牙开启");
                     refreshBluetoothState(false);
                 } else if (state == BluetoothAdapter.STATE_ON) {
-                    Log.e(TAG, "Bluetooth is on");
-                    showMessage("Bluetooth is on");
+                    LogUtils.e("手机蓝牙开启");
                     refreshBluetoothState(true);
                     EventBus.getDefault().post(new TemperatureBleScanEventBus());
                 }
@@ -466,7 +396,7 @@ public class HomeFragment extends Fragment {
 
 
     public void scanLeDevice() {
-        if (!checkBleFeatures()) {
+        if (!CheckBleFeaturesUtil.checkBleFeatures(this)) {
             return;
         }
         mScanning = true;
@@ -499,25 +429,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_LOCATION_SETTINGS) {
-            boolean openLocationServer = BleTools.isLocationEnable(getContext());
-            if (openLocationServer) {
-                Log.e(TAG, "Location service: The user manually sets the location service");
-                showMessage(getString(R.string.location_service_turn_on));
-            } else {
-                Log.e(TAG, "Location service: The user manually set the location service is not enabled");
-                showMessage(getString(R.string.location_service_turn_off));
-            }
-        } else if (requestCode == REQUEST_BLE_SETTINGS_CODE) {
-            boolean enable = BleTools.isLocationEnable(getContext());
-            if (!enable) {
-                showMessage(getString(R.string.request_location_premisson_tips));
-            }
-        }
-    }
-
-    private void showMessage(String massage) {
-        ToastUtils.show(getContext(), massage);
+        CheckBleFeaturesUtil.handBleFeaturesResult(getContext(), requestCode, resultCode);
     }
 
     @Override

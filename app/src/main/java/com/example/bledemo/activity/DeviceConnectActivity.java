@@ -20,6 +20,7 @@ import com.example.bledemo.event.BluetoothStateEventBus;
 import com.example.bledemo.event.TemperatureBleScanEventBus;
 import com.example.bledemo.info.HardwareInfo;
 import com.example.bledemo.model.HardwareModel;
+import com.example.bledemo.util.CheckBleFeaturesUtil;
 import com.example.bledemo.view.ThermometerHelper;
 import com.example.bledemo.view.TopBar;
 import com.example.bledemo.view.dialog.BleAlertDialog;
@@ -33,6 +34,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -96,6 +98,7 @@ public class DeviceConnectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_thermometer_device);
         AppInfo.getInstance().setDeviceConnectActive(true);
         initView();
+        CheckBleFeaturesUtil.checkBleFeatures(this);
     }
 
     private void initView() {
@@ -193,9 +196,7 @@ public class DeviceConnectActivity extends AppCompatActivity {
 
         }
         List<HardwareInfo> hardwareInfoList = HardwareModel.hardwareList(this);
-        if (!hardwareInfoList.isEmpty()) {
-
-        } else {
+        if (hardwareInfoList.isEmpty()) {
             finish();
         }
     }
@@ -370,7 +371,7 @@ public class DeviceConnectActivity extends AppCompatActivity {
                     .setMsg(Html.fromHtml(content + "<br><br>" + subContent), Gravity.LEFT)
                     .setCancelable(false)
                     .setCanceledOnTouchOutside(false)
-                    .setPositiveButton(getString(R.string.allright), new View.OnClickListener() {
+                    .setPositiveButton(getString(R.string.ok), new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                         }
@@ -483,6 +484,12 @@ public class DeviceConnectActivity extends AppCompatActivity {
             }
 
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        CheckBleFeaturesUtil.handBleFeaturesResult(this, requestCode, resultCode);
     }
 
     private interface IEvent {

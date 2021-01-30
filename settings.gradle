@@ -1,2 +1,3 @@
+include ':ScBluetoothUI'
 include ':app',':pickerview'
 rootProject.name='ScBluetoothDemo_UI_Android'

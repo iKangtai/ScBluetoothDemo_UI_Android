@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 /**
- * desc
+ * App数据缓存
  *
  * @author xiongyl 2021/1/21 22:10
  */
@@ -87,6 +87,10 @@ public class AppInfo {
         this.thermometerState = thermometerState;
     }
 
+    /**
+     * App是否显示摄氏度
+     * @return
+     */
     public boolean isTempUnitC() {
         return true;
     }

@@ -1,14 +1,13 @@
 package com.example.bledemo;
 
 /**
- * desc
+ * 蓝牙常量
  *
  * @author xiongyl 2021/1/21 21:48
  */
 public class ThermometerParameters {
     public static final int STATE_DISCONNECTED = 0;
     public static final int STATE_CONNECTED = 1;
-    public static final int STATE_NOT_BIND = 2;
 
     public static String FW_VERSION;
     public static int HW_GENERATION = 2;

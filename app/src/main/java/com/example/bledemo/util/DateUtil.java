@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * desc
+ * 时间格式化Util
  *
  * @author xiongyl 2021/1/26 22:59
  */

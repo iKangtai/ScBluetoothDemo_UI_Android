@@ -20,8 +20,17 @@ import java.util.Random;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-
+/**
+ * 通知Util
+ *
+ * @author xiongyl 2021/1/21 21:11
+ */
 public class NotificationUtil {
+    /**
+     * 是否允许发送通知
+     * @param context
+     * @return
+     */
     public static boolean isNotificationEnable(Context context) {
         if (context == null) {
             context = App.getInstance();
@@ -31,6 +40,14 @@ public class NotificationUtil {
         return areNotificationsEnabled;
     }
 
+    /**
+     * 发送App通知
+     * @param context
+     * @param playSound
+     * @param title
+     * @param msg
+     * @param intent
+     */
     public static void pushMessage(Context context, boolean playSound, String title, String msg, Intent intent) {
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

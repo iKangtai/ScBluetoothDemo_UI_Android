@@ -21,7 +21,7 @@ import java.util.List;
 import androidx.fragment.app.Fragment;
 
 /**
- * desc
+ * 在扫描开始之前，您需要检查6.0以上的定位服务开关、6.0以上系统的定位权限以及蓝牙开关
  *
  * @author xiongyl 2021/1/30 14:36
  */
@@ -37,9 +37,6 @@ public class CheckBleFeaturesUtil {
         return checkBleFeatures(null, fragment);
     }
 
-    /**
-     * 在扫描开始之前，您需要检查6.0以上的定位服务开关、6.0以上系统的定位权限以及蓝牙开关
-     */
     private static boolean checkBleFeatures(final Activity activity, final Fragment fragment) {
         final Context context;
         if (activity != null) {

@@ -91,12 +91,6 @@ public class AppInfo {
         return true;
     }
 
-    /**
-     * temp 输入源必须是摄氏度单位, 如果是华摄氏度源数据，则不能使用此方法
-     *
-     * @param temp
-     * @return
-     */
     public float getTemp(float temp) {
 
         if (isTempUnitC()) {

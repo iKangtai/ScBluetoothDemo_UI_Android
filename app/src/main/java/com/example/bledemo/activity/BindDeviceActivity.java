@@ -53,7 +53,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
- * desc
+ * 体温计绑定
  *
  * @author xiongyl 2021/1/21 21:11
  */

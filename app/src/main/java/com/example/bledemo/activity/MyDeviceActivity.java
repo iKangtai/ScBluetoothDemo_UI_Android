@@ -24,6 +24,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * 我的设备
+ *
+ * @author xiongyl 2021/1/21 21:11
  */
 public class MyDeviceActivity extends AppCompatActivity implements View.OnClickListener {
 

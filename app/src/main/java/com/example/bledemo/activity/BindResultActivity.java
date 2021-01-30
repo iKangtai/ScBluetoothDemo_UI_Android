@@ -11,7 +11,9 @@ import com.ikangtai.bluetoothsdk.util.LogUtils;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
- * 我的设备
+ * 绑定结果
+ *
+ * @author xiongyl 2021/1/21 21:11
  */
 public class BindResultActivity extends AppCompatActivity {
 

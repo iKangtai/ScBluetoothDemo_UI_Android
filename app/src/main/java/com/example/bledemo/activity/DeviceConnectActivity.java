@@ -43,7 +43,9 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 /**
- * 绑定/连接体温计
+ * 连接体温计
+ *
+ * @author xiongyl 2021/1/21 21:11
  */
 public class DeviceConnectActivity extends AppCompatActivity {
     private Disposable connDisposable;

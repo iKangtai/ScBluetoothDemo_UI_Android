@@ -34,6 +34,7 @@ import com.example.bledemo.util.DateUtil;
 import com.example.bledemo.util.NotificationUtil;
 import com.example.bledemo.view.ActionSheetDialog;
 import com.example.bledemo.view.dialog.BleAlertDialog;
+import com.example.bledemo.view.dialog.BuyAndBindThermometerDialog;
 import com.example.bledemo.view.dialog.TemperatureAddDialog;
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
@@ -90,6 +91,11 @@ public class HomeFragment extends Fragment {
      * @param state
      */
     private void refreshBleState(boolean state) {
+        if (state){
+            ToastUtils.show(getContext(),getString(R.string.thermometer_conn_success));
+        }else {
+            ToastUtils.show(getContext(),getString(R.string.thermometer_conn_fail));
+        }
         AppInfo.getInstance().setThermometerState(state);
         EventBus.getDefault().post(new BleStateEventBus(state));
     }
@@ -158,7 +164,8 @@ public class HomeFragment extends Fragment {
                                         }
                                         List<HardwareInfo> hardwareInfoList = HardwareModel.hardwareList(getContext());
                                         if (hardwareInfoList.isEmpty()) {
-                                            startActivity(new Intent(getContext(), BindDeviceActivity.class));
+                                            //弹框提示用户购买或者绑定体温计
+                                            new BuyAndBindThermometerDialog(getContext()).builder().show();
                                         } else {
                                             startActivity(new Intent(getContext(), DeviceConnectActivity.class));
                                         }

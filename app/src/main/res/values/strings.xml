@@ -42,8 +42,8 @@
     <string name="locaiton_server_hint">开启后才能扫描和连接体温计</string>
     <string name="open_location_server_success">位置服务已开启</string>
     <string name="open_locaiton_service_fail">位置服务未开启</string>
-    <string name="temperture_conn_success">设备已连接</string>
-    <string name="temperture_conn_fail">设备断开连接</string>
+    <string name="thermometer_conn_success">设备已连接</string>
+    <string name="thermometer_conn_fail">设备断开连接</string>
     <string name="no_new_temp">无最新温度</string>
     <string name="authorize">去授权</string>
     <string name="ok">确定</string>

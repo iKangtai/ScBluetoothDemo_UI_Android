@@ -56,7 +56,7 @@ public class BuyAndBindThermometerDialog extends BaseShecareDialog {
             public void onClick(View v) {
                 dialog.dismiss();
                 //进入购买体温计
-                String url = "https://s.click.taobao.com/t?e=m%3D2%26s%3DD5MM%2B3Pqg8wcQipKwQzePOeEDrYVVa64K7Vc7tFgwiFRAdhuF14FMb9PD7m6Qvbfxq3IhSJN6GQG50TC%2BOEKRV2PCaw8s0I5%2B4XeV4Br1rTc52Qvs3i40Q8zPczQMp9Ma7G8XfSvkCllRh9jBtJI%2BWeTimChZPpGxg5p7bh%2BFbQ%3D&pvid=53_115.239.25.5_624_1611125519095";
+                String url = "https://s.click.taobao.com/t?e=m%3D2%26s%3DfaVd4i2mdTccQipKwQzePOeEDrYVVa64K7Vc7tFgwiFRAdhuF14FMXD0IuTjzjxDMMgx22UI05YG50TC%2BOEKRV2PCaw8s0I5%2B4XeV4Br1rRhqXPujuVgf9JduXIAgIVPa7G8XfSvkCk8eRex8LTEM9CkUAHLmx%2B1xg5p7bh%2BFbQ%3D&pvid=53_115.239.25.5_624_1611125519095";
                 ThirdAppUtils.handleShop(context, url);
             }
         });

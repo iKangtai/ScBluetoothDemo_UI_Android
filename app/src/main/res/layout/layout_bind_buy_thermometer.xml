@@ -34,7 +34,8 @@
             android:gravity="left"
             android:text="@string/buy_thermometer_introduce2"
             android:textColor="#7F7F7F"
-            android:textSize="@dimen/button_text_small_size_13" />
+            android:textSize="@dimen/button_text_small_size_13"
+            android:visibility="gone"/>
     </LinearLayout>
 
 

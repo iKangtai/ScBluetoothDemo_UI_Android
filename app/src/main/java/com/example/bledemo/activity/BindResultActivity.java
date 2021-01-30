@@ -4,15 +4,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.bledemo.BaseAppActivity;
 import com.example.bledemo.R;
 import com.example.bledemo.view.TopBar;
 import com.ikangtai.bluetoothsdk.util.LogUtils;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 /**
  * 我的设备
  */
-public class BindResultActivity extends BaseAppActivity {
+public class BindResultActivity extends AppCompatActivity {
 
     private TopBar topBar;
     private Button finishBtn;

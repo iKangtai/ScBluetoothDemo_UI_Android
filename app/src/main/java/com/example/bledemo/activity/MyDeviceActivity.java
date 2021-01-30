@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.bledemo.BaseAppActivity;
 import com.example.bledemo.R;
 import com.example.bledemo.info.FirmwareVersionResp;
 import com.example.bledemo.info.HardwareInfo;
@@ -21,10 +20,12 @@ import com.ikangtai.bluetoothsdk.util.ToastUtils;
 
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 /**
  * 我的设备
  */
-public class MyDeviceActivity extends BaseAppActivity implements View.OnClickListener {
+public class MyDeviceActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TopBar topBar;
     private Button unbindDevice;

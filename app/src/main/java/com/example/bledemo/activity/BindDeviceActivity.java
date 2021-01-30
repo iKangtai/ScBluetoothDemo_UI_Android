@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.bledemo.AppInfo;
-import com.example.bledemo.BaseAppActivity;
 import com.example.bledemo.R;
 import com.example.bledemo.ThermometerParameters;
 import com.example.bledemo.info.FirmwareVersionResp;
@@ -54,13 +53,14 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * desc
  *
  * @author xiongyl 2021/1/21 21:11
  */
-public class BindDeviceActivity extends BaseAppActivity {
+public class BindDeviceActivity extends AppCompatActivity {
     public static final String TAG = BindDeviceActivity.class.getSimpleName();
     private TopBar topBar;
     public TextView stepFirstState;

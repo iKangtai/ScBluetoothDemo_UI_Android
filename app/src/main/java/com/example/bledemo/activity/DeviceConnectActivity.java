@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.bledemo.AppInfo;
-import com.example.bledemo.BaseAppActivity;
 import com.example.bledemo.R;
 import com.example.bledemo.event.AutoUploadTemperatureEvent;
 import com.example.bledemo.event.BleStateEventBus;
@@ -34,6 +33,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import androidx.appcompat.app.AppCompatActivity;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -43,7 +43,7 @@ import io.reactivex.functions.Consumer;
 /**
  * 绑定/连接体温计
  */
-public class DeviceConnectActivity extends BaseAppActivity {
+public class DeviceConnectActivity extends AppCompatActivity {
     private Disposable connDisposable;
     private Disposable waitDisposable;
     private Disposable waitUploadDisposable;
@@ -307,7 +307,7 @@ public class DeviceConnectActivity extends BaseAppActivity {
     protected void onDestroy() {
         super.onDestroy();
         LogUtils.i("onDestroy");
-        if (disposables!=null){
+        if (disposables != null) {
             disposables.clear();
         }
         if (EventBus.getDefault().isRegistered(this)) {

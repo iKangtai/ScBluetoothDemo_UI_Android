@@ -24,7 +24,13 @@ public class LoadingView extends androidx.appcompat.widget.AppCompatImageView {
     }
 
     public void startLoading() {
-        setLoadingRenderer(new LevelLoadingRenderer.Builder(getContext()).build());
+        stopAnimation();
+        if (mLoadingDrawable != null) {
+            setImageDrawable(mLoadingDrawable);
+        } else {
+            setLoadingRenderer(new LevelLoadingRenderer.Builder(getContext()).build());
+        }
+        startAnimation();
     }
 
     public void finishLoading() {

@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.example.bledemo.AppInfo;
 import com.example.bledemo.R;
-import com.example.bledemo.ThermometerParameters;
 import com.example.bledemo.info.FirmwareVersionResp;
 import com.example.bledemo.info.HardwareInfo;
 import com.example.bledemo.model.HardwareModel;
@@ -37,8 +36,6 @@ import java.io.File;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatDialog;
-
-import static com.example.bledemo.ThermometerParameters.FW_VERSION;
 
 
 /**
@@ -84,14 +81,15 @@ public class FirmwareUpdateDialog extends BaseShecareDialog {
                 if (!TextUtils.equals(macAddress, hardwareInfo.getHardMacId())) {
                     return;
                 }
+                if (resultCode == BleCommand.ResultCode.RESULT_FAIL) {
+                    return;
+                }
                 switch (type) {
                     case BleCommand.GET_FIRMWARE_VERSION:
                         if (OAD_COMPLETE && !TextUtils.isEmpty(value)) {
-                            double firmwareVerUsing = Double.valueOf(value);
+                            String firmwareVerUsing = value;
                             if (oadFileUtil != null) {
-                                double netFirmwareVer = Double.valueOf(oadFileUtil.getLatestVer());
-
-                                if (TextUtils.equals(FW_VERSION, oadFileUtil.getLatestVer())) {
+                                if (TextUtils.equals(firmwareVerUsing, oadFileUtil.getLatestVer())) {
                                     LogUtils.i("检查固件升级成功:" + firmwareVerUsing);
                                     showUpgradeState(context.getString(R.string.oad_suceess),
                                             context.getString(R.string.allright));
@@ -102,9 +100,7 @@ public class FirmwareUpdateDialog extends BaseShecareDialog {
                                             context.getString(R.string.understand));
                                 }
                             } else if (otaFileUtil != null) {
-                                double netFirmwareVer = Double.valueOf(otaFileUtil.getLatestVer());
-
-                                if (TextUtils.equals(FW_VERSION, otaFileUtil.getLatestVer())) {
+                                if (TextUtils.equals(firmwareVerUsing, otaFileUtil.getLatestVer())) {
                                     LogUtils.i("检查OTA升级成功:" + firmwareVerUsing);
                                     showUpgradeState(context.getString(R.string.oad_suceess),
                                             context.getString(R.string.allright));
@@ -220,12 +216,12 @@ public class FirmwareUpdateDialog extends BaseShecareDialog {
         AppInfo.getInstance().setOADConnectActive(true);
         initBleSdk();
         context.registerReceiver(downloadReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-        LogUtils.i("获取设备当前固件版本号 = " + FW_VERSION + ", 开始获取网络上对应固件最新的版本号!");
+        LogUtils.i("获取设备当前固件版本号 = " + hardwareInfo.getHardwareVersion() + ", 开始获取网络上对应固件最新的版本号!");
         if (hardwareInfo.getHardType() == HardwareInfo.HARD_TYPE_THERMOMETER) {
             refreshBleSate();
         } else {
             LogUtils.i("检查固件升级失败:不支持");
-            showUpgradeState(String.format(context.getString(R.string.oad_unSupported), FW_VERSION),
+            showUpgradeState(String.format(context.getString(R.string.oad_unSupported), hardwareInfo.getHardwareVersion()),
                     context.getString(R.string.understand));
         }
         return this;
@@ -262,14 +258,14 @@ public class FirmwareUpdateDialog extends BaseShecareDialog {
             LogUtils.i("获取OTA版本信息成功: version" + latestVer + "  url:" + downloadURL);
         } else {
             LogUtils.i("检查固件升级失败:不支持");
-            showUpgradeState(String.format(context.getString(R.string.oad_unSupported), FW_VERSION),
+            showUpgradeState(String.format(context.getString(R.string.oad_unSupported), hardwareInfo.getHardwareVersion()),
                     context.getString(R.string.understand));
         }
     }
 
     public void handleOADFirmVerMsg(int respCode, String latestVer) {
         if (respCode == GET_FMV_SUCCESS) {
-            checkFirmVerNeedOAD(FW_VERSION, latestVer);
+            checkFirmVerNeedOAD(hardwareInfo.getHardwareVersion(), latestVer);
         } else {
             updateConnect(context.getString(R.string.get_firmver_fail) + "\n" + context.getString(R.string.firmware_update_content));
         }
@@ -289,9 +285,9 @@ public class FirmwareUpdateDialog extends BaseShecareDialog {
          *  对于 2代固件 只支持 >= 2.96版本 才能 OAD
          *  对于 3代固件 均可 OAD
          */
-        if (ThermometerParameters.HW_GENERATION == ThermometerParameters.HW_GENERATION_1) {
+        if (hardwareInfo.getHardHardwareType() == HardwareInfo.HW_GENERATION_1) {
             updateConnect(String.format(context.getString(R.string.oad_unSupported), firmVerUsing));
-        } else if (ThermometerParameters.HW_GENERATION == ThermometerParameters.HW_GENERATION_2) {
+        } else if (hardwareInfo.getHardHardwareType() == HardwareInfo.HW_GENERATION_2) {
             updateConnect(String.format(context.getString(R.string.oad_unSupported),
                     firmVerUsing));
         } else if (netFirmwareVer - firmwareVerUsing > 0.00001) {
@@ -364,12 +360,7 @@ public class FirmwareUpdateDialog extends BaseShecareDialog {
         if (progressNum >= 99) {
             // 检查是否升级成功, 在连接断开之后 若OAD_COMPLETE = true, 则 5s 之后再次扫描, 连接, 读取版本号
             OAD_COMPLETE = true;
-            if (ThermometerParameters.HW_GENERATION == ThermometerParameters.HW_GENERATION_2 ||
-                    ThermometerParameters.HW_GENERATION == ThermometerParameters.HW_GENERATION_3) {
-                updateConnect(context.getString(R.string.oad_check_succ_g23));
-            } else {
-                updateConnect(context.getString(R.string.oad_check_success));
-            }
+            updateConnect(context.getString(R.string.oad_check_succ_g23));
         }
     }
 
@@ -393,8 +384,8 @@ public class FirmwareUpdateDialog extends BaseShecareDialog {
     public void upgradeOADSuccess() {
         if (!TextUtils.isEmpty(hardwareInfo.getHardMacId())) {
             LogUtils.i("固件升级成功,将升级后的信息进行同步 latestNetFirmVer:" + latestNetFirmVer);
-            hardwareInfo.setHardHardwareVersion(latestNetFirmVer);
-            HardwareModel.updateHardwareInfo(context,hardwareInfo);
+            hardwareInfo.setHardwareVersion(latestNetFirmVer);
+            HardwareModel.updateHardwareInfo(context, hardwareInfo);
         }
     }
 

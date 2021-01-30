@@ -42,6 +42,8 @@
     <string name="locaiton_server_hint">开启后才能扫描和连接体温计</string>
     <string name="open_location_server_success">位置服务已开启</string>
     <string name="open_locaiton_service_fail">位置服务未开启</string>
+    <string name="turn_on_ble">蓝牙已开启</string>
+    <string name="turn_off_ble">蓝牙未开启</string>
     <string name="thermometer_conn_success">设备已连接</string>
     <string name="thermometer_conn_fail">设备断开连接</string>
     <string name="no_new_temp">无最新温度</string>
@@ -130,7 +132,7 @@
     <string name="unbind_device">解绑设备</string>
     <string name="device_upgrade">设备程序升级</string>
     <string name="device_manage">体温计管理</string>
-    <string name="turn_on_ble">请打开手机蓝牙</string>
+    <string name="turn_on_ble_hint">请打开手机蓝牙</string>
     <string name="turn_on_thermometer">按下开关键</string>
     <string name="check_device_version">设备程序版本校验</string>
 </resources>

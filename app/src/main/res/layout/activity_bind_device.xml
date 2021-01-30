@@ -67,7 +67,7 @@
                     android:layout_weight="1"
                     android:drawableRight="@drawable/device_binding_page_pic_bluetooth_unselected"
                     android:gravity="center_vertical"
-                    android:text="@string/turn_on_ble"
+                    android:text="@string/turn_on_ble_hint"
                     android:textColor="@color/color_444444" />
 
                 <View

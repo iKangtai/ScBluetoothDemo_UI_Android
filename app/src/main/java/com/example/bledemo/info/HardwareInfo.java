@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.example.bledemo.R;
-import com.example.bledemo.ThermometerParameters;
 
 /**
  * desc
@@ -23,17 +22,33 @@ public class HardwareInfo {
     "hardType": 3,
     "gmtCreateTime": 1605063990,
     "gmtUpdateTime": 1605064004*/
-    //1表示体温计，4表示额温枪，5表示胎心仪
+    /**
+     * 硬件类型 1表示体温计，4表示额温枪，5表示胎心仪
+     */
     public static final int HARD_TYPE_THERMOMETER = 1;
-    public static final int HARD_TYPE_EWQ = 4;
-    public static final int HARD_TYPE_TXY = 5;
+    public static final int HARD_TYPE_EWQ = 2;
+    public static final int HARD_TYPE_TXY = 3;
+    /**
+     * 固件类型
+     */
+    /**
+     * 旧版1、2、3代体温计
+     */
+    public static final int HW_GENERATION_1 = 1001;
+    public static final int HW_GENERATION_2 = 1002;
+    public static final int HW_GENERATION_3 = 1003;
+    /**
+     * 新款三四代体温计
+     */
+    public static final int HW_GENERATION_AKY3 = 2003;
+    public static final int HW_GENERATION_AKY4 = 2004;
+
     private int deviceLogo;
     private String deviceName;
     private String hardMacId;
     private long hardBindingDate;
     private int hardHardwareType;
-    private String hardHardwareVersion;
-    private String hardHardwareUuid;
+    private String hardwareVersion;
     private int hardType;
     private long gmtCreateTime = System.currentTimeMillis() / 1000;
     private long gmtUpdateTime = System.currentTimeMillis() / 1000;
@@ -62,20 +77,12 @@ public class HardwareInfo {
         this.hardHardwareType = hardHardwareType;
     }
 
-    public String getHardHardwareVersion() {
-        return hardHardwareVersion;
+    public String getHardwareVersion() {
+        return hardwareVersion;
     }
 
-    public void setHardHardwareVersion(String hardHardwareVersion) {
-        this.hardHardwareVersion = hardHardwareVersion;
-    }
-
-    public String getHardHardwareUuid() {
-        return hardHardwareUuid;
-    }
-
-    public void setHardHardwareUuid(String hardHardwareUuid) {
-        this.hardHardwareUuid = hardHardwareUuid;
+    public void setHardwareVersion(String hardwareVersion) {
+        this.hardwareVersion = hardwareVersion;
     }
 
     public long getGmtCreateTime() {
@@ -131,9 +138,9 @@ public class HardwareInfo {
         if (deviceLogo == 0) {
             switch (hardType) {
                 case HARD_TYPE_THERMOMETER:
-                    if (hardHardwareType == ThermometerParameters.HW_GENERATION_2 || hardHardwareType == ThermometerParameters.HW_GENERATION_4 || hardHardwareType == ThermometerParameters.HW_GENERATION_AKY4) {
+                    if (hardHardwareType == HardwareInfo.HW_GENERATION_2 || hardHardwareType == HardwareInfo.HW_GENERATION_AKY4) {
                         deviceLogo = R.drawable.a21;
-                    } else if (hardHardwareType == ThermometerParameters.HW_GENERATION_3 || hardHardwareType == ThermometerParameters.HW_GENERATION_AKY3) {
+                    } else if (hardHardwareType == HardwareInfo.HW_GENERATION_3 || hardHardwareType == HardwareInfo.HW_GENERATION_AKY3) {
                         deviceLogo = R.drawable.a31;
                     }
                     break;

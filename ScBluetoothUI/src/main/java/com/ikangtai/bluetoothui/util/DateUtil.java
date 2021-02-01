@@ -31,6 +31,23 @@ public class DateUtil {
     }
 
     /**
+     * 月日
+     *
+     * @param seconds
+     * @return
+     */
+    public static String getDateFormatMD(long seconds) {
+        Date date = new Date(seconds * 1000);
+        SimpleDateFormat simpleDateFormat;
+        if (TextUtils.equals(Locale.getDefault().getLanguage(), "zh")) {
+            simpleDateFormat = new SimpleDateFormat("MM月dd日");
+        } else {
+            simpleDateFormat = new SimpleDateFormat("MMM dd");
+        }
+        return simpleDateFormat.format(date);
+    }
+
+    /**
      * 获取月日 时分对应时间戳
      *
      * @param timeStr

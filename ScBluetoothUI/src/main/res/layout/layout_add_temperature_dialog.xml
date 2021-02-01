@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lLayout_bg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_15"
+        android:gravity="right">
+
+        <ImageView
+            android:id="@+id/iv_dialog_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/app_corner_background"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dp_40"
+        android:paddingRight="@dimen/dp_40">
+
+        <TextView
+            android:id="@+id/txt_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:gravity="center"
+            android:textColor="@color/color_444444"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/temp_auto_upload"
+            style="@style/commonButtonCornerStyle"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_30"
+            android:text="@string/temp_auto_upload"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/temp_add"
+            style="@style/commonButtonCornerStyle"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_15"
+            android:layout_marginBottom="@dimen/dp_40"
+            android:text="@string/temp_add"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+</LinearLayout>

@@ -38,6 +38,7 @@ import com.ikangtai.bluetoothui.info.TemperatureInfo;
 import com.ikangtai.bluetoothui.util.CheckBleFeaturesUtil;
 import com.ikangtai.bluetoothui.util.DateUtil;
 import com.ikangtai.bluetoothui.view.ActionSheetDialog;
+import com.ikangtai.bluetoothui.view.dialog.AndTemperatureDialog;
 import com.ikangtai.bluetoothui.view.dialog.BuyAndBindThermometerDialog;
 import com.ikangtai.bluetoothui.view.dialog.TemperatureAddDialog;
 
@@ -375,26 +376,19 @@ public class BleModel {
     }
 
     public void showAddTemperatureView() {
-        new ActionSheetDialog(context)
-                .builder()
-                .addSheetItem(context.getString(R.string.temp_auto_upload), ActionSheetDialog.SheetItemColor.Blue,
-                        new ActionSheetDialog.OnSheetItemClickListener() {
-                            @Override
-                            public void onClick(int which) {
-                                autoSyncTemperature();
-                            }
-                        })
-                .addSheetItem(context.getString(R.string.temp_add), ActionSheetDialog.SheetItemColor.Blue,
-                        new ActionSheetDialog.OnSheetItemClickListener() {
-                            @Override
-                            public void onClick(int which) {
-                                manualAddTemperature();
-                            }
-                        }).setOnDismissListener(new DialogInterface.OnDismissListener() {
+        new AndTemperatureDialog(context).initEvent(new AndTemperatureDialog.IEvent() {
             @Override
-            public void onDismiss(DialogInterface dialog) {
+            public void clickAutoSyncTemperature() {
+                //自动上传温度
+                autoSyncTemperature();
             }
-        }).show();
+
+            @Override
+            public void clickManualAddTemperature() {
+                //手动添加温度
+                manualAddTemperature();
+            }
+        }).builder().show();
     }
 
     public void autoSyncTemperature() {

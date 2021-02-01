@@ -39,8 +39,8 @@ public class LevelLoadingRenderer extends LoadingRenderer {
     private static final float DEFAULT_CENTER_RADIUS = 32.75f;
     private static final float DEFAULT_STROKE_WIDTH = 2.5f;
 
-    private static final int[] DEFAULT_LEVEL_COLORS = new int[]{Color.parseColor("#00FA8816"),
-            Color.parseColor("#00FA8816"), Color.parseColor("#FA8816")};
+    private static final int[] DEFAULT_LEVEL_COLORS = new int[]{Color.parseColor("#F8F8F8"),
+            Color.parseColor("#FA8816"), Color.parseColor("#FA8816")};
 
     private final Paint mPaint = new Paint();
     private final RectF mTempBounds = new RectF();

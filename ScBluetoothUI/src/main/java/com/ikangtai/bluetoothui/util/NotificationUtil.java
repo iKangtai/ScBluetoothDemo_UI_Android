@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 
-import com.ikangtai.bluetoothui.App;
 import com.ikangtai.bluetoothui.R;
 
 import java.io.File;
@@ -32,9 +31,6 @@ public class NotificationUtil {
      * @return
      */
     public static boolean isNotificationEnable(Context context) {
-        if (context == null) {
-            context = App.getInstance();
-        }
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
         boolean areNotificationsEnabled = notificationManagerCompat.areNotificationsEnabled();
         return areNotificationsEnabled;
@@ -53,7 +49,7 @@ public class NotificationUtil {
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder notification;
         if (TextUtils.isEmpty(title)) {
-            title = "孕橙";
+            title = context.getString(R.string.app_name);
         }
 
         String id = context.getPackageName();

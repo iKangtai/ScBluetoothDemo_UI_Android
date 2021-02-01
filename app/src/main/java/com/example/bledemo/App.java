@@ -1,14 +1,9 @@
-package com.ikangtai.bluetoothui;
+package com.example.bledemo;
 
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
-/**
- * desc
- *
- * @author xiongyl 2021/1/29 1:09
- */
 public class App extends Application {
     private static App _instance;
 

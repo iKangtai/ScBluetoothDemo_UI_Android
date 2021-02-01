@@ -46,7 +46,7 @@ public class CheckBleFeaturesUtil {
         } else {
             return false;
         }
-        //Check Bluetooth Location Service
+        //检查系统定位服务
         if (!BleTools.isLocationEnable(context)) {
             new BleAlertDialog(context).builder().setTitle(context.getString(R.string.open_location_hint)).setMsg(context.getString(R.string.locaiton_server_hint)).setPositiveButton(context.getString(R.string.authorize), new View.OnClickListener() {
                 @Override
@@ -66,7 +66,7 @@ public class CheckBleFeaturesUtil {
             }).show();
             return false;
         }
-        //Check Bluetooth location permission
+        //检查扫描附近设备需要的定位权限
         if (!BleTools.checkBlePermission(context)) {
             XXPermissions.with(activity != null ? activity : fragment.getActivity())
                     .permission(Permission.Group.LOCATION)
@@ -100,7 +100,7 @@ public class CheckBleFeaturesUtil {
                     });
             return false;
         }
-        //Check the Bluetooth switch
+        //检查蓝牙开关
         if (!BleTools.checkBleEnable()) {
             LogUtils.i("蓝牙不可用");
             new BleAlertDialog(context).builder().setTitle(context.getString(R.string.warm_prompt)).setMsg(context.getString(R.string.request_location_premisson_tips)).setNegativeButton(context.getString(R.string.cancel), new View.OnClickListener() {

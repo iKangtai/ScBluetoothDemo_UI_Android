@@ -6,11 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.bledemo.App;
 import com.example.bledemo.MainActivity;
 import com.example.bledemo.R;
 import com.ikangtai.bluetoothsdk.util.LogUtils;
 import com.ikangtai.bluetoothsdk.util.ToastUtils;
-import com.ikangtai.bluetoothui.App;
 import com.ikangtai.bluetoothui.AppInfo;
 import com.ikangtai.bluetoothui.Keys;
 import com.ikangtai.bluetoothui.contract.BleContract;
@@ -98,32 +98,6 @@ public class HomeFragment extends Fragment implements BleContract.IView {
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        //处理蓝牙开关、定位开关回调
-        CheckBleFeaturesUtil.handBleFeaturesResult(getContext(), requestCode, resultCode);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        presenter.refreshDeviceList();
-        if (!AppInfo.getInstance().isThermometerState()) {
-            presenter.startScan();
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
-        presenter.destroy();
-
-    }
-
     /**
      * 处理接收到体温计温度
      *
@@ -182,6 +156,12 @@ public class HomeFragment extends Fragment implements BleContract.IView {
                 }).show();
     }
 
+    /**
+     * 组装发送通知内容
+     * @param notifyTempNum
+     * @param notifyTempValue
+     * @return
+     */
     private String getNotificationContent(int notifyTempNum, double notifyTempValue) {
         String notificationContent = getString(R.string.ble_temp_bg_notif_def_content);
         if (notifyTempNum == 1) {
@@ -192,5 +172,33 @@ public class HomeFragment extends Fragment implements BleContract.IView {
         notificationContent += getString(R.string.ble_temp_bg_notif_content_last);
 
         return notificationContent;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //绑定返回后刷新已绑定设备
+        presenter.refreshDeviceList();
+        //未连接设备时重新开始扫描附近设备
+        if (!AppInfo.getInstance().isThermometerState()) {
+            presenter.startScan();
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+        //释放资源断开蓝牙
+        presenter.destroy();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //处理请求打开蓝牙开关、定位开关结果
+        CheckBleFeaturesUtil.handBleFeaturesResult(getContext(), requestCode, resultCode);
     }
 }

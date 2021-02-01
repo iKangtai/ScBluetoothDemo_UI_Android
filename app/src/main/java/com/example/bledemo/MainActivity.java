@@ -38,27 +38,8 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        checkPermission();
     }
 
-    //android6.0之后要动态获取权限
-    private void checkPermission() {
-        // Storage Permissions
-        String[] PERMISSIONS_LIST = {
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-
-        try {
-            if (ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, PERMISSIONS_LIST, 0);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

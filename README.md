@@ -86,7 +86,7 @@
    ```
   5.显示添加温度Dialog
   ```java
-      presenter.showAddTemperatureView();
+    presenter.showAddTemperatureView();
   ```
 
   6.释放资源断开蓝牙

@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.ikangtai.bluetoothui.AppInfo;
 import com.ikangtai.bluetoothui.R;
+import com.ikangtai.bluetoothui.event.BleBindEvent;
 import com.ikangtai.bluetoothui.event.BleDeviceInfoEvent;
 import com.ikangtai.bluetoothui.event.BleStateEventBus;
 import com.ikangtai.bluetoothui.event.BluetoothStateEventBus;
@@ -198,6 +199,7 @@ public class BindDeviceActivity extends AppCompatActivity {
         hardwareInfo.setHardType(HardwareInfo.HARD_TYPE_THERMOMETER);
         hardwareInfo.setHardHardwareType(hardwareType);
         HardwareModel.saveHardwareInfo(BindDeviceActivity.this, hardwareInfo);
+        EventBus.getDefault().post(new BleBindEvent());
         checkFirmwareVersion();
     }
 

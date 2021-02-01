@@ -10,23 +10,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
 
-import com.ikangtai.bluetoothui.AppInfo;
-import com.ikangtai.bluetoothui.Keys;
-import com.ikangtai.bluetoothui.R;
-import com.ikangtai.bluetoothui.activity.DeviceConnectActivity;
-import com.ikangtai.bluetoothui.contract.BleContract;
-import com.ikangtai.bluetoothui.event.AutoUploadTemperatureEvent;
-import com.ikangtai.bluetoothui.event.BleDeviceInfoEvent;
-import com.ikangtai.bluetoothui.event.BleStateEventBus;
-import com.ikangtai.bluetoothui.event.BluetoothStateEventBus;
-import com.ikangtai.bluetoothui.event.TemperatureBleScanEventBus;
-import com.ikangtai.bluetoothui.info.HardwareInfo;
-import com.ikangtai.bluetoothui.info.TemperatureInfo;
-import com.ikangtai.bluetoothui.util.CheckBleFeaturesUtil;
-import com.ikangtai.bluetoothui.util.DateUtil;
-import com.ikangtai.bluetoothui.view.ActionSheetDialog;
-import com.ikangtai.bluetoothui.view.dialog.BuyAndBindThermometerDialog;
-import com.ikangtai.bluetoothui.view.dialog.TemperatureAddDialog;
 import com.ikangtai.bluetoothsdk.BleCommand;
 import com.ikangtai.bluetoothsdk.Config;
 import com.ikangtai.bluetoothsdk.ScPeripheralManager;
@@ -39,6 +22,24 @@ import com.ikangtai.bluetoothsdk.util.BleTools;
 import com.ikangtai.bluetoothsdk.util.FileUtil;
 import com.ikangtai.bluetoothsdk.util.LogUtils;
 import com.ikangtai.bluetoothsdk.util.ToastUtils;
+import com.ikangtai.bluetoothui.AppInfo;
+import com.ikangtai.bluetoothui.Keys;
+import com.ikangtai.bluetoothui.R;
+import com.ikangtai.bluetoothui.activity.DeviceConnectActivity;
+import com.ikangtai.bluetoothui.contract.BleContract;
+import com.ikangtai.bluetoothui.event.AutoUploadTemperatureEvent;
+import com.ikangtai.bluetoothui.event.BleBindEvent;
+import com.ikangtai.bluetoothui.event.BleDeviceInfoEvent;
+import com.ikangtai.bluetoothui.event.BleStateEventBus;
+import com.ikangtai.bluetoothui.event.BluetoothStateEventBus;
+import com.ikangtai.bluetoothui.event.TemperatureBleScanEventBus;
+import com.ikangtai.bluetoothui.info.HardwareInfo;
+import com.ikangtai.bluetoothui.info.TemperatureInfo;
+import com.ikangtai.bluetoothui.util.CheckBleFeaturesUtil;
+import com.ikangtai.bluetoothui.util.DateUtil;
+import com.ikangtai.bluetoothui.view.ActionSheetDialog;
+import com.ikangtai.bluetoothui.view.dialog.BuyAndBindThermometerDialog;
+import com.ikangtai.bluetoothui.view.dialog.TemperatureAddDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -111,6 +112,15 @@ public class BleModel {
     }
 
 
+    /**
+     * 绑定或解绑触发
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void restartScan(BleBindEvent bleBindEvent) {
+        refreshDeviceList();
+    }
+
+
     public void init(BleContract.IPresenter blePresenter, Activity activity) {
         init(blePresenter, activity, null);
     }
@@ -134,6 +144,7 @@ public class BleModel {
         handler = new Handler(context.getMainLooper());
         this.initBleSdk();
         this.registerBleReceiver();
+        this.refreshDeviceList();
     }
 
     private void registerBleReceiver() {

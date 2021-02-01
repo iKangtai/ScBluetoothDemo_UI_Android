@@ -71,9 +71,7 @@
         @Override
         public void onResume() {
             super.onResume();
-            //绑定返回后刷新已绑定设备
-            presenter.refreshDeviceList();
-            //未连接设备时重新开始扫描附近设备
+            //未连接设备时开始扫描附近设备
             if (!AppInfo.getInstance().isThermometerState()) {
                 presenter.startScan();
             }

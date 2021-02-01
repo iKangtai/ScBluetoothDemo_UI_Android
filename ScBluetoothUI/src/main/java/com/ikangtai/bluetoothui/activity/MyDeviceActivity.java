@@ -13,12 +13,15 @@ import com.ikangtai.bluetoothsdk.util.LogUtils;
 import com.ikangtai.bluetoothsdk.util.ToastUtils;
 import com.ikangtai.bluetoothui.AppInfo;
 import com.ikangtai.bluetoothui.R;
+import com.ikangtai.bluetoothui.event.BleBindEvent;
 import com.ikangtai.bluetoothui.info.FirmwareVersionResp;
 import com.ikangtai.bluetoothui.info.HardwareInfo;
 import com.ikangtai.bluetoothui.model.HardwareModel;
 import com.ikangtai.bluetoothui.view.TopBar;
 import com.ikangtai.bluetoothui.view.dialog.BleAlertDialog;
 import com.ikangtai.bluetoothui.view.dialog.FirmwareUpdateDialog;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -151,6 +154,7 @@ public class MyDeviceActivity extends AppCompatActivity implements View.OnClickL
                 return;
             }
             HardwareModel.deleteHardwareInfo(MyDeviceActivity.this, hardwareInfo);
+            EventBus.getDefault().post(new BleBindEvent());
             ScPeripheralManager.getInstance().disconnectPeripheral();
             ToastUtils.show(MyDeviceActivity.this, "解绑成功");
             finish();

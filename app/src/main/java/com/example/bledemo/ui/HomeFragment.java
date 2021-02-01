@@ -158,6 +158,7 @@ public class HomeFragment extends Fragment implements BleContract.IView {
 
     /**
      * 组装发送通知内容
+     *
      * @param notifyTempNum
      * @param notifyTempValue
      * @return

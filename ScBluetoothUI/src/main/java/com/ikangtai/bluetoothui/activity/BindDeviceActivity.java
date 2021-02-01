@@ -228,7 +228,6 @@ public class BindDeviceActivity extends AppCompatActivity {
         stepThirdLoading.finishLoading();
         stepThirdState.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.device_binding_page_pic_check_selected, 0);
         if (hardwareInfo.getHardType() == HardwareInfo.HARD_TYPE_THERMOMETER && hardwareInfo.getHardHardwareType() == HardwareInfo.HW_GENERATION_3 && AppInfo.getInstance().getServerHardwareVersion() > Double.parseDouble(hardwareInfo.getHardwareVersion())) {
-            //模拟需要固件升级
             //旧三代 {"code":200,"message":"Success","data":{"fileUrl":"{\"A\":\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Athermometer.bin\",\"B\":\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Bthermometer.bin\"}\r\n","version":"3.68","type":1}}
             //新三代四代  {"code":200,"message":"Success","data":{"fileUrl":"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Bthermometer.bin","version":"6.1","type":2}}
             String jsonData = "{\"code\":200,\"message\":\"Success\",\"data\":{\"fileUrl\":\"{\\\"A\\\":\\\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Athermometer.bin\\\",\\\"B\\\":\\\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Bthermometer.bin\\\"}\\r\\n\",\"version\":\"3.68\",\"type\":1}}";

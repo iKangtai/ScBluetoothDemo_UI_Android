@@ -1,5 +1,6 @@
 # Shecare蓝牙SDK UI Demo
 分为UI库和SDK库,UI库需要手动Copy到自己项目，SDK库上传到bintray使用Gradle引入
+
 ## UI库
 ### UI库接入
    ```java

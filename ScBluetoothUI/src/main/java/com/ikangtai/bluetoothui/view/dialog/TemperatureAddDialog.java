@@ -204,7 +204,7 @@ public class TemperatureAddDialog extends BaseShecareDialog {
                     }
                 })
                         .setDate(calendar)
-                        .setTitleText(context.getString(R.string.add_temperature_select_time).substring(0, 4))
+                        .setTitleText(context.getString(R.string.add_temperature_select_time).substring(0, context.getString(R.string.add_temperature_select_time).length()-1))
                         .setType(new boolean[]{true, true, true, true, true, false})
                         .setCancelColor(context.getResources().getColor(R.color.app_primary_dark_color))
                         .setSubmitText(context.getString(R.string.save))

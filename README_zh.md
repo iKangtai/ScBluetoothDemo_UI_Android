@@ -1,54 +1,54 @@
-# ShecareBle SDK UI Demo
-Divided into UI library and SDK library, the UI library needs to be manually copied to your own project, and the SDK library is uploaded to bintray and imported through Gradle
+# Shecare蓝牙SDK UI Demo
+分为UI库和SDK库,UI库需要手动Copy到自己项目，SDK库上传到bintray通过Gradle引入
 ## Demo
 [http://fir.ikangtai.cn/x5zp](http://fir.ikangtai.cn/x5zp)
 
-## UI library
-### UI library integration
+## UI库
+### UI库接入
    ```java
        implementation project(path:':ScBluetoothUI')
    ```
-### Instructions
-  1.Project Bluetooth module MVP structure to realize related interfaces
+### 使用方法
+  1.项目蓝牙模块MVP结构，实现相关接口
   ```java
 
        * implements BleContract.IView
        presenter = new BlePresenter(this, this)
   ```
-  2.Implement related data callback
+  2.实现相关数据回调
   ```java
       /**
-       * Handling of received thermometer temperature
+       * 处理接收到体温计温度
        *
        * @param temperatureInfoList
        */
       @Override
       public void onReceiveTemperatureData(List<TemperatureInfo> temperatureInfoList) {
           if (App.getInstance().isForeground()) {
-              //App front pop-up display
+              //App前台弹框显示
 
           } else {
-              //App background to send notifications
+              //App后台发送通知
 
           }
       }
 
       /**
-       * Handling manual preservation of thermometer temperature
+       * 处理手动保存体温计温度
        *
        * @param temperatureInfo
        */
       public void onSaveTemperatureData(TemperatureInfo temperatureInfo) {
-          //Processing storage temperature
+          //处理保存温度
 
       }
   ```
-  3.Receive EventBus events
-  Bluetooth or thermometer status changes receive related events
+  3.接收EventBus事件
+  蓝牙或者体温计状态改变接收到相关事件
    ```java
 
      /**
-      * Show thermometer status
+      * 显示体温计状态
       *
       * @param eventBus
       */
@@ -59,7 +59,7 @@ Divided into UI library and SDK library, the UI library needs to be manually cop
      }
 
      /**
-      * Display device Bluetooth status
+      * 显示设备蓝牙状态
       *
       * @param eventBus
       */
@@ -68,12 +68,12 @@ Divided into UI library and SDK library, the UI library needs to be manually cop
 
      }
    ```
-  4.Handle the logic related to the thermometer
+  4.处理体温计相关逻辑
    ```java
         @Override
         public void onResume() {
             super.onResume();
-            //Start scanning for nearby devices when the device is not connected
+            //未连接设备时开始扫描附近设备
             if (!AppInfo.getInstance().isThermometerState()) {
                 presenter.startScan();
             }
@@ -82,18 +82,18 @@ Divided into UI library and SDK library, the UI library needs to be manually cop
         @Override
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
-            //Processing request to turn on the Bluetooth switch and positioning switch results
+            //处理请求打开蓝牙开关、定位开关结果
             CheckBleFeaturesUtil.handBleFeaturesResult(getContext(), requestCode, resultCode);
         }
    ```
-  5.Show add temperature Dialog
+  5.显示添加温度Dialog
   ```java
     presenter.showAddTemperatureView();
   ```
 
-  6.Release resources to disconnect Bluetooth
+  6.释放资源断开蓝牙
   ```java
     presenter.destroy();
   ```
-## Bluetooth SDK access guide
-[English document](https://github.com/iKangtai/ScBluetoothSdkDemo_Android/blob/master/README.md)
+## 蓝牙SDK接入指南
+[中文文档](https://github.com/iKangtai/ScBluetoothSdkDemo_Android/blob/master/README_zh.md)

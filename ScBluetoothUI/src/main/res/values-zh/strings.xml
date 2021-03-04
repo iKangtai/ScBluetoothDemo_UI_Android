@@ -1,0 +1,125 @@
+<resources>
+    <string name="app_name">Shecare蓝牙SDKUI</string>
+    <string name="warm_prompt">温馨提示</string>
+    <string name="i_know">我知道了</string>
+    <string name="sure">确定</string>
+    <string name="cancel">取消</string>
+    <string name="finish">完成</string>
+    <string name="save">保存</string>
+
+    <string name="personal_my_device_bind">设备绑定</string>
+    <string name="device_list">设备列表</string>
+    <string name="shecare_thermometer">孕橙智能基础体温计</string>
+    <string name="shecare_ewq">孕橙智能额温枪</string>
+    <string name="shecare_txy">孕橙智能胎心仪</string>
+
+    <string name="request_location_premisson">扫描蓝牙设备需要开启定位功能权限</string>
+    <string name="location_service_turn_on">定位服务已开启</string>
+    <string name="location_service_turn_off">定位服务未开启</string>
+    <string name="request_location_premisson_tips">请打开手机蓝牙，否则无法连接体温计</string>
+    <string name="binding">绑定中 ...</string>
+    <string name="hardware_attached_unattach">该设备已被绑定过!请先解除绑定。</string>
+    <string name="device_choose_toast">因为拒绝定位权限，您的硬件会无法连接蓝牙！以后需在设置里面自行开通该权限。</string>
+    <string name="hardware_attached">该设备已被绑定过!请先解除绑定。</string>
+    <string name="attach_success">绑定成功!</string>
+    <string name="server_attach_error">绑定时请求服务器异常。</string>
+    <string name="attach_fail">绑定失败!</string>
+    <string name="sel_wrong_gen3">检测到您用的不是三代设备, 请选择正确的设备类型再绑定!</string>
+    <string name="open_location_hint">安卓系统要求打开GPS</string>
+    <string name="locaiton_server_hint">开启后才能扫描和连接体温计</string>
+    <string name="open_location_server_success">位置服务已开启</string>
+    <string name="open_locaiton_service_fail">位置服务未开启</string>
+    <string name="turn_on_ble">蓝牙已开启</string>
+    <string name="turn_off_ble">蓝牙未开启</string>
+    <string name="thermometer_conn_success">设备已连接</string>
+    <string name="thermometer_conn_fail">设备断开连接</string>
+    <string name="no_new_temp">无最新温度</string>
+    <string name="authorize">去授权</string>
+    <string name="ok">确定</string>
+    <string name="allright">好</string>
+    <string name="understand">知道了</string>
+
+
+    <string name="device_upate_tips">您的设备程序不是最新的，请点击“确定”更新设备程序！</string>
+    <string name="firmware_update_title">设备正在升级程序</string>
+    <string name="firmware_update_content">为了保证良好的蓝牙连接，请始终保持孕橙在屏幕显示，请不要关闭设备</string>
+    <string name="oad">固件升级</string>
+    <string name="oad_scan_str">请打开设备,正在扫描中...</string>
+    <string name="oad_device_found">设备已扫描到,正在连接设备...</string>
+    <string name="oad_check_ver">设备已连接,正在检测设备最新固件版本...</string>
+    <string name="oad_disconnected">设备连接已断开!</string>
+    <string name="get_firmver_fail">获取固件版本失败, 请检查网络!</string>
+    <string name="oad_unSupported">检测您的固件版本为:%s,此版本不支持升级!</string>
+    <string name="need_oad">发现新固件版本: %s,正在下载更新固件! </string>
+    <string name="already_latest_ver">当前设备固件版本为:%s,已经是最新版本!</string>
+    <string name="oad_start">开始固件升级</string>
+    <string name="oading">正在固件升级...</string>
+    <string name="oading_time">总时间: %d秒, 还剩下%d秒</string>
+    <string name="oad_check_success">正在检查固件是否升级成功,请稍候...</string>
+    <string name="oad_check_succ_g23">正在检查固件是否升级成功,请重启设备...</string>
+    <string name="oad_suceess">固件升级成功!</string>
+    <string name="oad_fail">固件升级失败!</string>
+    <string name="macAddress">MAC 地址：</string>
+    <string name="deviceVersion">版本号：</string>
+
+    <string name="open_phone_bluetooth">手机蓝牙已打开</string>
+    <string name="open_thermometer_switch">孕橙体温计开关已打开</string>
+    <string name="continue_manual_add_thermomter">继续手动添加体温</string>
+    <string name="connect_device">设备连接中</string>
+    <string name="connect_device_success">设备连接成功</string>
+    <string name="unconnect_device">设备未连接</string>
+    <string name="connect_hint_1">设备连接缓慢?</string>
+    <string name="connect_hint_2">1）重启体温计\n</string>
+    <string name="connect_hint_3">2）确认体温计\n没有误进入历史模式</string>
+    <string name="connect_hint_4">3）可能电量太低，\n换个电池试试</string>
+    <string name="device_connect">设备连接</string>
+    <string name="repeat_search">重新搜索</string>
+    <string name="data_uploading">数据上传中</string>
+    <string name="upload_complete">上传完毕</string>
+    <string name="update_oad_hint_1">为了保证良好的蓝牙连接，请始终保持孕橙在屏幕显示，请不要关闭设备</string>
+    <string name="wait_thermometer_data_uploading">数据上传中,请稍候</string>
+    <string name="temperature_alert_1">数据检查完毕，未发现新增体温数据，现在就开始测温吧</string>
+    <string name="temperature_alert_2"><![CDATA[体温计“嘀嘀”声后才算测温结束，测完后，也不要立即关机，以免数据丢失。]]></string>
+    <string name="temperature_alert_3">体温数据传输完毕，共同步体温数据%d条。好习惯要保持，记得每天及时测量你的基础体温哦。</string>
+    <string name="temperature_alert_4">体温数据传输完毕，共同步体温数据%d条，好习惯要保持。</string>
+    <string name="temperature_alert_sub_4"><![CDATA[<font color="#FF6F8F">温馨提示:</font>最佳测温时间为早上醒来起身之前的一段时间还有每天尽量保持在同一时间测量哦。]]></string>
+    <string name="temperature_alert_5">体温数据传输完毕，共同步体温数据%d条，还未检测到今日体温更新哦，最佳测温时间为早上醒来起身之前的一段时间。不要忘了测量今日体温哦。</string>
+    <string name="temperature_alert_6">体温数据传输完毕，共同步体温数据%d条，还未检测到今日体温更新哦，最佳测温时间为早上醒来起身之前的一段时间。现在就开始测量今日体温吧。</string>
+    <string name="temperature_alert_7">体温数据传输完毕，共同步体温数据%d条，还未检测到今日体温更新哦，现在就开始测量今日体温吧。</string>
+    <string name="temperature_alert_sub_7"><![CDATA[<font color="#FF6F8F">温馨提示:</font>最佳测温时间为早上醒来起身之前的一段时间还有每天尽量保持在同一时间测量哦。]]></string>
+    <string name="temperature_alert_8">收到%d条体温数据，请注意查看体温曲线。</string>
+    <string name="format_font_ff7568"><![CDATA[<font color="#FF7486">%s</font>]]></string>
+    <string name="bbt_valid_value_post_fail">亲，您的体温值过于偏离正常值,请重新测量。</string>
+    <string name="ble_temp_bg_notif_title">孕橙测温通知</string>
+    <string name="ble_temp_bg_notif_ticker">您收到新的温度!</string>
+    <string name="ble_temp_bg_notif_def_content">您收到多条新的温度!请进入App查看</string>
+    <string name="ble_temp_bg_notif_content">收到一条体温数据：%s。</string>
+    <string name="ble_temp_bg_notif_content_last">, 体温+试纸联合分析更准确！</string>
+
+
+    <string name="today_temperature_title">今日体温</string>
+    <string name="add_more_temperature_data">批量添加</string>
+    <string name="auto_upload_temperature">体温计自动上传</string>
+    <string name="add_temperature_select_time">选择时间：</string>
+    <string name="add_temperature_bbt">基础体温：</string>
+    <string name="add_valid_temperature_hint">孕橙无法帮你保存%s%s的体温,因为正常的体温范围为%s~%s%s</string>
+    <string name="you_has_not_thermometer">还没有孕橙智能基础体温计？</string>
+    <string name="buy_thermometer_introduce1">孕橙智能基础体温计，精准测温、自动绘图、永久储存</string>
+    <string name="buy_thermometer_introduce2">，购买即赠送备孕教练服务</string>
+    <string name="go_to_bind">去绑定</string>
+    <string name="go_to_buy">去购买</string>
+    <string name="not_edit_future_time">不能编辑成未来时间</string>
+    <string name="not_edit_past_time">不能编辑成过去时间</string>
+    <string name="add_temp">添加体温</string>
+    <string name="device_info">设备信息</string>
+    <string name="temp_auto_upload_success">温度上传成功</string>
+    <string name="temp_add_success">温度保存成功</string>
+    <string name="temp_auto_upload">体温计自动上传</string>
+    <string name="temp_add">手动输入</string>
+    <string name="unbind_device">解绑设备</string>
+    <string name="device_upgrade">设备程序升级</string>
+    <string name="device_manage">体温计管理</string>
+    <string name="turn_on_ble_hint">请打开手机蓝牙</string>
+    <string name="turn_on_thermometer">按下开关键</string>
+    <string name="check_device_version">设备程序版本校验</string>
+</resources>

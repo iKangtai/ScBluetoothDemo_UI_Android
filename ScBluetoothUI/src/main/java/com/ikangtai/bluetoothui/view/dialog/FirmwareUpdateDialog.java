@@ -16,21 +16,21 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.ikangtai.bluetoothui.AppInfo;
-import com.ikangtai.bluetoothui.R;
-import com.ikangtai.bluetoothui.info.FirmwareVersionResp;
-import com.ikangtai.bluetoothui.info.HardwareInfo;
-import com.ikangtai.bluetoothui.model.HardwareModel;
-import com.ikangtai.bluetoothui.upgrade.OadFileUtil;
-import com.ikangtai.bluetoothui.upgrade.OtaFileUtil;
-import com.ikangtai.bluetoothui.view.RoundProgressBar;
 import com.ikangtai.bluetoothsdk.BleCommand;
 import com.ikangtai.bluetoothsdk.ScPeripheralManager;
+import com.ikangtai.bluetoothsdk.http.respmodel.CheckFirmwareVersionResp;
 import com.ikangtai.bluetoothsdk.listener.ReceiveDataListenerAdapter;
 import com.ikangtai.bluetoothsdk.model.BleCommandData;
 import com.ikangtai.bluetoothsdk.model.ScPeripheralData;
 import com.ikangtai.bluetoothsdk.util.BleCode;
 import com.ikangtai.bluetoothsdk.util.LogUtils;
+import com.ikangtai.bluetoothui.AppInfo;
+import com.ikangtai.bluetoothui.R;
+import com.ikangtai.bluetoothui.info.HardwareInfo;
+import com.ikangtai.bluetoothui.model.HardwareModel;
+import com.ikangtai.bluetoothui.upgrade.OadFileUtil;
+import com.ikangtai.bluetoothui.upgrade.OtaFileUtil;
+import com.ikangtai.bluetoothui.view.RoundProgressBar;
 
 import java.io.File;
 import java.util.List;
@@ -49,7 +49,7 @@ public class FirmwareUpdateDialog extends BaseShecareDialog {
     private TextView updateTipsTv;
     private IEvent event;
     private HardwareInfo hardwareInfo;
-    private FirmwareVersionResp.Data versionData;
+    private CheckFirmwareVersionResp.Data versionData;
 
     private ScPeripheralManager scPeripheralManager;
     private ReceiveDataListenerAdapter receiveDataListenerAdapter;
@@ -61,7 +61,7 @@ public class FirmwareUpdateDialog extends BaseShecareDialog {
     private boolean mProgramming;
     private boolean isConnected;
 
-    public FirmwareUpdateDialog(Context context, HardwareInfo hardwareInfo, FirmwareVersionResp.Data data) {
+    public FirmwareUpdateDialog(Context context, HardwareInfo hardwareInfo, CheckFirmwareVersionResp.Data data) {
         this.context = context;
         this.hardwareInfo = hardwareInfo;
         this.versionData = data;

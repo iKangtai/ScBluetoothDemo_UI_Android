@@ -112,12 +112,4 @@ public class AppInfo {
     public String getTempUnit() {
         return isTempUnitC() ? Keys.kTempUnitC : Keys.kTempUnitF;
     }
-
-    /**
-     * 获取最新固件版本号
-     * 需要在自己服务器配置相关更新固件接口
-     */
-    public double getServerHardwareVersion(){
-        return 3.66;
-    }
 }

@@ -9,11 +9,9 @@ import com.ikangtai.bluetoothsdk.model.ScPeripheral;
  */
 public class BleDeviceInfoEvent {
     private ScPeripheral connectScPeripheral;
-    private String version;
 
-    public BleDeviceInfoEvent(ScPeripheral connectScPeripheral, String version) {
+    public BleDeviceInfoEvent(ScPeripheral connectScPeripheral) {
         this.connectScPeripheral = connectScPeripheral;
-        this.version = version;
     }
 
     public ScPeripheral getConnectScPeripheral() {
@@ -22,13 +20,5 @@ public class BleDeviceInfoEvent {
 
     public void setConnectScPeripheral(ScPeripheral connectScPeripheral) {
         this.connectScPeripheral = connectScPeripheral;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
     }
 }

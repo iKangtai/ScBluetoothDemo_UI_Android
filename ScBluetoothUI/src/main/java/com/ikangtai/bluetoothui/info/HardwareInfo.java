@@ -3,6 +3,9 @@ package com.ikangtai.bluetoothui.info;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.ikangtai.bluetoothsdk.model.ScPeripheral;
+import com.ikangtai.bluetoothsdk.util.BleTools;
+import com.ikangtai.bluetoothsdk.util.LogUtils;
 import com.ikangtai.bluetoothui.R;
 
 /**
@@ -23,14 +26,16 @@ public class HardwareInfo {
     "gmtCreateTime": 1605063990,
     "gmtUpdateTime": 1605064004*/
     /**
-     * 硬件类型 1表示体温计，4表示额温枪，5表示胎心仪
+     * 硬件类型 1表示智能体温计，2表示额温枪，3表示胎心仪,4体温贴
      */
     public static final int HARD_TYPE_THERMOMETER = 1;
     public static final int HARD_TYPE_EWQ = 2;
     public static final int HARD_TYPE_TXY = 3;
+    public static final int HARD_TYPE_TEM_TICK = 4;
     /**
      * 固件类型
      */
+    public static final int HW_GENERATION_DEFAULT = 1;
     /**
      * 旧版1、2、3代体温计
      */
@@ -42,6 +47,7 @@ public class HardwareInfo {
      */
     public static final int HW_GENERATION_AKY3 = 2003;
     public static final int HW_GENERATION_AKY4 = 2004;
+
 
     private int deviceLogo;
     private String deviceName;
@@ -154,4 +160,76 @@ public class HardwareInfo {
         }
         return deviceLogo;
     }
+
+    public static ScPeripheral toScPeripheral(HardwareInfo hardwareInfo) {
+        ScPeripheral scPeripheral = new ScPeripheral();
+        scPeripheral.setVersion(hardwareInfo.getHardwareVersion());
+        scPeripheral.setMacAddress(hardwareInfo.getHardMacId());
+        int hardType = hardwareInfo.getHardType();
+        if (hardType == HardwareInfo.HARD_TYPE_THERMOMETER) {
+            if (hardType == HardwareInfo.HW_GENERATION_1 || hardType == HardwareInfo.HW_GENERATION_2 || hardType == HardwareInfo.HW_GENERATION_3) {
+                scPeripheral.setDeviceType(BleTools.TYPE_SMART_THERMOMETER);
+            } else if (hardType == HardwareInfo.HW_GENERATION_AKY3) {
+                scPeripheral.setDeviceType(BleTools.TYPE_AKY_3);
+            } else if (hardType == HardwareInfo.HW_GENERATION_AKY4) {
+                scPeripheral.setDeviceType(BleTools.TYPE_AKY_4);
+            }
+        } else if (hardType == HardwareInfo.HARD_TYPE_EWQ) {
+            scPeripheral.setDeviceType(BleTools.TYPE_EWQ);
+        } else if (hardType == HardwareInfo.HARD_TYPE_TXY) {
+            scPeripheral.setDeviceType(BleTools.TYPE_LJ_TXY);
+        } else if (hardType == HardwareInfo.HARD_TYPE_TEM_TICK) {
+            scPeripheral.setDeviceType(BleTools.TYPE_IFEVER_TEM_TICK);
+        }
+        return scPeripheral;
+    }
+
+
+    public static HardwareInfo toHardwareInfo(ScPeripheral scPeripheral) {
+        String firmwareVersion = scPeripheral.getVersion();
+        int hardType = HardwareInfo.HARD_TYPE_THERMOMETER;
+        int hardHardwareType = HardwareInfo.HW_GENERATION_DEFAULT;
+        if (scPeripheral.getDeviceType() == BleTools.TYPE_AKY_3) {
+            hardHardwareType = HardwareInfo.HW_GENERATION_AKY3;
+        } else if (scPeripheral.getDeviceType() == BleTools.TYPE_AKY_4) {
+            hardHardwareType = HardwareInfo.HW_GENERATION_AKY4;
+        } else if (scPeripheral.getDeviceType() == BleTools.TYPE_SMART_THERMOMETER) {
+            int intPart = BleTools.getDeviceHardVersion(scPeripheral.getDeviceType(), firmwareVersion);
+            switch (intPart) {
+                case BleTools.HW_GENERATION_1:
+                    hardHardwareType = HardwareInfo.HW_GENERATION_1;
+                    break;
+                case BleTools.HW_GENERATION_2:
+                    hardHardwareType = HardwareInfo.HW_GENERATION_2;
+                    break;
+                case BleTools.HW_GENERATION_3:
+                    hardHardwareType = HardwareInfo.HW_GENERATION_3;
+                    break;
+            }
+        } else if (scPeripheral.getDeviceType() == BleTools.TYPE_EWQ) {
+            hardType = HardwareInfo.HARD_TYPE_EWQ;
+        } else if (scPeripheral.getDeviceType() == BleTools.TYPE_IFEVER_TEM_TICK) {
+            hardType = HardwareInfo.HARD_TYPE_TEM_TICK;
+        } else if (scPeripheral.getDeviceType() == BleTools.TYPE_LJ_TXY) {
+            hardType = HardwareInfo.HARD_TYPE_TXY;
+        }
+        if (hardHardwareType == HardwareInfo.HW_GENERATION_AKY3) {
+            LogUtils.i("这是新款第3代硬件!");
+        } else if (hardHardwareType == HardwareInfo.HW_GENERATION_AKY4) {
+            LogUtils.i("这是新款第4代硬件!");
+        } else {
+            LogUtils.i("这是旧款硬件! :" + hardHardwareType);
+        }
+
+        long time = System.currentTimeMillis();
+        HardwareInfo hardwareInfo = new HardwareInfo();
+        hardwareInfo.setHardMacId(scPeripheral.getMacAddress());
+        hardwareInfo.setHardBindingDate(time / 1000);
+        hardwareInfo.setHardwareVersion(firmwareVersion);
+        hardwareInfo.setHardType(hardType);
+        hardwareInfo.setHardHardwareType(hardHardwareType);
+
+        return hardwareInfo;
+    }
+
 }

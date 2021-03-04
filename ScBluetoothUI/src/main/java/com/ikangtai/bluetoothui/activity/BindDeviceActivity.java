@@ -6,6 +6,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.ikangtai.bluetoothsdk.ScPeripheralManager;
+import com.ikangtai.bluetoothsdk.http.respmodel.CheckFirmwareVersionResp;
+import com.ikangtai.bluetoothsdk.listener.CheckFirmwareVersionListener;
+import com.ikangtai.bluetoothsdk.model.ScPeripheral;
+import com.ikangtai.bluetoothsdk.util.BleTools;
+import com.ikangtai.bluetoothsdk.util.LogUtils;
+import com.ikangtai.bluetoothsdk.util.ToastUtils;
 import com.ikangtai.bluetoothui.AppInfo;
 import com.ikangtai.bluetoothui.R;
 import com.ikangtai.bluetoothui.event.BleBindEvent;
@@ -13,7 +20,6 @@ import com.ikangtai.bluetoothui.event.BleDeviceInfoEvent;
 import com.ikangtai.bluetoothui.event.BleStateEventBus;
 import com.ikangtai.bluetoothui.event.BluetoothStateEventBus;
 import com.ikangtai.bluetoothui.event.TemperatureBleScanEventBus;
-import com.ikangtai.bluetoothui.info.FirmwareVersionResp;
 import com.ikangtai.bluetoothui.info.HardwareInfo;
 import com.ikangtai.bluetoothui.model.HardwareModel;
 import com.ikangtai.bluetoothui.util.CheckBleFeaturesUtil;
@@ -21,11 +27,6 @@ import com.ikangtai.bluetoothui.view.TopBar;
 import com.ikangtai.bluetoothui.view.dialog.BleAlertDialog;
 import com.ikangtai.bluetoothui.view.dialog.FirmwareUpdateDialog;
 import com.ikangtai.bluetoothui.view.loading.LoadingView;
-import com.google.gson.Gson;
-import com.ikangtai.bluetoothsdk.model.ScPeripheral;
-import com.ikangtai.bluetoothsdk.util.BleTools;
-import com.ikangtai.bluetoothsdk.util.LogUtils;
-import com.ikangtai.bluetoothsdk.util.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -99,7 +100,7 @@ public class BindDeviceActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void synBleDeviceInfo(BleDeviceInfoEvent eventBus) {
         if (eventBus != null) {
-            handleFirmwareInfo(eventBus.getConnectScPeripheral(), eventBus.getVersion());
+            handleFirmwareInfo(eventBus.getConnectScPeripheral());
         }
     }
 
@@ -160,47 +161,13 @@ public class BindDeviceActivity extends AppCompatActivity {
      * 固件类型版本号映射
      *
      * @param scPeripheral
-     * @param firmwareVersion
      */
-    private void handleFirmwareInfo(ScPeripheral scPeripheral, String firmwareVersion) {
-        LogUtils.i("固件版本 = " + firmwareVersion);
-        int hardwareType = 1;
-        if (scPeripheral.getDeviceType() == BleTools.TYPE_AKY_3) {
-            hardwareType = HardwareInfo.HW_GENERATION_AKY3;
-        } else if (scPeripheral.getDeviceType() == BleTools.TYPE_AKY_4) {
-            hardwareType = HardwareInfo.HW_GENERATION_AKY4;
-        } else if (scPeripheral.getDeviceType() == BleTools.TYPE_SMART_THERMOMETER) {
-            int intPart = BleTools.getDeviceHardVersion(scPeripheral.getDeviceType(), firmwareVersion);
-            switch (intPart) {
-                case BleTools.HW_GENERATION_1:
-                    hardwareType = HardwareInfo.HW_GENERATION_1;
-                    break;
-                case BleTools.HW_GENERATION_2:
-                    hardwareType = HardwareInfo.HW_GENERATION_2;
-                    break;
-                case BleTools.HW_GENERATION_3:
-                    hardwareType = HardwareInfo.HW_GENERATION_3;
-                    break;
-            }
-        }
-        if (hardwareType == HardwareInfo.HW_GENERATION_AKY3) {
-            LogUtils.i("这是新款第3代硬件!");
-        } else if (hardwareType == HardwareInfo.HW_GENERATION_AKY4) {
-            LogUtils.i("这是新款第4代硬件!");
-        } else {
-            LogUtils.i("这是旧款硬件! :" + hardwareType);
-        }
+    private void handleFirmwareInfo(ScPeripheral scPeripheral) {
         LogUtils.i("准备绑定设备");
-        long time = System.currentTimeMillis();
-        hardwareInfo = new HardwareInfo();
-        hardwareInfo.setHardMacId(scPeripheral.getMacAddress());
-        hardwareInfo.setHardBindingDate(time / 1000);
-        hardwareInfo.setHardwareVersion(firmwareVersion);
-        hardwareInfo.setHardType(HardwareInfo.HARD_TYPE_THERMOMETER);
-        hardwareInfo.setHardHardwareType(hardwareType);
+        hardwareInfo = HardwareInfo.toHardwareInfo(scPeripheral);
         HardwareModel.saveHardwareInfo(BindDeviceActivity.this, hardwareInfo);
         EventBus.getDefault().post(new BleBindEvent());
-        checkFirmwareVersion();
+        checkFirmwareVersion(scPeripheral);
     }
 
 
@@ -225,37 +192,44 @@ public class BindDeviceActivity extends AppCompatActivity {
     /**
      * 检查固件版本是否需要升级
      */
-    public void checkFirmwareVersion() {
+    public void checkFirmwareVersion(ScPeripheral scPeripheral) {
         Log.i(TAG, "用户绑定体温计成功");
-        stepThirdLoading.finishLoading();
-        stepThirdState.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.device_binding_page_pic_check_selected, 0);
-        if (hardwareInfo.getHardType() == HardwareInfo.HARD_TYPE_THERMOMETER && hardwareInfo.getHardHardwareType() == HardwareInfo.HW_GENERATION_3 && AppInfo.getInstance().getServerHardwareVersion() > Double.parseDouble(hardwareInfo.getHardwareVersion())) {
-            //旧三代 {"code":200,"message":"Success","data":{"fileUrl":"{\"A\":\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Athermometer.bin\",\"B\":\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Bthermometer.bin\"}\r\n","version":"3.68","type":1}}
-            //新三代四代  {"code":200,"message":"Success","data":{"fileUrl":"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Bthermometer.bin","version":"6.1","type":2}}
-            String jsonData = "{\"code\":200,\"message\":\"Success\",\"data\":{\"fileUrl\":\"{\\\"A\\\":\\\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Athermometer.bin\\\",\\\"B\\\":\\\"http://yunchengfile.oss-cn-beijing.aliyuncs.com/firmware/A31/Bthermometer.bin\\\"}\\r\\n\",\"version\":\"3.68\",\"type\":1}}";
-            final FirmwareVersionResp firmwareVersionResp = new Gson().fromJson(jsonData, FirmwareVersionResp.class);
-            new BleAlertDialog(BindDeviceActivity.this).builder()
-                    .setTitle(getString(R.string.warm_prompt))
-                    .setMsg(getString(R.string.device_upate_tips))
-                    .setCancelable(false)
-                    .setCanceledOnTouchOutside(false)
-                    .setPositiveButton(getString(R.string.ok), new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            new FirmwareUpdateDialog(BindDeviceActivity.this, hardwareInfo, firmwareVersionResp.getData()).builder().initEvent(new FirmwareUpdateDialog.IEvent() {
+        ScPeripheralManager.getInstance().checkFirmwareVersion(scPeripheral, new CheckFirmwareVersionListener() {
+            @Override
+            public void checkSuccess(final CheckFirmwareVersionResp.Data data) {
+                if (Double.parseDouble(data.getVersion()) > Double.parseDouble(hardwareInfo.getHardwareVersion())) {
+                    new BleAlertDialog(BindDeviceActivity.this).builder()
+                            .setTitle(getString(R.string.warm_prompt))
+                            .setMsg(getString(R.string.device_upate_tips))
+                            .setCancelable(false)
+                            .setCanceledOnTouchOutside(false)
+                            .setPositiveButton(getString(R.string.ok), new View.OnClickListener() {
                                 @Override
-                                public void onDismiss() {
-                                    bindSuccess();
+                                public void onClick(View v) {
+                                    new FirmwareUpdateDialog(BindDeviceActivity.this, hardwareInfo, data).builder().initEvent(new FirmwareUpdateDialog.IEvent() {
+                                        @Override
+                                        public void onDismiss() {
+                                            bindSuccess();
+                                        }
+                                    }).show();
                                 }
                             }).show();
-                        }
-                    }).show();
-            return;
-        }
-        bindSuccess();
+                } else {
+                    bindSuccess();
+                }
+            }
+
+            @Override
+            public void checkFail() {
+                bindSuccess();
+            }
+        });
+
     }
 
     private void bindSuccess() {
+        stepThirdLoading.finishLoading();
+        stepThirdState.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.device_binding_page_pic_check_selected, 0);
         ToastUtils.show(getApplicationContext(), getString(R.string.attach_success));
         startActivity(new Intent(BindDeviceActivity.this, BindResultActivity.class));
         finish();

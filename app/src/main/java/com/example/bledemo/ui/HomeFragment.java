@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import com.example.bledemo.App;
 import com.example.bledemo.MainActivity;
 import com.example.bledemo.R;
+import com.ikangtai.bluetoothsdk.util.LogUtils;
 import com.ikangtai.bluetoothsdk.util.ToastUtils;
 import com.ikangtai.bluetoothui.AppInfo;
 import com.ikangtai.bluetoothui.Keys;
 import com.ikangtai.bluetoothui.contract.BleContract;
+import com.ikangtai.bluetoothui.event.AutoUploadTemperatureEvent;
 import com.ikangtai.bluetoothui.event.BleStateEventBus;
 import com.ikangtai.bluetoothui.event.BluetoothStateEventBus;
 import com.ikangtai.bluetoothui.info.TemperatureInfo;
@@ -55,11 +57,16 @@ public class HomeFragment extends Fragment implements BleContract.IView {
         });
     }
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         presenter = new BlePresenter(this, this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        setUserVisibleHint(false);
     }
 
     /**
@@ -97,6 +104,12 @@ public class HomeFragment extends Fragment implements BleContract.IView {
         }
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        LogUtils.d("isVisibleToUser:"+isVisibleToUser);
+    }
+
     /**
      * Receive thermometer temperature data
      *
@@ -115,17 +128,21 @@ public class HomeFragment extends Fragment implements BleContract.IView {
                 message.append(DateUtil.getDateFormatYMDHM(temperatureInfo.getMeasureTime()) + "\n" + AppInfo.getInstance().getTemp((float) temperatureInfo.getTemperature()) + AppInfo.getInstance().getTempUnit());
                 message.append("\n");
             }
-            new BleAlertDialog(getContext()).builder()
-                    .setTitle(getString(R.string.temp_auto_upload_success))
-                    .setMsg(message.toString())
-                    .setCancelable(false)
-                    .setCanceledOnTouchOutside(false)
-                    .setPositiveButton(getString(R.string.ok), new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+            if (getUserVisibleHint()) {
+                new BleAlertDialog(getContext()).builder()
+                        .setTitle(getString(R.string.temp_auto_upload_success))
+                        .setMsg(message.toString())
+                        .setCancelable(false)
+                        .setCanceledOnTouchOutside(false)
+                        .setPositiveButton(getString(R.string.ok), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
 
-                        }
-                    }).withOverLay().show();
+                            }
+                        }).show();
+            } else {
+                EventBus.getDefault().post(new AutoUploadTemperatureEvent(getString(R.string.temp_auto_upload_success), message.toString()));
+            }
         } else {
             //App background to send notifications
             int notifyTempNum = temperatureInfoList.size();
@@ -181,6 +198,7 @@ public class HomeFragment extends Fragment implements BleContract.IView {
     @Override
     public void onResume() {
         super.onResume();
+        setUserVisibleHint(true);
         //Restart scanning for nearby devices when the device is not connected
         if (!AppInfo.getInstance().isThermometerState()) {
             presenter.startScan();

@@ -76,6 +76,7 @@ public class BleModel {
     private Runnable scanRunnable = new Runnable() {
         @Override
         public void run() {
+            LogUtils.d("scanRunnable:   scanLeDevice");
             scanLeDevice();
         }
     };
@@ -194,9 +195,9 @@ public class BleModel {
 
                     LogUtils.i("Prepare to return body temperature data>>>");
                     filterTempWithValidTime(temperatureInfoList);
+                    notifyUserTemperature(temperatureInfoList);
                     if (temperatureInfoList != null
                             && temperatureInfoList.size() > 0) {
-                        notifyUserTemperature(temperatureInfoList);
                         blePresenter.onReceiveTemperatureData(temperatureInfoList);
                         LogUtils.i("End of processing body temperature data");
                     } else {
@@ -283,11 +284,13 @@ public class BleModel {
 
     private void notifyUserTemperature(CopyOnWriteArrayList temperatureInfoList) {
         if (AppInfo.getInstance().isDeviceConnectActive()) {
-            if (temperatureInfoList != null || temperatureInfoList.size() == 0) {
+            if (temperatureInfoList == null || temperatureInfoList.size() == 0) {
                 //No new body temperature found
                 String content = context.getString(R.string.temperature_alert_1);
                 String subContent = String.format(context.getString(R.string.format_font_ff7568), context.getString(R.string.warm_prompt) + ":") + context.getString(R.string.temperature_alert_2);
                 EventBus.getDefault().post(new AutoUploadTemperatureEvent(content, subContent));
+            }else {
+                EventBus.getDefault().post(new AutoUploadTemperatureEvent(null, null));
             }
         }
     }
@@ -316,6 +319,7 @@ public class BleModel {
     }
 
     public void startScan() {
+        LogUtils.d("startScan 1:"+mScanning);
         if (!mScanning) {
             handler.postDelayed(scanRunnable, 1500);
         }
@@ -334,12 +338,13 @@ public class BleModel {
 
 
     public void scanLeDevice() {
+        LogUtils.d("scanLeDevice----");
         if (activity != null && !CheckBleFeaturesUtil.checkBleFeatures(activity)) {
             return;
         } else if (fragment != null && !CheckBleFeaturesUtil.checkBleFeatures(fragment)) {
             return;
         }
-        LogUtils.i("Start scanning");
+        LogUtils.i("Start 1111111111scanning");
         mScanning = true;
         scPeripheralManager.startScan(new ScanResultListener() {
             @Override

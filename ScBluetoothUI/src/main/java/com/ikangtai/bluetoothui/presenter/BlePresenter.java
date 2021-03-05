@@ -2,6 +2,7 @@ package com.ikangtai.bluetoothui.presenter;
 
 import android.app.Activity;
 
+import com.ikangtai.bluetoothsdk.util.LogUtils;
 import com.ikangtai.bluetoothui.contract.BleContract;
 import com.ikangtai.bluetoothui.info.TemperatureInfo;
 import com.ikangtai.bluetoothui.model.BleModel;
@@ -53,6 +54,7 @@ public class BlePresenter implements BleContract.IPresenter {
 
     @Override
     public void startScan() {
+        LogUtils.d("bleModel startScan ");
         this.bleModel.startScan();
     }
 

@@ -15,7 +15,7 @@ import com.ikangtai.bluetoothui.util.DateUtil;
 
 
 /**
- * 添加温度
+ * Add temperature
  */
 public class AndTemperatureDialog extends BaseShecareDialog {
 
@@ -68,8 +68,6 @@ public class AndTemperatureDialog extends BaseShecareDialog {
                 }
             }
         });
-
-        // 定义Dialog布局和参数
         dialog = new Dialog(context, R.style.BleAlertDialogStyle);
         dialog.setContentView(view);
 

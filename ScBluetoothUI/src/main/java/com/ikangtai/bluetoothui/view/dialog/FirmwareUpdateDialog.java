@@ -301,8 +301,7 @@ public class FirmwareUpdateDialog extends BaseShecareDialog {
             }
         } else {
             //用户版本已是最新
-            updateConnect(String.format(context.getString(R.string.already_latest_ver),
-                    firmVerUsing));
+            updateConnect(context.getString(R.string.already_latest_ver));
         }
 
     }

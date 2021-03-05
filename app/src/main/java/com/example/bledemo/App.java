@@ -26,6 +26,7 @@ public class App extends Application {
     }
 
     private void registerAppLifecycle() {
+        //Record the App life cycle and determine whether it is in the foreground
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {

@@ -43,7 +43,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 /**
- * 连接体温计
+ * Connect a thermometer
  *
  * @author xiongyl 2021/1/21 21:11
  */
@@ -52,30 +52,30 @@ public class DeviceConnectActivity extends AppCompatActivity {
     private Disposable waitDisposable;
     private Disposable waitUploadDisposable;
     /**
-     * 设备正在连接
+     * Device is connecting
      */
     public static final int CONN_ING = 0;
     /**
-     * 设备连接缓慢已过15秒
+     * Device connection is slow for 15 seconds
      */
     public static final int CONN_SLOW = 1;
 
     /**
-     * 设备连接完成
+     * Device connection complete
      */
     public static final int CONN_COMPLETE = 2;
     /**
-     * 设备连接成功
+     * Device connected successfully
      */
     public static final int CONN_SUCCESS = 3;
 
     /**
-     * 设备连接失败
+     * Device connection failed
      */
     public static final int CONN_FAIL = 4;
 
     /**
-     * 设备连接数据传输成功
+     * Device connection data transmission is successful
      */
     public static final int CONN_SEND_DATA_SUCCESS = 5;
 
@@ -148,13 +148,13 @@ public class DeviceConnectActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     String content = operatorBtn.getText().toString();
                     if (content.equals(getResources().getString(R.string.repeat_search))) {
-                        //重新搜索
+                        //rescan
                         loadData();
                         operatorBtn.setText(getResources().getString(R.string.cancel));
                         EventBus.getDefault().post(new TemperatureBleScanEventBus());
                     } else if (content.equals(getResources().getString(R.string.cancel)) ||
                             content.equals(getResources().getString(R.string.upload_complete))) {
-                        //取消
+                        //cancel
                         finish();
                     }
                 }
@@ -173,21 +173,21 @@ public class DeviceConnectActivity extends AppCompatActivity {
         showBluetoothState(bluetoothState);
 
         if (bluetoothState && thermometerState) {
-            //手机蓝牙打开/孕橙体温计开关打开
-            //先告知用户设备已连接成功
+            //Mobile phone bluetooth is turned on/pregnant orange thermometer is turned on
+            //First notify the user that the device is connected successfully
             notifyUserConnected();
         } else {
             disposables.clear();
             disposables.add(taskDisposable(10 * 1000, new IEvent() {
                 @Override
                 public void firstTask() {
-                    //告知用户设备正在连接
+                    //Notify the user that the device is connecting
                     showConnState(CONN_ING);
                 }
 
                 @Override
                 public void nextTask() {
-                    //10秒后，手机与体温计还未建立连接
+                    //After 10 seconds, the phone and the thermometer have not established a connection
                     if (!(obtainThermometerState() && obtainBluetoothState())) {
                         notifyUserWait();
                     } else {
@@ -216,7 +216,7 @@ public class DeviceConnectActivity extends AppCompatActivity {
     }
 
     /**
-     * 通知用户已经连接成功
+     * Notify the user that the connection is successful
      */
     private void notifyUserConnected() {
         if (connDisposable != null) {
@@ -250,7 +250,7 @@ public class DeviceConnectActivity extends AppCompatActivity {
     }
 
     /**
-     * 通知用户继续等待50s
+     * Notify the user to continue waiting for 50s
      */
     private void notifyUserWait() {
         if (waitDisposable != null) {
@@ -275,7 +275,7 @@ public class DeviceConnectActivity extends AppCompatActivity {
     }
 
     /**
-     * 等待30秒数据上传
+     * Wait 30 seconds for data upload
      */
     private void waitDataUpload() {
         if (waitUploadDisposable != null) {
@@ -290,7 +290,7 @@ public class DeviceConnectActivity extends AppCompatActivity {
             @Override
             public void nextTask() {
                 if (!uploadSuccess) {
-                    //未发现新增体温
+                    //No new body temperature found
                     String content = getString(R.string.temperature_alert_1);
                     String subContent = String.format(getString(R.string.format_font_ff7568), getString(R.string.warm_prompt) + ":") + getString(R.string.temperature_alert_2);
                     showTemperatureInfo(new AutoUploadTemperatureEvent(content, subContent));
@@ -321,7 +321,7 @@ public class DeviceConnectActivity extends AppCompatActivity {
 
 
     /**
-     * 显示体温计状态
+     * Receive thermometer status
      *
      * @param eventBus
      */
@@ -336,7 +336,7 @@ public class DeviceConnectActivity extends AppCompatActivity {
     }
 
     /**
-     * 显示设备蓝牙状态
+     * Bluetooth status of receiving device
      *
      * @param eventBus
      */
@@ -354,7 +354,7 @@ public class DeviceConnectActivity extends AppCompatActivity {
     }
 
     /**
-     * 将体温计传输的温度结果信息告知用户
+     * Notify the user of the temperature result information transmitted by the clinical thermometer
      *
      * @param autoUploadTemperatureEvent
      */
@@ -442,9 +442,9 @@ public class DeviceConnectActivity extends AppCompatActivity {
     }
 
     /**
-     * 先做第一任务，延时多久，做第二任务
+     * Do the first task first, how long is the delay, do the second task
      *
-     * @param delay 毫秒
+     * @param delay millisecond
      * @param event
      * @return
      */
@@ -470,7 +470,7 @@ public class DeviceConnectActivity extends AppCompatActivity {
     }
 
     /**
-     * 更改底部按钮文案
+     * Change the bottom button text
      *
      * @param content
      */

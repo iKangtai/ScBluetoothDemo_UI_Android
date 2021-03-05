@@ -60,7 +60,7 @@ public class InputTemperatureLayout extends RelativeLayout {
     }
 
     /**
-     * 新输入/编辑体温
+     * New input/edit body temperature
      *
      * @param result
      * @param update
@@ -133,7 +133,7 @@ public class InputTemperatureLayout extends RelativeLayout {
 
     public double getValue() {
         if (temperatureContent != null) {
-            //tag里存放真实的值
+            //Store the real value in the tag
             String tag = temperatureContent.getTag().toString().replace(" ", "").trim();
             return Double.parseDouble(tag);
         }
@@ -158,7 +158,7 @@ public class InputTemperatureLayout extends RelativeLayout {
 
         if (AppInfo.getInstance().isTempUnitC()) {
             if (inputBuilder.length() == 4) {
-                //长度等于4不在添加
+                //Length equal to 4 is not added
                 return;
             }
             inputBuilder.append(value);
@@ -167,13 +167,13 @@ public class InputTemperatureLayout extends RelativeLayout {
                 int firstNum = Integer.valueOf(inputBuilder.toString().substring(0, 1));
                 if (firstNum == 1) {
                     if (inputBuilder.length() == 5) {
-                        //长度等于5不在添加
+                        //Length equal to 5 is not added
                         return;
                     }
                     inputBuilder.append(value);
                 } else {
                     if (inputBuilder.length() == 4) {
-                        //长度等于4不在添加
+                        //Length equal to 4 is not added
                         return;
                     }
                     inputBuilder.append(value);
@@ -194,7 +194,7 @@ public class InputTemperatureLayout extends RelativeLayout {
 
     public interface IEvent {
         /**
-         * 是否已经清空
+         * Whether it has been emptied
          *
          * @param result
          */

@@ -10,26 +10,26 @@ import android.text.TextUtils;
 
 public class ThirdAppUtils {
     /**
-     * URL类别为淘宝
+     * URL category is Taobao
      */
     public static final int URL_TAOBAO = 1;
     /**
-     * URL类别为天猫
+     * URL category is Tianmao
      */
     public static final int URL_TIANMAO = 2;
     /**
-     * URL类别为京东
+     * URL category is JD
      */
     public static final int URL_JD = 3;
 
     /**
-     * URL 类别为淘宝优惠券
+     * URL category is Taobao Quan
      */
 
     public static final int URL_TAOBAO_QUAN = 4;
 
     /**
-     * URL类别为淘宝客
+     * URL category is Taobaoke
      */
     public static final int URL_TAOBAO_CLICK = 5;
 
@@ -45,7 +45,7 @@ public class ThirdAppUtils {
     public static String mQQ = "com.tencent.mobileqq";
 
     /**
-     * 判断URL类别
+     * Determine URL category
      *
      * @param url
      * @return
@@ -76,7 +76,7 @@ public class ThirdAppUtils {
     }
 
     /**
-     * 商品转化为淘宝优惠券schema
+     * The product is converted into Taobao coupon schema
      *
      * @param url
      * @return
@@ -96,7 +96,7 @@ public class ThirdAppUtils {
     }
 
     /**
-     * 商品转化为淘宝客schema
+     * Commodities are converted to Taobao guest schema
      *
      * @param url
      * @return
@@ -116,7 +116,7 @@ public class ThirdAppUtils {
     }
 
     /**
-     * 商品转化为淘宝schema
+     * Commodities are converted to Taobao schema
      *
      * @param url
      * @return
@@ -143,7 +143,7 @@ public class ThirdAppUtils {
     }
 
     /**
-     * 商品转化为京东schema
+     * Commodities are converted to JD schema
      *
      * @param url
      * @return
@@ -171,7 +171,7 @@ public class ThirdAppUtils {
     }
 
     /**
-     * 商品转化为天猫schema
+     * Commodities are converted to Tianmao schema
      *
      * @param url
      * @return
@@ -235,7 +235,7 @@ public class ThirdAppUtils {
             String schemalUrl = null;
             int urlType = ThirdAppUtils.handleUrl(url);
             if (urlType == ThirdAppUtils.URL_TAOBAO || urlType == ThirdAppUtils.URL_TIANMAO) {
-                //优先打开天猫/淘宝/浏览器
+                //Open Tmall/Taobao/Browser first
                 if (ThirdAppUtils.isTMAppExist(context)) {
                     schemalUrl = ThirdAppUtils.getTianMaoId(url);
                 } else if (ThirdAppUtils.isTaoBaoAppExist(context)) {

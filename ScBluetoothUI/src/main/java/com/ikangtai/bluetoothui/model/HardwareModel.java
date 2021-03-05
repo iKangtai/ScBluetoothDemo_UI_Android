@@ -44,7 +44,7 @@ public class HardwareModel {
     }
 
     /**
-     * 已绑定列表
+     * Bound list
      *
      * @return
      */

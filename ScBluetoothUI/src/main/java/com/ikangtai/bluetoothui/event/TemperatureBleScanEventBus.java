@@ -1,7 +1,7 @@
 package com.ikangtai.bluetoothui.event;
 
 /**
- * 体温计扫描事件
+ * Thermometer scan event
  */
 public class TemperatureBleScanEventBus {
 }

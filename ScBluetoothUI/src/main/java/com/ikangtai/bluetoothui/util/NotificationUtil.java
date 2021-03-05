@@ -20,13 +20,13 @@ import java.util.Random;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 /**
- * 通知Util
+ * Notification Util
  *
  * @author xiongyl 2021/1/21 21:11
  */
 public class NotificationUtil {
     /**
-     * 是否允许发送通知
+     * Whether to allow notifications
      * @param context
      * @return
      */
@@ -37,7 +37,7 @@ public class NotificationUtil {
     }
 
     /**
-     * 发送App通知
+     * Send app notification
      * @param context
      * @param playSound
      * @param title
@@ -69,7 +69,6 @@ public class NotificationUtil {
                 channel.setSound(sound, audioAttributes);
             }
             channel.setShowBadge(true);
-            //震动
             //channel.enableVibration(true);
             //channel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
 

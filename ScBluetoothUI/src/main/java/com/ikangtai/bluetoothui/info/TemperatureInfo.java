@@ -7,7 +7,7 @@ package com.ikangtai.bluetoothui.info;
  */
 public class TemperatureInfo {
     /**
-     * 统一转换成ºC存储;
+     * Unified conversion to ºC storage;
      */
     private double temperature;
     private long measureTime;

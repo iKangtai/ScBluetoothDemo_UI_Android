@@ -1,7 +1,7 @@
 package com.ikangtai.bluetoothui.event;
 
 /**
- * 蓝牙状态事件
+ * Bluetooth status event
  */
 public class BluetoothStateEventBus {
     private boolean open;

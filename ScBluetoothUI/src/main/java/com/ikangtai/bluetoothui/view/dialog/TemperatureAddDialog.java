@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.ikangtai.bluetoothsdk.util.LogUtils;
+import com.ikangtai.bluetoothsdk.util.ToastUtils;
 import com.ikangtai.bluetoothui.AppInfo;
 import com.ikangtai.bluetoothui.Keys;
 import com.ikangtai.bluetoothui.R;
@@ -27,21 +29,13 @@ import com.ikangtai.bluetoothui.model.HardwareModel;
 import com.ikangtai.bluetoothui.util.DateUtil;
 import com.ikangtai.bluetoothui.view.InputTemperatureLayout;
 import com.ikangtai.bluetoothui.view.TemperatureKeyborad;
-import com.ikangtai.bluetoothsdk.util.LogUtils;
-import com.ikangtai.bluetoothsdk.util.ToastUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 /**
- * 体温添加对话框
+ * Body temperature add dialog
  */
 public class TemperatureAddDialog extends BaseShecareDialog {
     private Context context;
@@ -66,7 +60,6 @@ public class TemperatureAddDialog extends BaseShecareDialog {
     public TemperatureAddDialog builder() {
         final View view = LayoutInflater.from(context).inflate(
                 R.layout.layout_add_temperature, null);
-        // 设置Dialog最小宽度为屏幕宽度
         view.setMinimumWidth(display.getWidth());
         operator = view.findViewById(R.id.operator);
         closeBtn = view.findViewById(R.id.closeBtn);
@@ -90,7 +83,7 @@ public class TemperatureAddDialog extends BaseShecareDialog {
                     final String content = operator.getText().toString();
                     if (context.getResources().getString(R.string.save).equals(content)) {
                         double temperatureValue = inputTemperatureLayout.getValue();
-                        //用户保存当天体温
+                        //The user saves the temperature of the day
                         String temperature = String.valueOf(temperatureValue);
                         if (!TextUtils.isEmpty(temperature)) {
                             if (AppInfo.getInstance().isTempUnitC()) {
@@ -134,14 +127,14 @@ public class TemperatureAddDialog extends BaseShecareDialog {
                         if (dialog != null) {
                             dialog.dismiss();
                         }
-                        LogUtils.i("添加温度");
-                        //判断用户是否已经绑定
-                        List<HardwareInfo> hardwareInfoList=HardwareModel.hardwareList(context);
+                        LogUtils.i("Add temperature");
+                        //Determine whether the user has been bound
+                        List<HardwareInfo> hardwareInfoList = HardwareModel.hardwareList(context);
                         if (hardwareInfoList.isEmpty()) {
-                            //弹框提示用户购买体温计
+                            //The pop-up box prompts the user to buy a thermometer
                             new BuyAndBindThermometerDialog(context).builder().show();
                         } else {
-                            //跳转到数据上传界面
+                            //Jump to the data upload interface
                             context.startActivity(new Intent(context, DeviceConnectActivity.class));
                         }
                     }
@@ -204,7 +197,7 @@ public class TemperatureAddDialog extends BaseShecareDialog {
                     }
                 })
                         .setDate(calendar)
-                        .setTitleText(context.getString(R.string.add_temperature_select_time).substring(0, context.getString(R.string.add_temperature_select_time).length()-1))
+                        .setTitleText(context.getString(R.string.add_temperature_select_time).substring(0, context.getString(R.string.add_temperature_select_time).length() - 1))
                         .setType(new boolean[]{true, true, true, true, true, false})
                         .setCancelColor(context.getResources().getColor(R.color.app_primary_dark_color))
                         .setSubmitText(context.getString(R.string.save))
@@ -215,8 +208,6 @@ public class TemperatureAddDialog extends BaseShecareDialog {
             }
         });
 
-
-        // 定义Dialog布局和参数
         dialog = new Dialog(context, R.style.ActionSheetDialogStyle);
         dialog.setContentView(view);
         Window dialogWindow = dialog.getWindow();

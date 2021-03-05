@@ -221,7 +221,7 @@ public class BleAlertDialog extends BaseShecareDialog {
 
     private void setLayout() {
         if (!showTitle && !showMsg) {
-            txt_title.setText("提示");
+            txt_title.setText(context.getString(R.string.warm_prompt));
             txt_title.setVisibility(View.VISIBLE);
         }
 
@@ -240,7 +240,7 @@ public class BleAlertDialog extends BaseShecareDialog {
         }
 
         if (!showPosBtn && !showNegBtn) {
-            btn_pos.setText("确定");
+            btn_pos.setText(context.getString(R.string.ok));
             btn_pos.setVisibility(View.VISIBLE);
             btn_pos.setBackgroundResource(R.drawable.alertdialog_single_selector);
             btn_pos.setOnClickListener(new View.OnClickListener() {

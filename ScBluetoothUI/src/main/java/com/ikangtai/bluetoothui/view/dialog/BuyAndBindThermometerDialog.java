@@ -9,13 +9,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.ikangtai.bluetoothui.Keys;
 import com.ikangtai.bluetoothui.R;
 import com.ikangtai.bluetoothui.activity.BindDeviceActivity;
 import com.ikangtai.bluetoothui.util.ThirdAppUtils;
 
 
 /**
- * 绑定/购买体温计
+ * Bind/Buy Thermometer
  */
 public class BuyAndBindThermometerDialog extends BaseShecareDialog {
 
@@ -45,7 +46,7 @@ public class BuyAndBindThermometerDialog extends BaseShecareDialog {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                //跳转到体温计绑定界面
+                //Jump to the thermometer binding interface
                 context.startActivity(new Intent(context, BindDeviceActivity.class));
             }
         });
@@ -55,13 +56,11 @@ public class BuyAndBindThermometerDialog extends BaseShecareDialog {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                //进入购买体温计
-                String url = "https://s.click.taobao.com/t?e=m%3D2%26s%3DfaVd4i2mdTccQipKwQzePOeEDrYVVa64K7Vc7tFgwiFRAdhuF14FMXD0IuTjzjxDMMgx22UI05YG50TC%2BOEKRV2PCaw8s0I5%2B4XeV4Br1rRhqXPujuVgf9JduXIAgIVPa7G8XfSvkCk8eRex8LTEM9CkUAHLmx%2B1xg5p7bh%2BFbQ%3D&pvid=53_115.239.25.5_624_1611125519095";
+                //Enter to buy a thermometer
+                String url = Keys.SHOP_URL;
                 ThirdAppUtils.handleShop(context, url);
             }
         });
-
-        // 定义Dialog布局和参数
         dialog = new Dialog(context, R.style.BleAlertDialogStyle);
         dialog.setContentView(view);
 

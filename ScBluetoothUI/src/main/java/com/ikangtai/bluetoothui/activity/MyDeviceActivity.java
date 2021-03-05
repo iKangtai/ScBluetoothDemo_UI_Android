@@ -28,7 +28,7 @@ import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
- * 我的设备
+ * My device
  *
  * @author xiongyl 2021/1/21 21:11
  */
@@ -46,7 +46,7 @@ public class MyDeviceActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogUtils.i("进入我的设备");
+        LogUtils.i("Go to my device page");
         setContentView(R.layout.activity_my_device);
         initView();
     }
@@ -82,8 +82,8 @@ public class MyDeviceActivity extends AppCompatActivity implements View.OnClickL
         unbindDevice = findViewById(R.id.unbind_device);
         unbindDevice.setOnClickListener(this);
         deviceUpgrade = findViewById(R.id.device_upgrade);
-        deviceUpgrade.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
-        deviceUpgrade.getPaint().setAntiAlias(true);//抗锯齿
+        deviceUpgrade.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        deviceUpgrade.getPaint().setAntiAlias(true);
         deviceUpgrade.setOnClickListener(this);
 
         loadData();
@@ -142,8 +142,7 @@ public class MyDeviceActivity extends AppCompatActivity implements View.OnClickL
                 public void checkFail() {
                     new BleAlertDialog(MyDeviceActivity.this).builder()
                             .setTitle(getString(R.string.warm_prompt))
-                            .setMsg(String.format(getString(R.string.already_latest_ver),
-                                    hardwareInfo.getHardwareVersion()))
+                            .setMsg(getString(R.string.already_latest_ver))
                             .setCancelable(false)
                             .setCanceledOnTouchOutside(false)
                             .setPositiveButton(getString(R.string.ok), new View.OnClickListener() {
@@ -161,7 +160,7 @@ public class MyDeviceActivity extends AppCompatActivity implements View.OnClickL
             HardwareModel.deleteHardwareInfo(MyDeviceActivity.this, hardwareInfo);
             EventBus.getDefault().post(new BleBindEvent());
             ScPeripheralManager.getInstance().disconnectPeripheral();
-            ToastUtils.show(MyDeviceActivity.this, "解绑成功");
+            ToastUtils.show(MyDeviceActivity.this, getString(R.string.unbind_device));
             finish();
         }
     }

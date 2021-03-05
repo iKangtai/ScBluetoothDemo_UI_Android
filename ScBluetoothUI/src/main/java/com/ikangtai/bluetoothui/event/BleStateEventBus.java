@@ -1,7 +1,7 @@
 package com.ikangtai.bluetoothui.event;
 
 /**
- * 体温计连接状态事件
+ * Thermometer connection status event
  */
 public class BleStateEventBus {
     private boolean connect;

@@ -1,7 +1,7 @@
 package com.ikangtai.bluetoothui.event;
 
 /**
- * 绑定或解绑触发
+ * Bind or unbind trigger
  *
  * @author xiongyl 2021/2/1 15:31
  */

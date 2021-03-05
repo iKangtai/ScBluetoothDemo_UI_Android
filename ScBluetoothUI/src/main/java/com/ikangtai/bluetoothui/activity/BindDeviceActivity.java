@@ -36,7 +36,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
- * 体温计绑定
+ * Thermometer binding
  *
  * @author xiongyl 2021/1/21 21:11
  */
@@ -50,7 +50,7 @@ public class BindDeviceActivity extends AppCompatActivity {
     private HardwareInfo hardwareInfo;
 
     /**
-     * 显示体温计状态
+     * Receive thermometer status
      *
      * @param eventBus
      */
@@ -72,7 +72,7 @@ public class BindDeviceActivity extends AppCompatActivity {
     }
 
     /**
-     * 显示设备蓝牙状态
+     * Receive device Bluetooth status
      *
      * @param eventBus
      */
@@ -81,10 +81,10 @@ public class BindDeviceActivity extends AppCompatActivity {
         if (eventBus != null) {
             boolean isOpen = eventBus.isOpen();
             if (isOpen) {
-                Log.i(TAG, "STATE_OFF 手机蓝牙已打开");
+                Log.i(TAG, "STATE_OFF");
                 handleScanSate();
             } else {
-                Log.i(TAG, "STATE_OFF 手机蓝牙关闭");
+                Log.i(TAG, "STATE_OFF");
                 stepFirstLoading.initLoading();
                 stepSecondLoading.initLoading();
                 stepFirstState.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.device_binding_page_pic_bluetooth_unselected, 0);
@@ -93,7 +93,7 @@ public class BindDeviceActivity extends AppCompatActivity {
     }
 
     /**
-     * 显示设备信息
+     * Receive device info
      *
      * @param eventBus
      */
@@ -101,6 +101,7 @@ public class BindDeviceActivity extends AppCompatActivity {
     public void synBleDeviceInfo(BleDeviceInfoEvent eventBus) {
         if (eventBus != null) {
             handleFirmwareInfo(eventBus.getConnectScPeripheral());
+            checkFirmwareVersion(eventBus.getConnectScPeripheral());
         }
     }
 
@@ -158,16 +159,15 @@ public class BindDeviceActivity extends AppCompatActivity {
     }
 
     /**
-     * 固件类型版本号映射
+     * Bind the device and save the scanned device information
      *
      * @param scPeripheral
      */
     private void handleFirmwareInfo(ScPeripheral scPeripheral) {
-        LogUtils.i("准备绑定设备");
+        LogUtils.i("Prepare to bind the device");
         hardwareInfo = HardwareInfo.toHardwareInfo(scPeripheral);
         HardwareModel.saveHardwareInfo(BindDeviceActivity.this, hardwareInfo);
         EventBus.getDefault().post(new BleBindEvent());
-        checkFirmwareVersion(scPeripheral);
     }
 
 
@@ -190,10 +190,10 @@ public class BindDeviceActivity extends AppCompatActivity {
     }
 
     /**
-     * 检查固件版本是否需要升级
+     * Check whether the firmware version needs to be upgraded
      */
     public void checkFirmwareVersion(ScPeripheral scPeripheral) {
-        Log.i(TAG, "用户绑定体温计成功");
+        Log.i(TAG, "check firmware version");
         ScPeripheralManager.getInstance().checkFirmwareVersion(scPeripheral, new CheckFirmwareVersionListener() {
             @Override
             public void checkSuccess(final CheckFirmwareVersionResp.Data data) {
@@ -228,9 +228,10 @@ public class BindDeviceActivity extends AppCompatActivity {
     }
 
     private void bindSuccess() {
+        Log.i(TAG, "The user successfully binds the thermometer");
         stepThirdLoading.finishLoading();
         stepThirdState.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.device_binding_page_pic_check_selected, 0);
-        ToastUtils.show(getApplicationContext(), getString(R.string.attach_success));
+        ToastUtils.show(getApplicationContext(), getString(R.string.unbind_success));
         startActivity(new Intent(BindDeviceActivity.this, BindResultActivity.class));
         finish();
     }

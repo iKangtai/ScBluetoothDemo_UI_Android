@@ -4,30 +4,30 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 /**
- * App数据缓存
+ * App data cache
  *
  * @author xiongyl 2021/1/21 22:10
  */
 public class AppInfo {
     /**
-     * 设备连接界面
+     * Device connection interface
      */
     private boolean isDeviceConnectActive = false;
 
     /**
-     * OAD连接界面
+     * OAD connection interface
      */
     private boolean isOADConnectActive = false;
     /**
-     * 蓝牙状态开/闭
+     * Bluetooth status on/off
      */
     private boolean bluetoothState;
     /**
-     * 体温计状态开/闭
+     * Thermometer status on/off
      */
     private boolean thermometerState;
     /**
-     * 是否处于绑定页面
+     * Whether it is on the binding page
      */
     private boolean isBindActivityActive = false;
     private static volatile AppInfo instance;
@@ -88,7 +88,7 @@ public class AppInfo {
     }
 
     /**
-     * App是否显示摄氏度
+     * Does the app display degrees Celsius
      * @return
      */
     public boolean isTempUnitC() {

@@ -58,7 +58,7 @@ import androidx.fragment.app.Fragment;
 
 
 /**
- * 处理连接体温计同步温度
+ * Handle the synchronized temperature of the connected thermometer
  *
  * @author xiongyl 2021/1/30 20:16
  */
@@ -87,10 +87,10 @@ public class BleModel {
             if (action != null && action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
                 int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
                 if (state == BluetoothAdapter.STATE_OFF) {
-                    LogUtils.e("手机蓝牙开启");
+                    LogUtils.e("Phone Bluetooth is turned off");
                     refreshBluetoothState(false);
                 } else if (state == BluetoothAdapter.STATE_ON) {
-                    LogUtils.e("手机蓝牙开启");
+                    LogUtils.e("Phone Bluetooth is turned on");
                     refreshBluetoothState(true);
                     if (AppInfo.getInstance().isOADConnectActive()) {
                         return;
@@ -102,7 +102,7 @@ public class BleModel {
     };
 
     /**
-     * 重新开始扫描
+     * Restart scanning
      *
      * @param temperatureBleScanEventBus
      */
@@ -114,7 +114,7 @@ public class BleModel {
 
 
     /**
-     * 绑定或解绑触发
+     * Bind or unbind trigger
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void restartScan(BleBindEvent bleBindEvent) {
@@ -192,15 +192,15 @@ public class BleModel {
                         temperatureInfoList.add(temperatureInfo);
                     }
 
-                    LogUtils.i("准备回传体温数据>>>");
+                    LogUtils.i("Prepare to return body temperature data>>>");
                     filterTempWithValidTime(temperatureInfoList);
                     if (temperatureInfoList != null
                             && temperatureInfoList.size() > 0) {
                         notifyUserTemperature(temperatureInfoList);
                         blePresenter.onReceiveTemperatureData(temperatureInfoList);
-                        LogUtils.i("处理体温数据结束");
+                        LogUtils.i("End of processing body temperature data");
                     } else {
-                        LogUtils.i("处理体温数据结束--->收到过体温但体温数据不符合规范");
+                        LogUtils.i("End of processing body temperature data ---> The body temperature has been received but the body temperature data does not meet the specifications");
                     }
                 }
             }
@@ -241,13 +241,13 @@ public class BleModel {
                 if (state == BluetoothProfile.STATE_CONNECTED) {
                     LogUtils.i("The device is connected " + macAddress);
                     endConnBLETime = System.currentTimeMillis();
-                    LogUtils.i("已连接!");
+                    LogUtils.i("connected!");
                     refreshBleState(macAddress, true);
                 } else if (state == BluetoothProfile.STATE_DISCONNECTED) {
                     LogUtils.i("Device disconnected " + macAddress);
                     long currentTime = System.currentTimeMillis();
                     if (endConnBLETime == 0 || (currentTime - endConnBLETime) > distanceTime) {
-                        LogUtils.i("断开连接!");
+                        LogUtils.i("disconnect!");
                         endConnBLETime = currentTime;
                     }
                     refreshBleState(macAddress, false);
@@ -261,7 +261,7 @@ public class BleModel {
     }
 
     /**
-     * 刷新蓝牙连接状态
+     * Refresh Bluetooth connection status
      *
      * @param state
      */
@@ -271,7 +271,7 @@ public class BleModel {
     }
 
     /**
-     * 刷新体温计连接状态
+     * Refresh the thermometer connection status
      *
      * @param state
      */
@@ -284,7 +284,7 @@ public class BleModel {
     private void notifyUserTemperature(CopyOnWriteArrayList temperatureInfoList) {
         if (AppInfo.getInstance().isDeviceConnectActive()) {
             if (temperatureInfoList != null || temperatureInfoList.size() == 0) {
-                //未发现新增体温
+                //No new body temperature found
                 String content = context.getString(R.string.temperature_alert_1);
                 String subContent = String.format(context.getString(R.string.format_font_ff7568), context.getString(R.string.warm_prompt) + ":") + context.getString(R.string.temperature_alert_2);
                 EventBus.getDefault().post(new AutoUploadTemperatureEvent(content, subContent));
@@ -294,9 +294,9 @@ public class BleModel {
 
     public void filterTempWithValidTime(CopyOnWriteArrayList<TemperatureInfo> temperatureInfoList) {
         if (temperatureInfoList != null) {
-            LogUtils.i("开始--过滤无效体温数据");
+            LogUtils.i("Start - filter invalid body temperature data");
 
-            //过滤掉温度值偏离的数据
+            //Filter out data that deviates from the temperature value
             if (temperatureInfoList.size() != 0) {
                 for (int i = temperatureInfoList.size() - 1; i >= 0; i--) {
                     if (temperatureInfoList.get(i).getTemperature() >= Keys.C_MAX
@@ -304,14 +304,14 @@ public class BleModel {
                         temperatureInfoList.remove(i);
                     }
                 }
-                LogUtils.i("过滤掉温度32-43以外的数据,剩下条数: " + temperatureInfoList.size());
+                LogUtils.i("Filter out the data other than the temperature 32-43, and the number of remaining items: " + temperatureInfoList.size());
                 if (temperatureInfoList.size() == 0) {
                     if (!AppInfo.getInstance().isBindActivityActive()) {
                         ToastUtils.show(context, context.getString(R.string.bbt_valid_value_post_fail));
                     }
                 }
             }
-            LogUtils.i("结束--过滤无效体温数据");
+            LogUtils.i("End - filter invalid body temperature data");
         }
     }
 
@@ -323,7 +323,7 @@ public class BleModel {
 
     public void stopScan() {
         mScanning = false;
-        LogUtils.i("停止扫描");
+        LogUtils.i("Stop scanning");
         handler.removeCallbacks(scanRunnable);
         try {
             scPeripheralManager.stopScan();
@@ -339,7 +339,7 @@ public class BleModel {
         } else if (fragment != null && !CheckBleFeaturesUtil.checkBleFeatures(fragment)) {
             return;
         }
-        LogUtils.i("开始扫描");
+        LogUtils.i("Start scanning");
         mScanning = true;
         scPeripheralManager.startScan(new ScanResultListener() {
             @Override
@@ -350,16 +350,16 @@ public class BleModel {
                         if (scBluetoothDevice.getDeviceType() == BleTools.TYPE_UNKNOWN) {
                             continue;
                         }
-                        //目前只支持体温计连接
+                        //Currently only supports thermometer connection
                         if (scBluetoothDevice.getDeviceType() != BleTools.TYPE_SMART_THERMOMETER && scBluetoothDevice.getDeviceType() != BleTools.TYPE_AKY_3 && scBluetoothDevice.getDeviceType() != BleTools.TYPE_AKY_4) {
                             return;
                         }
                         if (AppInfo.getInstance().isBindActivityActive() || hardwareInfoList != null && !hardwareInfoList.isEmpty() && hardwareInfoList.get(0).getHardMacId().contains(scBluetoothDevice.getMacAddress())) {
                             connectScPeripheral = scBluetoothDevice;
                             String deviceAddr = connectScPeripheral.getMacAddress();
-                            LogUtils.i("已扫描到 device! 停止扫描! " + deviceAddr);
+                            LogUtils.i("Device has been scanned! Stop scanning! " + deviceAddr);
                             stopScan();
-                            LogUtils.i("开始请求连接设备:" + scBluetoothDevice.macAddress);
+                            LogUtils.i("Start requesting to connect to the device:" + scBluetoothDevice.macAddress);
                             scPeripheralManager.connectPeripheral(scBluetoothDevice.macAddress);
                             break;
                         }
@@ -379,13 +379,13 @@ public class BleModel {
         new AndTemperatureDialog(context).initEvent(new AndTemperatureDialog.IEvent() {
             @Override
             public void clickAutoSyncTemperature() {
-                //自动上传温度
+                //Automatic upload temperature
                 autoSyncTemperature();
             }
 
             @Override
             public void clickManualAddTemperature() {
-                //手动添加温度
+                //Manually add temperature
                 manualAddTemperature();
             }
         }).builder().show();
@@ -394,16 +394,16 @@ public class BleModel {
     public void autoSyncTemperature() {
         List<HardwareInfo> hardwareInfoList = HardwareModel.hardwareList(context);
         if (hardwareInfoList.isEmpty()) {
-            //弹框提示用户购买或者绑定体温计
+            //The pop-up box prompts the user to buy or bind a thermometer
             new BuyAndBindThermometerDialog(context).builder().show();
         } else {
-            //已绑定体温计，连接体温计
+            //The thermometer has been bound, and the thermometer is connected
             context.startActivity(new Intent(context, DeviceConnectActivity.class));
         }
     }
 
     public void manualAddTemperature() {
-        //手动添加温度
+        //Manually add temperature
         new TemperatureAddDialog(context).builder().initEvent(new TemperatureAddDialog.IEvent() {
             @Override
             public void onSave(TemperatureInfo temperatureInfo) {

@@ -30,30 +30,19 @@ public class ProgressDialog {
         return createLoadingDialog(context, null, onClickListener);
     }
 
-    /**
-     * 自定义的progressDialog
-     *
-     * @param context
-     * @param msg
-     * @return
-     */
     public static Dialog createLoadingDialog(Context context, String msg, View.OnClickListener onClickListener) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View v = inflater.inflate(R.layout.loading_dialog, null);
         RelativeLayout layout = v.findViewById(R.id.dialog_view);
-        // main.xml中的ImageView
         spaceshipImage = v.findViewById(R.id.img);
         tipTextView = v.findViewById(R.id.tipTextView);
         closeDialog = v.findViewById(R.id.close_dialog);
-        // 加载动画
         Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(
                 context, R.anim.loading_animation);
-        // 使用ImageView显示动画
         spaceshipImage.startAnimation(hyperspaceJumpAnimation);
         if (TextUtils.isEmpty(msg)) {
             tipTextView.setVisibility(View.GONE);
         } else {
-            // 设置加载信息
             tipTextView.setText(msg);
         }
         closeDialog.setOnClickListener(onClickListener);

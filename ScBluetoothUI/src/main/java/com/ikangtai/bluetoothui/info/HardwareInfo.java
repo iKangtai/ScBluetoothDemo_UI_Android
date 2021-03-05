@@ -161,6 +161,11 @@ public class HardwareInfo {
         return deviceLogo;
     }
 
+    /**
+     * Firmware type version number mapping
+     * @param hardwareInfo
+     * @return
+     */
     public static ScPeripheral toScPeripheral(HardwareInfo hardwareInfo) {
         ScPeripheral scPeripheral = new ScPeripheral();
         scPeripheral.setVersion(hardwareInfo.getHardwareVersion());
@@ -184,7 +189,11 @@ public class HardwareInfo {
         return scPeripheral;
     }
 
-
+    /**
+     * Firmware type version number mapping
+     * @param scPeripheral
+     * @return
+     */
     public static HardwareInfo toHardwareInfo(ScPeripheral scPeripheral) {
         String firmwareVersion = scPeripheral.getVersion();
         int hardType = HardwareInfo.HARD_TYPE_THERMOMETER;

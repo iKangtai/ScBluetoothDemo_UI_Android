@@ -11,7 +11,7 @@ import com.ikangtai.bluetoothsdk.util.LogUtils;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
- * 绑定结果
+ * Binding result
  *
  * @author xiongyl 2021/1/21 21:11
  */
@@ -23,7 +23,7 @@ public class BindResultActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogUtils.i("进入设备绑定结果");
+        LogUtils.i("Enter the device binding result page");
         setContentView(R.layout.activity_bind_result);
         initView();
     }

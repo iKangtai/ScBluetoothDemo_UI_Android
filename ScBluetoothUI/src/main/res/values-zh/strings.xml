@@ -51,7 +51,7 @@
     <string name="get_firmver_fail">获取固件版本失败, 请检查网络!</string>
     <string name="oad_unSupported">检测您的固件版本为:%s,此版本不支持升级!</string>
     <string name="need_oad">发现新固件版本: %s,正在下载更新固件! </string>
-    <string name="already_latest_ver">当前设备固件版本为:%s,已经是最新版本!</string>
+    <string name="already_latest_ver">当前设备固件版本为已经是最新版本!</string>
     <string name="oad_start">开始固件升级</string>
     <string name="oading">正在固件升级...</string>
     <string name="oading_time">总时间: %d秒, 还剩下%d秒</string>
@@ -122,4 +122,5 @@
     <string name="turn_on_ble_hint">请打开手机蓝牙</string>
     <string name="turn_on_thermometer">按下开关键</string>
     <string name="check_device_version">设备程序版本校验</string>
+    <string name="unbind_success">解绑成功</string>
 </resources>

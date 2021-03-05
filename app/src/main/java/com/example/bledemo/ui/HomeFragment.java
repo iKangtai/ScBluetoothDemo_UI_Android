@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import com.example.bledemo.App;
 import com.example.bledemo.MainActivity;
 import com.example.bledemo.R;
-import com.ikangtai.bluetoothsdk.util.LogUtils;
 import com.ikangtai.bluetoothsdk.util.ToastUtils;
 import com.ikangtai.bluetoothui.AppInfo;
 import com.ikangtai.bluetoothui.Keys;
@@ -50,7 +49,7 @@ public class HomeFragment extends Fragment implements BleContract.IView {
         view.findViewById(R.id.add_temp).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //显示添加温度View
+                //Show the added temperature View
                 presenter.showAddTemperatureView();
             }
         });
@@ -64,7 +63,7 @@ public class HomeFragment extends Fragment implements BleContract.IView {
     }
 
     /**
-     * 显示体温计状态
+     * Receive thermometer status
      *
      * @param eventBus
      */
@@ -82,7 +81,7 @@ public class HomeFragment extends Fragment implements BleContract.IView {
     }
 
     /**
-     * 显示设备蓝牙状态
+     * Receive device Bluetooth status
      *
      * @param eventBus
      */
@@ -99,14 +98,17 @@ public class HomeFragment extends Fragment implements BleContract.IView {
     }
 
     /**
-     * 处理接收到体温计温度
+     * Receive thermometer temperature data
      *
      * @param temperatureInfoList
      */
     @Override
     public void onReceiveTemperatureData(List<TemperatureInfo> temperatureInfoList) {
+        /**
+         * @TODO Need App to save the temperature data
+         */
         if (App.getInstance().isForeground()) {
-            //App前台弹框显示
+            //App front pop-up display
             StringBuffer message = new StringBuffer();
             for (TemperatureInfo temperatureInfo :
                     temperatureInfoList) {
@@ -125,11 +127,10 @@ public class HomeFragment extends Fragment implements BleContract.IView {
                         }
                     }).withOverLay().show();
         } else {
-            //App后台发送通知
+            //App background to send notifications
             int notifyTempNum = temperatureInfoList.size();
             double notifyTempValue = temperatureInfoList.get(0).getTemperature();
             String notificationContent = getNotificationContent(notifyTempNum, notifyTempValue);
-            LogUtils.i("发送通知栏通知消息>>>");
             String title = getString(R.string.ble_temp_bg_notif_title);
             Intent intent = new Intent(getContext(), MainActivity.class);
             NotificationUtil.pushMessage(getContext(), false, title, notificationContent, intent);
@@ -137,12 +138,14 @@ public class HomeFragment extends Fragment implements BleContract.IView {
     }
 
     /**
-     * 处理手动保存体温计温度
+     * Receive manually added body temperature data
      *
      * @param temperatureInfo
      */
     public void onSaveTemperatureData(TemperatureInfo temperatureInfo) {
-        //处理保存温度
+        /**
+         * @TODO Need App to save the temperature data
+         */
         new BleAlertDialog(getContext()).builder()
                 .setTitle(getString(R.string.temp_add_success))
                 .setMsg(DateUtil.getDateFormatYMDHM(temperatureInfo.getMeasureTime()) + "\n" + temperatureInfo.getTemperature() + Keys.kTempUnitC)
@@ -157,7 +160,7 @@ public class HomeFragment extends Fragment implements BleContract.IView {
     }
 
     /**
-     * 组装发送通知内容
+     * Splicing notification content
      *
      * @param notifyTempNum
      * @param notifyTempValue
@@ -178,7 +181,7 @@ public class HomeFragment extends Fragment implements BleContract.IView {
     @Override
     public void onResume() {
         super.onResume();
-        //未连接设备时重新开始扫描附近设备
+        //Restart scanning for nearby devices when the device is not connected
         if (!AppInfo.getInstance().isThermometerState()) {
             presenter.startScan();
         }
@@ -190,14 +193,14 @@ public class HomeFragment extends Fragment implements BleContract.IView {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-        //释放资源断开蓝牙
+        //Release resources to disconnect Bluetooth
         presenter.destroy();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //处理请求打开蓝牙开关、定位开关结果
+        //Processing request to turn on the Bluetooth switch and positioning switch results
         CheckBleFeaturesUtil.handBleFeaturesResult(getContext(), requestCode, resultCode);
     }
 }

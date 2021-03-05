@@ -3,7 +3,7 @@ package com.ikangtai.bluetoothui.event;
 import com.ikangtai.bluetoothsdk.model.ScPeripheral;
 
 /**
- * 获取连接设备信息
+ * Get connected device information
  *
  * @author xiongyl 2021/1/30 22:41
  */

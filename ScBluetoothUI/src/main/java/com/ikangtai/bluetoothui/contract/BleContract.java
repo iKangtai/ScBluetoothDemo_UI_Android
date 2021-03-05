@@ -12,13 +12,13 @@ import java.util.List;
 public class BleContract {
     public interface IView {
         /**
-         * 接收体温计温度
+         * Receive thermometer temperature data
          *
          * @param temperatureInfoList
          */
         void onReceiveTemperatureData(List<TemperatureInfo> temperatureInfoList);
         /**
-         * 保存手动添加温度
+         * Save manually added temperature data
          * @param temperatureInfo
          */
         void onSaveTemperatureData(TemperatureInfo temperatureInfo);
@@ -27,40 +27,40 @@ public class BleContract {
     public interface IPresenter {
 
         /**
-         * 添加温度
+         * Add temperature
          */
         void showAddTemperatureView();
 
         /**
-         * 接收到体温计温度
+         * Receive thermometer temperature data
          *
          * @param temperatureInfoList
          */
         void onReceiveTemperatureData(List<TemperatureInfo> temperatureInfoList);
 
         /**
-         * 保存手动添加温度
+         * Save manually added temperature
          * @param temperatureInfo
          */
         void onSaveTemperatureData(TemperatureInfo temperatureInfo);
 
         /**
-         * 刷新已绑定设备列表
+         * Refresh the list of bound devices
          */
         void refreshDeviceList();
 
         /**
-         * 开始扫描附近设备
+         * Start scanning for nearby devices
          */
         void startScan();
 
         /**
-         * 停止扫描
+         * Stop scanning
          */
         void stopScan();
 
         /**
-         * 释放资源
+         * Release resources
          */
         void destroy();
     }

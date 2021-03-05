@@ -1,7 +1,7 @@
 package com.ikangtai.bluetoothui.event;
 
 /**
- * 自动上传体温事件
+ * Automatically upload body temperature events
  */
 
 public class AutoUploadTemperatureEvent {

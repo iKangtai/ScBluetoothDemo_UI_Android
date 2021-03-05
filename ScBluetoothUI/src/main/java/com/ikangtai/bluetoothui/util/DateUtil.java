@@ -8,13 +8,13 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * 时间格式化Util
+ * Time format Util
  *
  * @author xiongyl 2021/1/26 22:59
  */
 public class DateUtil {
     /**
-     * 获取月日 时分
+     * Get month, day, hour and minute
      *
      * @param seconds
      * @return
@@ -31,7 +31,7 @@ public class DateUtil {
     }
 
     /**
-     * 月日
+     * MM DD
      *
      * @param seconds
      * @return
@@ -48,7 +48,7 @@ public class DateUtil {
     }
 
     /**
-     * 获取月日 时分对应时间戳
+     * Get the timestamp corresponding to the date str
      *
      * @param timeStr
      * @return

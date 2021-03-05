@@ -3,6 +3,9 @@
 ## Demo
 [http://fir.ikangtai.cn/x5zp](http://fir.ikangtai.cn/x5zp)
 
+## 国际化
+[English](README.md) | 中文文档
+
 ## UI库
 ### UI库接入
    ```java

@@ -3,6 +3,9 @@ Divided into UI library and SDK library, the UI library needs to be manually cop
 ## Demo
 [http://fir.ikangtai.cn/x5zp](http://fir.ikangtai.cn/x5zp)
 
+## Internationalization
+English | [中文文档](README_zh.md)
+
 ## UI library
 ### UI library integration
    ```java

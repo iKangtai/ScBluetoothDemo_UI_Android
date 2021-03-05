@@ -54,7 +54,6 @@ public class BlePresenter implements BleContract.IPresenter {
 
     @Override
     public void startScan() {
-        LogUtils.d("bleModel startScan ");
         this.bleModel.startScan();
     }
 

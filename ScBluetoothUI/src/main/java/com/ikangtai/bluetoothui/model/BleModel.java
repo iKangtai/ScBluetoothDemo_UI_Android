@@ -5,7 +5,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
@@ -37,7 +36,6 @@ import com.ikangtai.bluetoothui.info.HardwareInfo;
 import com.ikangtai.bluetoothui.info.TemperatureInfo;
 import com.ikangtai.bluetoothui.util.CheckBleFeaturesUtil;
 import com.ikangtai.bluetoothui.util.DateUtil;
-import com.ikangtai.bluetoothui.view.ActionSheetDialog;
 import com.ikangtai.bluetoothui.view.dialog.AndTemperatureDialog;
 import com.ikangtai.bluetoothui.view.dialog.BuyAndBindThermometerDialog;
 import com.ikangtai.bluetoothui.view.dialog.TemperatureAddDialog;
@@ -76,7 +74,6 @@ public class BleModel {
     private Runnable scanRunnable = new Runnable() {
         @Override
         public void run() {
-            LogUtils.d("scanRunnable:   scanLeDevice");
             scanLeDevice();
         }
     };
@@ -289,7 +286,7 @@ public class BleModel {
                 String content = context.getString(R.string.temperature_alert_1);
                 String subContent = String.format(context.getString(R.string.format_font_ff7568), context.getString(R.string.warm_prompt) + ":") + context.getString(R.string.temperature_alert_2);
                 EventBus.getDefault().post(new AutoUploadTemperatureEvent(content, subContent));
-            }else {
+            } else {
                 EventBus.getDefault().post(new AutoUploadTemperatureEvent(null, null));
             }
         }
@@ -319,7 +316,6 @@ public class BleModel {
     }
 
     public void startScan() {
-        LogUtils.d("startScan 1:"+mScanning);
         if (!mScanning) {
             handler.postDelayed(scanRunnable, 1500);
         }
@@ -338,13 +334,11 @@ public class BleModel {
 
 
     public void scanLeDevice() {
-        LogUtils.d("scanLeDevice----");
         if (activity != null && !CheckBleFeaturesUtil.checkBleFeatures(activity)) {
             return;
         } else if (fragment != null && !CheckBleFeaturesUtil.checkBleFeatures(fragment)) {
             return;
         }
-        LogUtils.i("Start 1111111111scanning");
         mScanning = true;
         scPeripheralManager.startScan(new ScanResultListener() {
             @Override

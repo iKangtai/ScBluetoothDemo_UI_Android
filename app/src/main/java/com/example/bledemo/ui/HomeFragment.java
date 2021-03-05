@@ -104,12 +104,6 @@ public class HomeFragment extends Fragment implements BleContract.IView {
         }
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        LogUtils.d("isVisibleToUser:"+isVisibleToUser);
-    }
-
     /**
      * Receive thermometer temperature data
      *

@@ -1,14 +1,13 @@
 package com.ikangtai.bluetoothui.activity;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
 import com.ikangtai.bluetoothui.R;
 import com.ikangtai.bluetoothui.view.TopBar;
 import com.ikangtai.bluetoothsdk.util.LogUtils;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Binding result

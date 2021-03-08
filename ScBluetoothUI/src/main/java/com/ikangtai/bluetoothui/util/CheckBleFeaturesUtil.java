@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.ikangtai.bluetoothui.R;
@@ -18,7 +19,6 @@ import com.ikangtai.bluetoothsdk.util.ToastUtils;
 
 import java.util.List;
 
-import androidx.fragment.app.Fragment;
 
 /**
  * Before the scan starts, you need to check the location service switch above 6.0, the location permission of the system above 6.0, and the Bluetooth switch

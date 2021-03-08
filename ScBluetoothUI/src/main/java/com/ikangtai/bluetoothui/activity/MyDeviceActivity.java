@@ -2,6 +2,7 @@ package com.ikangtai.bluetoothui.activity;
 
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,8 +25,6 @@ import com.ikangtai.bluetoothui.view.dialog.FirmwareUpdateDialog;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * My device

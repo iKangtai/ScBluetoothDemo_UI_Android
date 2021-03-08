@@ -2,6 +2,7 @@ package com.ikangtai.bluetoothui.view;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
@@ -11,7 +12,6 @@ import android.widget.TextView;
 import com.ikangtai.bluetoothui.AppInfo;
 import com.ikangtai.bluetoothui.R;
 
-import androidx.annotation.Nullable;
 
 public class InputTemperatureLayout extends RelativeLayout {
     private TextView tempUnitTv;

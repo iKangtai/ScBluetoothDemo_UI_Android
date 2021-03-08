@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 
 import com.ikangtai.bluetoothsdk.BleCommand;
 import com.ikangtai.bluetoothsdk.Config;
@@ -52,7 +53,6 @@ import java.io.Writer;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import androidx.fragment.app.Fragment;
 
 
 /**

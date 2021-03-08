@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Environment;
+import android.support.v7.app.AppCompatDialog;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
@@ -34,8 +35,6 @@ import com.ikangtai.bluetoothui.view.RoundProgressBar;
 
 import java.io.File;
 import java.util.List;
-
-import androidx.appcompat.app.AppCompatDialog;
 
 
 /**

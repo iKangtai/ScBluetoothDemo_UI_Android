@@ -224,8 +224,10 @@ public class BleModel {
                         BleCommandData commandData = new BleCommandData();
                         commandData.setParam1(AppInfo.getInstance().isTempUnitC() ? 1 : 2);
                         scPeripheralManager.sendPeripheralCommand(macAddress, BleCommand.SYNC_THERMOMETER_UNIT, commandData);
-                        connectScPeripheral.setVersion(value);
-                        EventBus.getDefault().post(new BleDeviceInfoEvent(connectScPeripheral));
+                        if (connectScPeripheral!=null){
+                            connectScPeripheral.setVersion(value);
+                            EventBus.getDefault().post(new BleDeviceInfoEvent(connectScPeripheral));
+                        }
                         break;
                 }
             }

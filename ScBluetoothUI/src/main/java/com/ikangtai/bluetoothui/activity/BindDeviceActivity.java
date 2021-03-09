@@ -231,7 +231,7 @@ public class BindDeviceActivity extends AppCompatActivity {
         Log.i(TAG, "The user successfully binds the thermometer");
         stepThirdLoading.finishLoading();
         stepThirdState.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.device_binding_page_pic_check_selected, 0);
-        ToastUtils.show(getApplicationContext(), getString(R.string.unbind_success));
+        ToastUtils.show(getApplicationContext(), getString(R.string.bind_success));
         startActivity(new Intent(BindDeviceActivity.this, BindResultActivity.class));
         finish();
     }

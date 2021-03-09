@@ -126,4 +126,5 @@
     <string name="turn_on_thermometer">Press the power button</string>
     <string name="check_device_version">Device program version verification</string>
     <string name="unbind_success">Unbind successfully</string>
+    <string name="bind_success">Bind successfully</string>
 </resources>

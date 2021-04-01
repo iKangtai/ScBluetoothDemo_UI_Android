@@ -426,5 +426,6 @@ public class BleModel {
             stopScan();
         }
         scPeripheralManager.disconnectPeripheral();
+        scPeripheralManager.removeReceiveDataListener(receiveDataListenerAdapter);
     }
 }

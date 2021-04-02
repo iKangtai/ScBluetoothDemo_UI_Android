@@ -159,7 +159,7 @@ public class BleModel {
 
     private void initBleSdk() {
         scPeripheralManager = ScPeripheralManager.getInstance();
-        String logFilePath = new File(FileUtil.createRootPath(context), "log.txt").getAbsolutePath();
+        String logFilePath = new File(FileUtil.createRootPath(context), "bleSdkLog.txt").getAbsolutePath();
         BufferedWriter logWriter = null;
         try {
             logWriter = new BufferedWriter(new FileWriter(logFilePath, true), 2048);
@@ -319,6 +319,7 @@ public class BleModel {
 
     public void startScan() {
         if (!mScanning) {
+            handler.removeCallbacks(scanRunnable);
             handler.postDelayed(scanRunnable, 1500);
         }
     }

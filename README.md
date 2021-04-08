@@ -98,6 +98,13 @@ English | [中文文档](README_zh.md)
   ```java
     presenter.destroy();
   ```
+### Confusion configuration
+If your application uses code obfuscation, please add the following configuration to avoid SDK being unavailable due to incorrect obfuscation.
+```java
+    -dontwarn  com.ikangtai.bluetoothsdk.**
+    -keep class com.ikangtai.bluetoothsdk.** {*;}
+```
+  
 ## SDK privacy agreement
 a) Purpose/purpose of collecting personal information: optimizing hardware compatible devices
 b) The type of personal information collected: device model, operating system, mobile phone developer identifier, network data

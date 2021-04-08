@@ -98,5 +98,13 @@
   ```java
     presenter.destroy();
   ```
+
+## SDK隐私协议
+a)收集个人信息目的/用途：优化硬件兼容设备
+b)收集个人信息类型：设备型号、操作系统、手机开发商标识符、网络数据
+c)需要获取的权限：网络权限，蓝牙权限
+d)第三方SDK隐私政策链接：https://static.shecarefertility.com/shecare/resource/dist/#/blesdk_privacy_policy
+e)提供方：北京爱康泰科技有限责任公司
+
 ## 蓝牙SDK接入指南
 [中文文档](https://github.com/iKangtai/ScBluetoothSdkDemo_Android/blob/master/README_zh.md)

@@ -106,11 +106,11 @@ If your application uses code obfuscation, please add the following configuratio
 ```
   
 ## SDK privacy agreement
-a) Purpose/purpose of collecting personal information: optimizing hardware compatible devices
-b) The type of personal information collected: device model, operating system, mobile phone developer identifier, network data
-c) Required permissions: network permissions, Bluetooth permissions
-d) Third-party SDK privacy policy link: https://static.shecarefertility.com/shecare/resource/dist/#/blesdk_privacy_policy
-e) Provider: Beijing ikangtai Technology Co., Ltd.
+a) Purpose/purpose of collecting personal information: optimizing hardware compatible devices<br/>
+b) The type of personal information collected: device model, operating system, mobile phone developer identifier, network data<br/>
+c) Required permissions: network permissions, Bluetooth permissions<br/>
+d) Third-party SDK privacy policy link: https://static.shecarefertility.com/shecare/resource/dist/#/blesdk_privacy_policy<br/>
+e) Provider: Beijing ikangtai Technology Co., Ltd.<br/>
 
 ## Bluetooth SDK access guide
 [English document](https://github.com/iKangtai/ScBluetoothSdkDemo_Android/blob/master/README.md)

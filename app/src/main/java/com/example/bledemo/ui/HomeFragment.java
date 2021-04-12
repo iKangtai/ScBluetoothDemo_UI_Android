@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.bledemo.App;
 import com.example.bledemo.MainActivity;
@@ -78,9 +79,9 @@ public class HomeFragment extends Fragment implements BleContract.IView {
         if (eventBus != null) {
             boolean isConn = eventBus.isConnect();
             if (isConn) {
-                ToastUtils.show(getContext(), getString(R.string.thermometer_conn_success));
+                Toast.makeText(getContext(), getString(R.string.thermometer_conn_success),Toast.LENGTH_LONG).show();
             } else {
-                ToastUtils.show(getContext(), getString(R.string.thermometer_conn_fail));
+                Toast.makeText(getContext(), getString(R.string.thermometer_conn_fail),Toast.LENGTH_LONG).show();
             }
         }
 
@@ -96,9 +97,9 @@ public class HomeFragment extends Fragment implements BleContract.IView {
         if (eventBus != null) {
             boolean isOpen = eventBus.isOpen();
             if (isOpen) {
-                ToastUtils.show(getContext(), getString(R.string.turn_on_ble));
+                Toast.makeText(getContext(), getString(R.string.turn_on_ble),Toast.LENGTH_LONG).show();
             } else {
-                ToastUtils.show(getContext(), getString(R.string.turn_off_ble));
+                Toast.makeText(getContext(), getString(R.string.turn_off_ble),Toast.LENGTH_LONG).show();
             }
         }
     }

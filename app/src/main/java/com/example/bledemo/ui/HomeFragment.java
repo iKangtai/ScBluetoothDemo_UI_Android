@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.example.bledemo.App;
 import com.example.bledemo.MainActivity;
 import com.example.bledemo.R;
-import com.ikangtai.bluetoothsdk.util.ToastUtils;
 import com.ikangtai.bluetoothui.AppInfo;
 import com.ikangtai.bluetoothui.Keys;
 import com.ikangtai.bluetoothui.contract.BleContract;

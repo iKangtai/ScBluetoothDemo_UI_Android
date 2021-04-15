@@ -1,2 +1,2 @@
-include ':ScBluetoothUI',':app',':pickerview',':ScBluetoothLib'
+include ':ScBluetoothUI',':app',':pickerview'/*,':ScBluetoothLib'*/
 rootProject.name='ScBluetoothDemo_UI_Android'

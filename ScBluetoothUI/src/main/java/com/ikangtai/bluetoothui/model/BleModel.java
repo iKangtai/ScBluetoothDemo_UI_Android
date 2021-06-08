@@ -224,7 +224,7 @@ public class BleModel {
                         BleCommandData commandData = new BleCommandData();
                         commandData.setParam1(AppInfo.getInstance().isTempUnitC() ? 1 : 2);
                         scPeripheralManager.sendPeripheralCommand(macAddress, BleCommand.SYNC_THERMOMETER_UNIT, commandData);
-                        if (connectScPeripheral!=null){
+                        if (connectScPeripheral != null) {
                             connectScPeripheral.setVersion(value);
                             EventBus.getDefault().post(new BleDeviceInfoEvent(connectScPeripheral));
                         }
@@ -301,8 +301,9 @@ public class BleModel {
             //Filter out data that deviates from the temperature value
             if (temperatureInfoList.size() != 0) {
                 for (int i = temperatureInfoList.size() - 1; i >= 0; i--) {
-                    if (temperatureInfoList.get(i).getTemperature() >= Keys.C_MAX
-                            || temperatureInfoList.get(i).getTemperature() < Keys.C_MIN) {
+                    if (!(temperatureInfoList.get(i).getTemperature() < Keys.C_MAX
+                            && temperatureInfoList.get(i).getTemperature() >= Keys.C_MIN || temperatureInfoList.get(i).getTemperature() < Keys.F_MAX
+                            && temperatureInfoList.get(i).getTemperature() >= Keys.F_MIN)) {
                         temperatureInfoList.remove(i);
                     }
                 }

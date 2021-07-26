@@ -2,6 +2,7 @@ package com.ikangtai.bluetoothui.view.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ public class BleAlertDialog extends BaseShecareDialog {
     private boolean showNegBtn = false;
     private boolean showClose = false;
     private View contentView;
+    private DismissIEvent dismissIEvent;
 
     public BleAlertDialog(Context context) {
         this.context = context;
@@ -73,6 +75,14 @@ public class BleAlertDialog extends BaseShecareDialog {
         // 定义Dialog布局和参数
         dialog = new Dialog(context, R.style.BleAlertDialogStyle);
         dialog.setContentView(contentView);
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if (dismissIEvent != null) {
+                    dismissIEvent.onDismiss();
+                }
+            }
+        });
 
         // 调整dialog背景大小
         lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams((int) (display
@@ -292,5 +302,14 @@ public class BleAlertDialog extends BaseShecareDialog {
             e.printStackTrace();
         }
         return this;
+    }
+
+    public BleAlertDialog initDismissIEvent(DismissIEvent event) {
+        this.dismissIEvent = event;
+        return this;
+    }
+
+    public interface DismissIEvent {
+        void onDismiss();
     }
 }

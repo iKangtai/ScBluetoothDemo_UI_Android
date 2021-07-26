@@ -8,14 +8,14 @@ import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import com.ikangtai.bluetoothui.R;
-import com.ikangtai.bluetoothui.view.dialog.BleAlertDialog;
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.ikangtai.bluetoothsdk.util.BleTools;
 import com.ikangtai.bluetoothsdk.util.LogUtils;
 import com.ikangtai.bluetoothsdk.util.ToastUtils;
+import com.ikangtai.bluetoothui.R;
+import com.ikangtai.bluetoothui.view.dialog.BleAlertDialog;
 
 import java.util.List;
 
@@ -28,6 +28,7 @@ import java.util.List;
 public class CheckBleFeaturesUtil {
     public final static int REQUEST_LOCATION_SETTINGS = 1000;
     public final static int REQUEST_BLE_SETTINGS_CODE = 1001;
+    public static BleAlertDialog bleAlertDialog;
 
     public static boolean checkBleFeatures(Activity activity) {
         return checkBleFeatures(activity, null);
@@ -68,6 +69,9 @@ public class CheckBleFeaturesUtil {
         }
         //Check the location permissions required to scan nearby devices
         if (!BleTools.checkBlePermission(context)) {
+            if (bleAlertDialog != null && bleAlertDialog.showing()) {
+                return false;
+            }
             XXPermissions.with(activity != null ? activity : fragment.getActivity())
                     .permission(Permission.Group.LOCATION)
                     .request(new OnPermission() {
@@ -81,7 +85,7 @@ public class CheckBleFeaturesUtil {
                         @Override
                         public void noPermission(List<String> denied, boolean quick) {
                             if (quick) {
-                                new BleAlertDialog(context).builder().setTitle(context.getString(R.string.warm_prompt)).setMsg(context.getString(R.string.request_location_premisson)).setNegativeButton(context.getString(R.string.cancel), new View.OnClickListener() {
+                                bleAlertDialog = new BleAlertDialog(context).builder().setTitle(context.getString(R.string.warm_prompt)).setMsg(context.getString(R.string.request_location_premisson)).setNegativeButton(context.getString(R.string.cancel), new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
 
@@ -90,6 +94,11 @@ public class CheckBleFeaturesUtil {
                                     @Override
                                     public void onClick(View v) {
                                         XXPermissions.gotoPermissionSettings(context);
+                                    }
+                                }).initDismissIEvent(new BleAlertDialog.DismissIEvent() {
+                                    @Override
+                                    public void onDismiss() {
+                                        bleAlertDialog = null;
                                     }
                                 }).show();
 

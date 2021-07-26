@@ -22,6 +22,7 @@ import com.ikangtai.bluetoothsdk.util.FileUtil;
 import com.ikangtai.bluetoothsdk.util.LogUtils;
 import com.ikangtai.bluetoothsdk.util.ToastUtils;
 import com.ikangtai.bluetoothui.AppInfo;
+import com.ikangtai.bluetoothui.Constant;
 import com.ikangtai.bluetoothui.Keys;
 import com.ikangtai.bluetoothui.R;
 import com.ikangtai.bluetoothui.activity.DeviceConnectActivity;
@@ -173,7 +174,7 @@ public class BleModel {
          */
         Config config = new Config.Builder().logWriter(logWriter).build();
         //sdk init
-        scPeripheralManager.init(context, config);
+        scPeripheralManager.init(context, Constant.appId, Constant.appSecret, Constant.unionId,config);
         receiveDataListenerAdapter = new ReceiveDataListenerAdapter() {
             private long endConnBLETime;
             private long distanceTime = 5 * 60 * 1000;

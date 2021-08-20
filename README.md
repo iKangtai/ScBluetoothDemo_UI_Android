@@ -103,6 +103,8 @@ If your application uses code obfuscation, please add the following configuratio
 ```java
     -dontwarn  com.ikangtai.bluetoothsdk.**
     -keep class com.ikangtai.bluetoothsdk.** {*;}
+    -dontwarn  com.ikangtai.bluetoothui.**
+    -keep class com.ikangtai.bluetoothui.** {*;}
 ```
   
 ## SDK privacy agreement

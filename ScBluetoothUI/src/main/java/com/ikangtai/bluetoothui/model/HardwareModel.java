@@ -25,8 +25,12 @@ public class HardwareModel {
         List<HardwareInfo> hardwareInfoList = new ArrayList<>();
         String jsonDataStr = context.getSharedPreferences("HardwareDataPref", Context.MODE_PRIVATE).getString("HardwareData", "");
         if (!TextUtils.isEmpty(jsonDataStr)) {
-            HardwareInfo hardwareInfo = new Gson().fromJson(jsonDataStr, HardwareInfo.class);
-            hardwareInfoList.add(hardwareInfo);
+            try{
+                HardwareInfo hardwareInfo = new Gson().fromJson(jsonDataStr, HardwareInfo.class);
+                hardwareInfoList.add(hardwareInfo);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
         return hardwareInfoList;
     }

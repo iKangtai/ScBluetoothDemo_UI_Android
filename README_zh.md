@@ -103,6 +103,8 @@
 ```java
     -dontwarn  com.ikangtai.bluetoothsdk.**
     -keep class com.ikangtai.bluetoothsdk.** {*;}
+    -dontwarn  com.ikangtai.bluetoothui.**
+    -keep class com.ikangtai.bluetoothui.** {*;}
 ```
 ## SDK隐私协议
 a)收集个人信息目的/用途：优化硬件兼容设备<br/>

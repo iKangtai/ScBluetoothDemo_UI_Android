@@ -101,6 +101,9 @@
 ### 混淆配置
 如果您的应用程序使用代码混淆，请添加以下配置，以避免由于混淆不正确而导致SDK不可用。
 ```java
+    -keepclasseswithmembernames class * {  # 保持 native 方法不被混淆
+        native <methods>;
+    }
     -dontwarn  com.ikangtai.bluetoothsdk.**
     -keep class com.ikangtai.bluetoothsdk.** {*;}
     -dontwarn  com.ikangtai.bluetoothui.**

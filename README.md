@@ -101,6 +101,9 @@ English | [中文文档](README_zh.md)
 ### Confusion configuration
 If your application uses code obfuscation, please add the following configuration to avoid SDK being unavailable due to incorrect obfuscation.
 ```java
+    -keepclasseswithmembernames class * {  # 保持 native 方法不被混淆
+        native <methods>;
+    }
     -dontwarn  com.ikangtai.bluetoothsdk.**
     -keep class com.ikangtai.bluetoothsdk.** {*;}
     -dontwarn  com.ikangtai.bluetoothui.**

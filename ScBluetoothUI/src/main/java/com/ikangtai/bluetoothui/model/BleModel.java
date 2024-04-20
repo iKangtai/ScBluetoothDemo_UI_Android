@@ -363,8 +363,8 @@ public class BleModel {
                             String deviceAddr = connectScPeripheral.getMacAddress();
                             LogUtils.i("Device has been scanned! Stop scanning! " + deviceAddr);
                             stopScan();
-                            LogUtils.i("Start requesting to connect to the device:" + scBluetoothDevice.macAddress);
-                            scPeripheralManager.connectPeripheral(scBluetoothDevice.macAddress);
+                            LogUtils.i("Start requesting to connect to the device:" + scBluetoothDevice.getMacAddress());
+                            scPeripheralManager.connectPeripheral(scBluetoothDevice.getMacAddress());
                             break;
                         }
                     }
